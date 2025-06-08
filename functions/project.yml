@@ -1,0 +1,50 @@
+targetNamespace: ""
+parameters: {}
+environment: {}
+packages:
+  - name: api
+    environment:
+      S3_ACCESS_KEY_ID: "${S3_ACCESS_KEY_ID}"
+      S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY}"
+      S3_ENDPOINT: "${S3_ENDPOINT}"
+      S3_REGION: "${S3_REGION}"
+      S3_BUCKET: "${S3_BUCKET}"
+      JWT_SECRET: "${JWT_SECRET}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+    functions:
+      - name: create-multipart
+        web: true
+        runtime: nodejs:18
+      - name: sign-part
+        web: true
+        runtime: nodejs:18
+      - name: complete-multipart
+        web: true
+        runtime: nodejs:18
+      - name: abort-multipart
+        web: true
+        runtime: nodejs:18
+      - name: list-parts
+        web: true
+        runtime: nodejs:18
+      - name: get-upload-url
+        web: true
+        runtime: nodejs:18
+      - name: create-metadata
+        web: true
+        runtime: nodejs:18
+      - name: get-metadata
+        web: true
+        runtime: nodejs:18
+      - name: get-download-url
+        web: true
+        runtime: nodejs:18
+      - name: list-files
+        web: true
+        runtime: nodejs:18
+      - name: delete-file
+        web: true
+        runtime: nodejs:18
+      - name: clean-expired
+        web: true
+        runtime: nodejs:18 
