@@ -2,16 +2,35 @@
   <div id="app">
     <Toast />
     <router-view />
+    <div v-if="!hasDonated" class="footer">
+      Made with ❤️ & ☕ in the 🇬🇧 by <a href="https://github.com/calumk" target="_blank">@calumk</a>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    hasDonated() {
+      return import.meta.env.VITE_I_HAVE_DONATED_TO_CALUMK === 'true'
+    }
+  }
 }
 </script>
 
 <style>
+.footer {
+  text-align: center;
+  color: white;
+  padding: 1rem;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
 * {
   margin: 0;
   padding: 0;

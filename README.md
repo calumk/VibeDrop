@@ -238,6 +238,14 @@ All configuration is done through environment variables. See `env.example` for a
 4. Push to branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
+## ☕ Support the Developer
+
+If VibeDrop has been useful for you, consider supporting the developer:
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/calumk)
+
+Your support helps maintain and improve VibeDrop! After donating, you can set `VITE_I_HAVE_DONATED_TO_CALUMK=true` in your environment variables to hide the footer attribution.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -255,6 +263,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
 
 **Made with ❤️ by [calumk](https://github.com/calumk)**
+
+**Buy me a Coffee ☕ [https://ko-fi.com/calumk](https://ko-fi.com/calumk)
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
 
