@@ -9,7 +9,7 @@ environment:
   JWT_SECRET: "${JWT_SECRET}"
   ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
 packages:
-  - name: api
+  - name: default
     functions:
       - name: create-multipart
         web: true
