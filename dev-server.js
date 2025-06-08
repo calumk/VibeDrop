@@ -16,18 +16,18 @@ if (!process.env.S3_ACCESS_KEY_ID && process.env.VITE_S3_ACCESS_KEY_ID) {
 }
 
 // Import function handlers
-import createMultipart from './functions/packages/default/create-multipart/index.js';
-import signPart from './functions/packages/default/sign-part/index.js';
-import completeMultipart from './functions/packages/default/complete-multipart/index.js';
-import abortMultipart from './functions/packages/default/abort-multipart/index.js';
-import listParts from './functions/packages/default/list-parts/index.js';
-import getUploadUrl from './functions/packages/default/get-upload-url/index.js';
-import createMetadata from './functions/packages/default/create-metadata/index.js';
-import getMetadata from './functions/packages/default/get-metadata/index.js';
-import getDownloadUrl from './functions/packages/default/get-download-url/index.js';
-import listFiles from './functions/packages/default/list-files/index.js';
-import deleteFile from './functions/packages/default/delete-file/index.js';
-import cleanExpired from './functions/packages/default/clean-expired/index.js';
+import createMultipart from './functions/packages/api/create-multipart/index.js';
+import signPart from './functions/packages/api/sign-part/index.js';
+import completeMultipart from './functions/packages/api/complete-multipart/index.js';
+import abortMultipart from './functions/packages/api/abort-multipart/index.js';
+import listParts from './functions/packages/api/list-parts/index.js';
+import getUploadUrl from './functions/packages/api/get-upload-url/index.js';
+import createMetadata from './functions/packages/api/create-metadata/index.js';
+import getMetadata from './functions/packages/api/get-metadata/index.js';
+import getDownloadUrl from './functions/packages/api/get-download-url/index.js';
+import listFiles from './functions/packages/api/list-files/index.js';
+import deleteFile from './functions/packages/api/delete-file/index.js';
+import cleanExpired from './functions/packages/api/clean-expired/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
