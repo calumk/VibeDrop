@@ -264,7 +264,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by [calumk](https://github.com/calumk)**
 
-**Buy me a Coffee ☕ [https://ko-fi.com/calumk](https://ko-fi.com/calumk)
+**Buy me a Coffee ☕ [https://ko-fi.com/calumk](https://ko-fi.com/calumk)**
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
 
