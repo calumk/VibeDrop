@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\"",
     "dev:frontend": "vite",
-    "dev:api": "node dev-server.js",
+    "dev:api": "node dev-server.cjs",
     "build": "vite build",
     "preview": "vite preview",
     "setup-cors": "node scripts/setup-cors.js",

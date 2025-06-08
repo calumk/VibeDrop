@@ -1,8 +1,8 @@
-import { S3Client } from '@aws-sdk/client-s3';
-import jwt from 'jsonwebtoken';
+const { S3Client } = require('@aws-sdk/client-s3');
+const jwt = require('jsonwebtoken');
 
 // Create S3 client with server-side credentials
-export function createS3Client() {
+function createS3Client() {
   return new S3Client({
     endpoint: process.env.S3_ENDPOINT,
     region: process.env.S3_REGION,
@@ -15,7 +15,7 @@ export function createS3Client() {
 }
 
 // Validate authentication token
-export function validateAuth(event) {
+function validateAuth(event) {
   try {
     const authHeader = event.headers?.authorization || event.headers?.Authorization;
     if (!authHeader) {
@@ -52,12 +52,12 @@ export function validateAuth(event) {
 }
 
 // Generate unique file ID
-export function generateFileId() {
+function generateFileId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
 }
 
 // Standard response helper
-export function createResponse(statusCode, body, headers = {}) {
+function createResponse(statusCode, body, headers = {}) {
   return {
     statusCode,
     headers: {
@@ -72,7 +72,7 @@ export function createResponse(statusCode, body, headers = {}) {
 }
 
 // Handle CORS preflight
-export function handleCORS(event) {
+function handleCORS(event) {
   if (event.httpMethod === 'OPTIONS') {
     return createResponse(200, { message: 'CORS preflight' });
   }
@@ -80,11 +80,21 @@ export function handleCORS(event) {
 }
 
 // Parse request body safely
-export function parseBody(event) {
+function parseBody(event) {
   try {
     if (!event.body) return {};
     return JSON.parse(event.body);
   } catch (error) {
     throw new Error('Invalid JSON in request body');
   }
-} 
+}
+
+// Export all functions
+module.exports = {
+  createS3Client,
+  validateAuth,
+  generateFileId,
+  createResponse,
+  handleCORS,
+  parseBody
+}; 

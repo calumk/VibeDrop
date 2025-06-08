@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
 // Load environment variables from .env.local
 dotenv.config({ path: '.env.local' });
@@ -16,19 +16,19 @@ if (!process.env.S3_ACCESS_KEY_ID && process.env.VITE_S3_ACCESS_KEY_ID) {
 }
 
 // Import function handlers
-import hello from './functions/packages/vibedrop/hello/index.js';
-import createMultipart from './functions/packages/vibedrop/create-multipart/index.js';
-import signPart from './functions/packages/vibedrop/sign-part/index.js';
-import completeMultipart from './functions/packages/vibedrop/complete-multipart/index.js';
-import abortMultipart from './functions/packages/vibedrop/abort-multipart/index.js';
-import listParts from './functions/packages/vibedrop/list-parts/index.js';
-import getUploadUrl from './functions/packages/vibedrop/get-upload-url/index.js';
-import createMetadata from './functions/packages/vibedrop/create-metadata/index.js';
-import getMetadata from './functions/packages/vibedrop/get-metadata/index.js';
-import getDownloadUrl from './functions/packages/vibedrop/get-download-url/index.js';
-import listFiles from './functions/packages/vibedrop/list-files/index.js';
-import deleteFile from './functions/packages/vibedrop/delete-file/index.js';
-import cleanExpired from './functions/packages/vibedrop/clean-expired/index.js';
+const hello = require('./functions/packages/vibedrop/hello/index.js');
+const createMultipart = require('./functions/packages/vibedrop/create-multipart/index.js');
+const signPart = require('./functions/packages/vibedrop/sign-part/index.js');
+const completeMultipart = require('./functions/packages/vibedrop/complete-multipart/index.js');
+const abortMultipart = require('./functions/packages/vibedrop/abort-multipart/index.js');
+const listParts = require('./functions/packages/vibedrop/list-parts/index.js');
+const getUploadUrl = require('./functions/packages/vibedrop/get-upload-url/index.js');
+const createMetadata = require('./functions/packages/vibedrop/create-metadata/index.js');
+const getMetadata = require('./functions/packages/vibedrop/get-metadata/index.js');
+const getDownloadUrl = require('./functions/packages/vibedrop/get-download-url/index.js');
+const listFiles = require('./functions/packages/vibedrop/list-files/index.js');
+const deleteFile = require('./functions/packages/vibedrop/delete-file/index.js');
+const cleanExpired = require('./functions/packages/vibedrop/clean-expired/index.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -51,8 +51,8 @@ function wrapHandler(handler) {
 
       // Note: Debug logging removed for production
 
-      // Call the function handler
-      const result = await handler(event, {});
+      // Call the function handler - use .main for CommonJS modules
+      const result = await handler.main(event);
       
       // Send response
       res.status(result.statusCode || 200);

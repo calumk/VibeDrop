@@ -1,8 +1,9 @@
-import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { createS3Client, createResponse, handleCORS, parseBody } from '../utils.js';
+const { GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const { createS3Client, createResponse, handleCORS, parseBody } = require('../utils.js');
 
-export default async function main(event, context) {
+exports.main = async function(params) {
+  const event = params;
   // Handle CORS
   const corsResponse = handleCORS(event);
   if (corsResponse) return corsResponse;
@@ -97,4 +98,4 @@ export default async function main(event, context) {
       details: error.message 
     });
   }
-} 
+};

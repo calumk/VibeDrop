@@ -1,7 +1,8 @@
-import { DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { createS3Client, validateAuth, createResponse, handleCORS, parseBody } from '../utils.js';
+const { DeleteObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { createS3Client, validateAuth, createResponse, handleCORS, parseBody } = require('../utils.js');
 
-export default async function main(event, context) {
+exports.main = async function(params) {
+  const event = params;
   // Handle CORS
   const corsResponse = handleCORS(event);
   if (corsResponse) return corsResponse;
@@ -88,4 +89,4 @@ export default async function main(event, context) {
       details: error.message 
     });
   }
-} 
+};

@@ -1,7 +1,8 @@
-import { ListPartsCommand } from '@aws-sdk/client-s3';
-import { createS3Client, validateAuth, createResponse, handleCORS, parseBody } from '../utils.js';
+const { ListPartsCommand } = require('@aws-sdk/client-s3');
+const { createS3Client, validateAuth, createResponse, handleCORS, parseBody } = require('../utils.js');
 
-export default async function main(event, context) {
+exports.main = async function(params) {
+  const event = params;
   const corsResponse = handleCORS(event);
   if (corsResponse) return corsResponse;
 
@@ -33,4 +34,4 @@ export default async function main(event, context) {
     console.error('List parts error:', error);
     return createResponse(500, { error: 'Failed to list parts' });
   }
-} 
+};
