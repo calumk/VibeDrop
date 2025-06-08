@@ -1,0 +1,10 @@
+{
+  "name": "vibedrop-api",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.470.0",
+    "@aws-sdk/s3-request-presigner": "^3.470.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+} 

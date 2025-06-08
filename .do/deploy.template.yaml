@@ -25,15 +25,27 @@ spec:
       type: SECRET
     - key: VITE_I_HAVE_DONATED_TO_CALUMK
       value: "false"
-    - key: VITE_S3_ENDPOINT
+  functions:
+  - name: api
+    git:
+      branch: main
+      repo_clone_url: https://github.com/calumk/VibeDrop.git
+    source_dir: /functions
+    routes:
+    - path: /api
+    envs:
+    - key: S3_ENDPOINT
       value: "https://lon1.digitaloceanspaces.com"
-    - key: VITE_S3_REGION
+    - key: S3_REGION
       value: "lon1"
-    - key: VITE_S3_BUCKET
+    - key: S3_BUCKET
       value: "your-bucket-name"
-    - key: VITE_S3_ACCESS_KEY_ID
+    - key: S3_ACCESS_KEY_ID
       value: "your-access-key"
       type: SECRET
-    - key: VITE_S3_SECRET_ACCESS_KEY
+    - key: S3_SECRET_ACCESS_KEY
       value: "your-secret-key"
+      type: SECRET
+    - key: JWT_SECRET
+      value: "your-jwt-secret"
       type: SECRET 

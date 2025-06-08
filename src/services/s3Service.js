@@ -1,36 +1,33 @@
-import { 
-  S3Client, 
-  PutObjectCommand, 
-  GetObjectCommand, 
-  DeleteObjectCommand, 
-  ListObjectsV2Command,
-  CreateMultipartUploadCommand,
-  UploadPartCommand,
-  CompleteMultipartUploadCommand,
-  AbortMultipartUploadCommand,
-  ListPartsCommand
-} from '@aws-sdk/client-s3'
-import { Upload } from '@aws-sdk/lib-storage'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-
-const SPACES_ENDPOINT = import.meta.env.VITE_S3_ENDPOINT
-const SPACES_BUCKET = import.meta.env.VITE_S3_BUCKET
-const SPACES_KEY = import.meta.env.VITE_S3_ACCESS_KEY_ID
-const SPACES_SECRET = import.meta.env.VITE_S3_SECRET_ACCESS_KEY
-const SPACES_REGION = import.meta.env.VITE_S3_REGION
-
-// Configure S3 client for DigitalOcean Spaces
-const s3Client = new S3Client({
-  endpoint: SPACES_ENDPOINT,
-  region: SPACES_REGION,
-  credentials: {
-    accessKeyId: SPACES_KEY,
-    secretAccessKey: SPACES_SECRET
-  },
-  forcePathStyle: false
-})
+// API base URL for serverless functions
+const API_BASE = import.meta.env.DEV 
+  ? 'http://localhost:3001/api'  // Local development
+  : '/api';                      // Production
 
 export class S3Service {
+  // Get auth token for API calls
+  static getAuthToken() {
+    // Simple auth token - in production use proper JWT
+    return localStorage.getItem('authToken') || 'admin-session'
+  }
+
+  // Make API call with auth
+  static async apiCall(endpoint, options = {}) {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getAuthToken()}`,
+        ...options.headers
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`API call failed: ${response.statusText}`)
+    }
+
+    return response.json()
+  }
+
   // Generate unique file ID
   static generateFileId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9)
@@ -39,22 +36,12 @@ export class S3Service {
   // Create multipart upload
   static async createMultipartUpload(fileId, fileName, fileType) {
     try {
-      const key = `files/${fileId}/${fileName}`
-      
-      const command = new CreateMultipartUploadCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        ContentType: fileType,
-        ACL: 'private'
+      const result = await this.apiCall('/create-multipart', {
+        method: 'POST',
+        body: JSON.stringify({ fileId, fileName, fileType })
       })
-
-      const response = await s3Client.send(command)
       
-      return {
-        success: true,
-        uploadId: response.UploadId,
-        key
-      }
+      return result
     } catch (error) {
       console.error('Create multipart upload error:', error)
       return {
@@ -67,19 +54,12 @@ export class S3Service {
   // Sign part for multipart upload
   static async signPart(uploadId, key, partNumber) {
     try {
-      const command = new UploadPartCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        UploadId: uploadId,
-        PartNumber: partNumber
+      const result = await this.apiCall('/sign-part', {
+        method: 'POST',
+        body: JSON.stringify({ uploadId, key, partNumber })
       })
-
-      const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
       
-      return {
-        success: true,
-        signedUrl
-      }
+      return result
     } catch (error) {
       console.error('Sign part error:', error)
       return {
@@ -92,24 +72,12 @@ export class S3Service {
   // Complete multipart upload
   static async completeMultipartUpload(uploadId, key, parts) {
     try {
-      const command = new CompleteMultipartUploadCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        UploadId: uploadId,
-        MultipartUpload: {
-          Parts: parts.map((part, index) => ({
-            ETag: part.ETag,
-            PartNumber: index + 1
-          }))
-        }
+      const result = await this.apiCall('/complete-multipart', {
+        method: 'POST',
+        body: JSON.stringify({ uploadId, key, parts })
       })
-
-      const response = await s3Client.send(command)
       
-      return {
-        success: true,
-        location: response.Location
-      }
+      return result
     } catch (error) {
       console.error('Complete multipart upload error:', error)
       return {
@@ -122,17 +90,12 @@ export class S3Service {
   // Abort multipart upload
   static async abortMultipartUpload(uploadId, key) {
     try {
-      const command = new AbortMultipartUploadCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        UploadId: uploadId
+      const result = await this.apiCall('/abort-multipart', {
+        method: 'POST',
+        body: JSON.stringify({ uploadId, key })
       })
-
-      await s3Client.send(command)
       
-      return {
-        success: true
-      }
+      return result
     } catch (error) {
       console.error('Abort multipart upload error:', error)
       return {
@@ -145,18 +108,12 @@ export class S3Service {
   // List parts
   static async listParts(uploadId, key) {
     try {
-      const command = new ListPartsCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        UploadId: uploadId
+      const result = await this.apiCall('/list-parts', {
+        method: 'POST',
+        body: JSON.stringify({ uploadId, key })
       })
-
-      const response = await s3Client.send(command)
       
-      return {
-        success: true,
-        parts: response.Parts || []
-      }
+      return result
     } catch (error) {
       console.error('List parts error:', error)
       return {
@@ -169,22 +126,12 @@ export class S3Service {
   // Get signed URL for Uppy upload
   static async getUploadUrl(fileId, fileName, fileType) {
     try {
-      const key = `files/${fileId}/${fileName}`
-      
-      const command = new PutObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: key,
-        ContentType: fileType,
-        ACL: 'private'
+      const result = await this.apiCall('/get-upload-url', {
+        method: 'POST',
+        body: JSON.stringify({ fileId, fileName, fileType })
       })
-
-      const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
       
-      return {
-        success: true,
-        uploadUrl: signedUrl,
-        key
-      }
+      return result
     } catch (error) {
       console.error('Upload URL generation error:', error)
       return {
@@ -197,42 +144,12 @@ export class S3Service {
   // Create metadata file
   static async createMetadata(fileId, fileData) {
     try {
-      // Calculate expiry date based on expiryDays
-      let expiryDate = null
-      if (fileData.expiryDays && fileData.expiryDays > 0) {
-        expiryDate = new Date(Date.now() + fileData.expiryDays * 24 * 60 * 60 * 1000).toISOString()
-      }
+      const result = await this.apiCall('/create-metadata', {
+        method: 'POST',
+        body: JSON.stringify({ fileId, fileData })
+      })
       
-      const metadata = {
-        fileId,
-        displayName: fileData.name, // Custom name for display
-        originalName: fileData.originalName, // Original filename
-        description: fileData.description || null,
-        size: fileData.size,
-        type: fileData.type,
-        passcode: fileData.passcode || null,
-        uploadDate: new Date().toISOString(),
-        expiryDate: expiryDate, // null means never expires
-        expiryDays: fileData.expiryDays || null,
-        downloadCount: 0,
-        filePath: `files/${fileId}/${fileData.originalName}`
-      }
-
-      const metadataKey = `links/${fileId}.json`
-      
-      await s3Client.send(new PutObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: metadataKey,
-        Body: JSON.stringify(metadata),
-        ContentType: 'application/json',
-        ACL: 'private'
-      }))
-
-      return {
-        success: true,
-        fileId,
-        metadata
-      }
+      return result
     } catch (error) {
       console.error('Metadata creation error:', error)
       return {
