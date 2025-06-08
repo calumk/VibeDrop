@@ -3,9 +3,19 @@
 // AWS SDK v2 CORS Setup Script for DigitalOcean Spaces
 const AWS = require('aws-sdk');
 
-const BUCKET = 'dsl-test-bucket';
-const ACCESS_KEY = 'REDACTED_ACCESS_KEY';
-const SECRET_KEY = 'REDACTED_SECRET_KEY';
+const BUCKET = process.env.VITE_S3_BUCKET;
+const ACCESS_KEY = process.env.VITE_S3_ACCESS_KEY_ID;
+const SECRET_KEY = process.env.VITE_S3_SECRET_ACCESS_KEY;
+
+// Validate required environment variables
+if (!BUCKET || !ACCESS_KEY || !SECRET_KEY) {
+  console.error('❌ Missing required environment variables!');
+  console.log('Please set the following environment variables:');
+  console.log('- VITE_S3_BUCKET');
+  console.log('- VITE_S3_ACCESS_KEY_ID');
+  console.log('- VITE_S3_SECRET_ACCESS_KEY');
+  process.exit(1);
+}
 
 // Configure AWS SDK for DigitalOcean Spaces
 const spacesEndpoint = new AWS.Endpoint('lon1.digitaloceanspaces.com');

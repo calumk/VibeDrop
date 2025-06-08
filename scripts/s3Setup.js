@@ -3,10 +3,21 @@
 // S3 Setup Script to configure CORS with ETag support for DigitalOcean Spaces
 import { S3Client, PutBucketCorsCommand, GetBucketCorsCommand } from '@aws-sdk/client-s3'
 
-const SPACES_ENDPOINT = 'https://lon1.digitaloceanspaces.com'
-const SPACES_BUCKET = 'dsl-test-bucket'
-const SPACES_KEY = 'REDACTED_ACCESS_KEY'
-const SPACES_SECRET = 'REDACTED_SECRET_KEY'
+const SPACES_ENDPOINT = process.env.VITE_S3_ENDPOINT || 'https://lon1.digitaloceanspaces.com'
+const SPACES_BUCKET = process.env.VITE_S3_BUCKET
+const SPACES_KEY = process.env.VITE_S3_ACCESS_KEY_ID  
+const SPACES_SECRET = process.env.VITE_S3_SECRET_ACCESS_KEY
+
+// Validate required environment variables
+if (!SPACES_BUCKET || !SPACES_KEY || !SPACES_SECRET) {
+  console.error('❌ Missing required environment variables!')
+  console.log('Please set the following environment variables:')
+  console.log('- VITE_S3_BUCKET')
+  console.log('- VITE_S3_ACCESS_KEY_ID') 
+  console.log('- VITE_S3_SECRET_ACCESS_KEY')
+  console.log('- VITE_S3_ENDPOINT (optional, defaults to lon1.digitaloceanspaces.com)')
+  process.exit(1)
+}
 
 const s3Client = new S3Client({
   endpoint: SPACES_ENDPOINT,

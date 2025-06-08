@@ -3,10 +3,21 @@
 # S3CMD CORS Setup Script for DigitalOcean Spaces
 # This script applies CORS configuration using s3cmd and verifies it worked
 
-BUCKET="dsl-test-bucket"
-ENDPOINT="https://lon1.digitaloceanspaces.com"
-ACCESS_KEY="REDACTED_ACCESS_KEY_2"
-SECRET_KEY="REDACTED_SECRET_KEY_2"
+BUCKET="${VITE_S3_BUCKET}"
+ENDPOINT="${VITE_S3_ENDPOINT:-https://lon1.digitaloceanspaces.com}"
+ACCESS_KEY="${VITE_S3_ACCESS_KEY_ID}"
+SECRET_KEY="${VITE_S3_SECRET_ACCESS_KEY}"
+
+# Validate required environment variables
+if [ -z "$BUCKET" ] || [ -z "$ACCESS_KEY" ] || [ -z "$SECRET_KEY" ]; then
+    echo "❌ Missing required environment variables!"
+    echo "Please set the following environment variables:"
+    echo "- VITE_S3_BUCKET"
+    echo "- VITE_S3_ACCESS_KEY_ID"
+    echo "- VITE_S3_SECRET_ACCESS_KEY"
+    echo "- VITE_S3_ENDPOINT (optional, defaults to https://lon1.digitaloceanspaces.com)"
+    exit 1
+fi
 
 echo "🔧 Setting up CORS configuration using s3cmd..."
 echo "📦 Bucket: $BUCKET"
