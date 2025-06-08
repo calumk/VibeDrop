@@ -11,6 +11,9 @@ environment:
 packages:
   - name: vibedrop
     functions:
+      - name: hello
+        web: true
+        runtime: nodejs:18
       - name: create-multipart
         web: true
         runtime: nodejs:18

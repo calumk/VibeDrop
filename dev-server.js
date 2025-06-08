@@ -16,6 +16,7 @@ if (!process.env.S3_ACCESS_KEY_ID && process.env.VITE_S3_ACCESS_KEY_ID) {
 }
 
 // Import function handlers
+import hello from './functions/packages/vibedrop/hello/index.js';
 import createMultipart from './functions/packages/vibedrop/create-multipart/index.js';
 import signPart from './functions/packages/vibedrop/sign-part/index.js';
 import completeMultipart from './functions/packages/vibedrop/complete-multipart/index.js';
@@ -82,6 +83,7 @@ function wrapHandler(handler) {
 }
 
 // Mount API endpoints
+app.get('/api/hello', wrapHandler(hello));
 app.post('/api/create-multipart', wrapHandler(createMultipart));
 app.post('/api/sign-part', wrapHandler(signPart));
 app.post('/api/complete-multipart', wrapHandler(completeMultipart));
@@ -113,6 +115,7 @@ app.listen(PORT, () => {
   console.log(`📡 API endpoints available at http://localhost:${PORT}/api/*`);
   console.log('');
   console.log('Available endpoints:');
+  console.log('  GET  /api/hello');
   console.log('  POST /api/create-multipart');
   console.log('  POST /api/sign-part');
   console.log('  POST /api/complete-multipart');
