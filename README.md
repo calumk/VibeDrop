@@ -83,6 +83,9 @@ VITE_S3_REGION=lon1
 VITE_S3_BUCKET=your-bucket-name
 VITE_S3_ACCESS_KEY_ID=your-access-key
 VITE_S3_SECRET_ACCESS_KEY=your-secret-key
+# Support the Developer (set to 'true' to hide the footer attribution)
+VITE_I_HAVE_DONATED_TO_CALUMK=false
+
 ```
 
 4. **Start development server**
