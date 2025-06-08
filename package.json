@@ -1,0 +1,38 @@
+{
+  "name": "wetransfer-clone",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "setup-cors": "node scripts/setup-cors.js",
+    "setup-s3": "node scripts/s3Setup.js",
+    "setup-cors-aws": "node scripts/setup-cors-aws.cjs",
+    "setup-cors-s3cmd": "chmod +x scripts/setup-cors-s3cmd.sh && ./scripts/setup-cors-s3cmd.sh"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.682.0",
+    "@aws-sdk/lib-storage": "^3.682.0",
+    "@aws-sdk/s3-request-presigner": "^3.682.0",
+    "@primevue/themes": "^4.2.0",
+    "@uppy/aws-s3": "^4.1.0",
+    "@uppy/core": "^4.2.1",
+    "@uppy/dashboard": "^4.1.0",
+    "@uppy/drag-drop": "^4.0.3",
+    "@uppy/file-input": "^4.0.1",
+    "@uppy/progress-bar": "^4.0.1",
+    "aws-sdk": "^2.1691.0",
+    "plyr": "^3.7.8",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.2.0",
+    "prismjs": "^1.30.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.1"
+  }
+}

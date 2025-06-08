@@ -1,0 +1,42 @@
+spec:
+  name: vibedrop
+  services:
+  - name: web
+    git:
+      branch: main
+      repo_clone_url: https://github.com/calumk/VibeDrop.git
+    build_command: npm run build
+    run_command: npm run preview
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    source_dir: /
+    routes:
+    - path: /
+    envs:
+    - key: VITE_APP_NAME
+      value: "VibeDrop"
+    - key: VITE_APP_TAGLINE
+      value: "Share files up to 5GB securely and magically. Upload, protect, and share with ease."
+    - key: VITE_FAVICON_URL
+      value: "https://via.placeholder.com/32x32/667eea/ffffff?text=VD"
+    - key: VITE_USE_SIMPLE_LOGIN
+      value: "false"
+    - key: VITE_ADMIN_PASSWORD
+      value: "change-this-password"
+      type: SECRET
+    - key: VITE_SIMPLE_AUTH_STRING
+      value: "your-secret-auth-string"
+      type: SECRET
+    - key: VITE_S3_ENDPOINT
+      value: "https://lon1.digitaloceanspaces.com"
+    - key: VITE_S3_REGION
+      value: "lon1"
+    - key: VITE_S3_BUCKET
+      value: "your-bucket-name"
+    - key: VITE_S3_ACCESS_KEY_ID
+      value: "your-access-key"
+      type: SECRET
+    - key: VITE_S3_SECRET_ACCESS_KEY
+      value: "your-secret-key"
+      type: SECRET 
