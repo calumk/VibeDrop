@@ -23,6 +23,8 @@ spec:
     - key: VITE_SIMPLE_AUTH_STRING
       value: "your-secret-auth-string"
       type: SECRET
+    - key: VITE_I_HAVE_DONATED_TO_CALUMK
+      value: "false"
     - key: VITE_S3_ENDPOINT
       value: "https://lon1.digitaloceanspaces.com"
     - key: VITE_S3_REGION
