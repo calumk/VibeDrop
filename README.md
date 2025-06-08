@@ -92,6 +92,14 @@ npm run dev
 bun run dev
 ```
 
+5. **Build for production (when ready to deploy)**
+```bash
+npm run build
+git add dist/
+git commit -m "Update production build"
+git push
+```
+
 ## 🎯 How It Works
 
 ### Upload Process
@@ -181,7 +189,7 @@ bun run dev
 ### DigitalOcean App Platform (Recommended)
 1. Click the deploy button above
 2. Configure environment variables
-3. Deploy automatically
+3. Deploy automatically (pre-built static files)
 
 ### Manual Deployment
 1. Build the project: `npm run build`
