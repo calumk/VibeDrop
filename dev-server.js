@@ -1,5 +1,19 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env.local
+dotenv.config({ path: '.env.local' });
+
+// Map VITE_ prefixed variables to server-side equivalents for development
+if (!process.env.S3_ACCESS_KEY_ID && process.env.VITE_S3_ACCESS_KEY_ID) {
+  process.env.S3_ACCESS_KEY_ID = process.env.VITE_S3_ACCESS_KEY_ID;
+  process.env.S3_SECRET_ACCESS_KEY = process.env.VITE_S3_SECRET_ACCESS_KEY;
+  process.env.S3_ENDPOINT = process.env.VITE_S3_ENDPOINT;
+  process.env.S3_REGION = process.env.VITE_S3_REGION;
+  process.env.S3_BUCKET = process.env.VITE_S3_BUCKET;
+  console.log('🔧 Mapped VITE_ prefixed S3 credentials for development');
+}
 
 // Import function handlers
 import createMultipart from './functions/packages/api/create-multipart/index.js';
@@ -9,6 +23,11 @@ import abortMultipart from './functions/packages/api/abort-multipart/index.js';
 import listParts from './functions/packages/api/list-parts/index.js';
 import getUploadUrl from './functions/packages/api/get-upload-url/index.js';
 import createMetadata from './functions/packages/api/create-metadata/index.js';
+import getMetadata from './functions/packages/api/get-metadata/index.js';
+import getDownloadUrl from './functions/packages/api/get-download-url/index.js';
+import listFiles from './functions/packages/api/list-files/index.js';
+import deleteFile from './functions/packages/api/delete-file/index.js';
+import cleanExpired from './functions/packages/api/clean-expired/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,10 +43,12 @@ function wrapHandler(handler) {
       const event = {
         httpMethod: req.method,
         headers: req.headers,
-        body: JSON.stringify(req.body),
+        body: req.body ? JSON.stringify(req.body) : null,
         queryStringParameters: req.query,
         pathParameters: req.params
       };
+
+      // Note: Debug logging removed for production
 
       // Call the function handler
       const result = await handler(event, {});
@@ -68,6 +89,13 @@ app.post('/api/abort-multipart', wrapHandler(abortMultipart));
 app.post('/api/list-parts', wrapHandler(listParts));
 app.post('/api/get-upload-url', wrapHandler(getUploadUrl));
 app.post('/api/create-metadata', wrapHandler(createMetadata));
+app.get('/api/get-metadata/:id', wrapHandler(getMetadata));
+app.post('/api/get-metadata', wrapHandler(getMetadata));
+app.post('/api/get-download-url', wrapHandler(getDownloadUrl));
+app.get('/api/list-files', wrapHandler(listFiles));
+app.delete('/api/delete-file/:id', wrapHandler(deleteFile));
+app.post('/api/delete-file', wrapHandler(deleteFile));
+app.post('/api/clean-expired', wrapHandler(cleanExpired));
 
 // Handle CORS preflight for all API routes
 app.options('/api/*', (req, res) => {
@@ -92,5 +120,10 @@ app.listen(PORT, () => {
   console.log('  POST /api/list-parts');
   console.log('  POST /api/get-upload-url');
   console.log('  POST /api/create-metadata');
+  console.log('  GET  /api/get-metadata/:id');
+  console.log('  POST /api/get-download-url');
+  console.log('  GET  /api/list-files');
+  console.log('  DELETE /api/delete-file/:id');
+  console.log('  POST /api/clean-expired');
   console.log('  GET  /api/health');
 }); 

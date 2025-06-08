@@ -1,24 +1,36 @@
 # DigitalOcean App Platform Deployment
 
+## Serverless Architecture
+
+VibeDrop now uses a **secure serverless architecture** with DigitalOcean Functions. This provides enterprise-level security by keeping S3 credentials server-side only.
+
 ## Environment Variables Setup
 
 In your DigitalOcean App Platform settings, add these environment variables:
 
-### Required Variables
+### Frontend Variables (Client-side)
 
 | Variable | Description | Example | Encrypt |
 |----------|-------------|---------|---------|
-| `VITE_APP_NAME` | Application name | `Magic File Transfer` | No |
+| `VITE_APP_NAME` | Application name | `VibeDrop` | No |
 | `VITE_APP_TAGLINE` | App description/tagline | `Share files securely and magically` | No |
 | `VITE_FAVICON_URL` | Custom favicon URL | `https://your-domain.com/favicon.ico` | No |
 | `VITE_USE_SIMPLE_LOGIN` | Use simple login (true/false) | `false` | No |
 | `VITE_ADMIN_PASSWORD` | Admin access password | `your-secure-password` | **Yes** |
 | `VITE_SIMPLE_AUTH_STRING` | URL parameter authentication string | `your-secret-auth-string` | **Yes** |
-| `VITE_S3_ENDPOINT` | DigitalOcean Spaces endpoint | `https://lon1.digitaloceanspaces.com` | No |
-| `VITE_S3_REGION` | DigitalOcean Spaces region | `lon1` | No |
-| `VITE_S3_BUCKET` | Your Spaces bucket name | `your-bucket-name` | No |
-| `VITE_S3_ACCESS_KEY_ID` | Spaces access key | `your-access-key` | **Yes** |
-| `VITE_S3_SECRET_ACCESS_KEY` | Spaces secret key | `your-secret-key` | **Yes** |
+| `VITE_I_HAVE_DONATED_TO_CALUMK` | Hide footer attribution | `false` | No |
+
+### Server-side Function Variables (SECURE)
+
+**🔒 These credentials stay server-side and are NEVER exposed to browsers:**
+
+| Variable | Description | Example | Encrypt |
+|----------|-------------|---------|---------|
+| `S3_ENDPOINT` | DigitalOcean Spaces endpoint | `https://lon1.digitaloceanspaces.com` | No |
+| `S3_REGION` | DigitalOcean Spaces region | `lon1` | No |
+| `S3_BUCKET` | Your Spaces bucket name | `your-bucket-name` | No |
+| `S3_ACCESS_KEY_ID` | Spaces access key | `your-access-key` | **Yes** |
+| `S3_SECRET_ACCESS_KEY` | Spaces secret key | `your-secret-key` | **Yes** |
 
 ### Steps to Configure
 
@@ -94,12 +106,29 @@ https://your-app.com/?linkAuth=your-secret-auth-string
 - The auth string is removed from the URL after authentication
 - Session expires after 1 hour like normal password authentication
 
-## Security Notes
+## Security Features
 
-- Always encrypt sensitive variables in DigitalOcean
-- Use strong passwords for admin access
+### 🛡️ Enterprise-Level Security
+- **Zero Client-Side Credentials**: S3 credentials never exposed to browsers
+- **Serverless Functions**: All S3 operations handled server-side
+- **Pre-signed URLs**: Temporary, secure upload/download links
+- **Authentication Validation**: All operations require proper authorization
+
+### Security Best Practices
+- Always encrypt sensitive variables in DigitalOcean (marked **Yes** above)
+- Use strong passwords for admin access (12+ characters)
 - Regularly rotate your Spaces API keys
-- Consider restricting Spaces access by IP if needed
+- Monitor function logs for unusual activity
+- Set appropriate file expiry times
+
+### Why Serverless Functions Are Required
+Traditional SPAs expose S3 credentials in client-side JavaScript, allowing anyone to:
+- View your credentials in browser dev tools
+- Upload unlimited files to your bucket
+- Delete all your files
+- Rack up massive storage costs
+
+**VibeDrop's serverless architecture prevents ALL of these attacks.**
 
 ## Troubleshooting
 

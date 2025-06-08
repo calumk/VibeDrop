@@ -273,7 +273,7 @@ export default {
           })
 
           if (metadataResult.success) {
-            this.shareUrl = `${window.location.origin}/${this.currentFileId}`
+            this.shareUrl = `${window.location.origin}/file/${this.currentFileId}`
             this.uploadComplete = true
             this.uploading = false
             

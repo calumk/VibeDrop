@@ -2,6 +2,8 @@
 
 A beautiful, modern file transfer application that lets you share files up to 5GB securely and magically. Built with Vue 3 and designed for simplicity and elegance.
 
+VibeDrop requires NO database, and can operate either with the provided development server, or using DigitalOcean Functions
+
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
 
 ## ✨ Features
@@ -71,28 +73,66 @@ cp env.example .env.local
 ```
 
 Edit `.env.local` with your settings:
+
+**For Local Development:**
 ```env
+# App Configuration
 VITE_APP_NAME=VibeDrop
 VITE_APP_TAGLINE=Share files securely and magically
 VITE_FAVICON_URL=https://your-domain.com/favicon.ico
+
+# Authentication  
 VITE_USE_SIMPLE_LOGIN=false
 VITE_ADMIN_PASSWORD=your-secure-password
 VITE_SIMPLE_AUTH_STRING=your-secret-auth-string
+
+# DigitalOcean Spaces (for local dev server only)
 VITE_S3_ENDPOINT=https://lon1.digitaloceanspaces.com
 VITE_S3_REGION=lon1
 VITE_S3_BUCKET=your-bucket-name
 VITE_S3_ACCESS_KEY_ID=your-access-key
 VITE_S3_SECRET_ACCESS_KEY=your-secret-key
-# Support the Developer (set to 'true' to hide the footer attribution)
-VITE_I_HAVE_DONATED_TO_CALUMK=false
 
+# Support the Developer
+VITE_I_HAVE_DONATED_TO_CALUMK=false
 ```
 
-4. **Start development server**
+**For Production Deployment:**
+In DigitalOcean App Platform, set these as **encrypted environment variables**:
+```env
+# Frontend Variables (same as above)
+VITE_APP_NAME=VibeDrop
+VITE_ADMIN_PASSWORD=your-secure-password
+# ... other VITE_ variables
+
+# Server-side Function Variables (SECURE - not exposed to client)
+S3_ACCESS_KEY_ID=your-access-key
+S3_SECRET_ACCESS_KEY=your-secret-key  
+S3_ENDPOINT=https://lon1.digitaloceanspaces.com
+S3_REGION=lon1
+S3_BUCKET=your-bucket-name
+```
+
+> **🔒 Security Note**: In production, S3 credentials use non-VITE prefixed variables so they remain server-side only. The VITE_ prefixed versions are only used for local development convenience.
+
+4. **Start development servers**
+
+Start both the frontend and API server together:
 ```bash
 npm run dev
-# or
-bun run dev
+```
+
+This automatically starts:
+- **Frontend** at `http://localhost:5173` (Vite dev server)
+- **API Server** at `http://localhost:3001` (for secure S3 operations)
+
+You can also run them separately if needed:
+```bash
+# Terminal 1: API server only
+npm run dev:api
+
+# Terminal 2: Frontend only  
+npm run dev:frontend
 ```
 
 5. **Build for production (when ready to deploy)**
@@ -136,11 +176,19 @@ git push
 
 ## 🔧 Architecture
 
-### Frontend Routes
+VibeDrop uses a **secure serverless architecture** that separates frontend and backend concerns:
+
+### Frontend (Vue 3 SPA)
 - `/` - Home/login page with splash or simple login
 - `/upload` - File upload interface (protected)
 - `/admin` - Admin dashboard for file management (protected)  
-- `/:fileId` - Public file view and download
+- `/file/:fileId` - Public file view and download
+
+### Backend (DigitalOcean Functions)
+- **Serverless functions** handle all S3 operations securely
+- **Pre-signed URLs** for direct file uploads/downloads  
+- **Authentication validation** for protected operations
+- **Metadata management** with encryption support
 
 ### Components
 - `AuthHeader` - Reusable authentication header
@@ -150,7 +198,19 @@ git push
 
 ### Services
 - `AuthService` - Session management and authentication
-- `S3Service` - File operations and metadata handling
+- `S3Service` - API client for serverless functions (no direct S3 access)
+
+### Serverless Functions (`/functions/packages/api/`)
+- `create-multipart` - Initialize large file uploads
+- `sign-part` - Sign individual upload chunks
+- `complete-multipart` - Finalize multipart uploads
+- `get-upload-url` - Generate secure upload URLs
+- `create-metadata` - Store file metadata
+- `get-metadata` - Retrieve file information
+- `get-download-url` - Generate secure download URLs
+- `list-files` - Admin file listing
+- `delete-file` - Secure file deletion
+- `clean-expired` - Automated cleanup
 
 ## 🔒 Security Features
 
@@ -165,6 +225,120 @@ git push
 - **Signed URLs**: Temporary, secure download links
 - **Auto Expiry**: Configurable file lifetimes
 - **Admin Controls**: Bulk cleanup and management
+
+## 🛡️ Why DigitalOcean Functions Are Essential for Security
+
+VibeDrop uses DigitalOcean Functions (serverless backend) to solve a **critical security vulnerability** that exists in traditional Single Page Applications (SPAs) when dealing with cloud storage.
+
+### 🚨 The Problem: Exposed Credentials in SPAs
+
+In a traditional SPA-only setup, your S3/Spaces credentials would need to be included in the client-side JavaScript bundle:
+
+```javascript
+// ❌ DANGEROUS - Credentials exposed to everyone
+const s3Client = new S3Client({
+  credentials: {
+    accessKeyId: "DO00ABC123XYZ789",     // 😱 Visible to all users!
+    secretAccessKey: "secret_key_here"   // 😱 Anyone can see this!
+  }
+})
+```
+
+**This means:**
+- ✅ Anyone visiting your site can see your S3 credentials in browser dev tools
+- ✅ Malicious users can upload unlimited files to your bucket
+- ✅ Attackers can delete all your files or rack up huge storage costs
+- ✅ No way to control access or implement proper authentication
+
+### ✅ The Solution: Serverless Functions + Pre-signed URLs
+
+VibeDrop's serverless architecture keeps credentials **completely hidden** on the server:
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Browser/SPA   │────│ DO Functions    │────│ DigitalOcean    │
+│                 │    │ (Server-side)    │    │ Spaces          │
+│ • No credentials│────│ • Has credentials│────│ • Secure access │
+│ • Makes API calls│   │ • Validates auth │    │ • Pre-signed URLs│
+│ • Gets signed URLs│  │ • Generates URLs │    │ • Direct uploads │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+```
+
+### 🔐 How It Works Securely
+
+1. **Hidden Credentials**: S3 credentials stay on the server, never sent to browsers
+2. **Authentication Validation**: Functions verify user permissions before any S3 operations
+3. **Pre-signed URLs**: Temporary, secure URLs for uploads/downloads (1-hour expiry)
+4. **Direct Uploads**: Files go straight from browser to S3 (no server bandwidth used)
+5. **Audit Trail**: All operations logged and controllable
+
+### 💰 Cost & Performance Benefits
+
+**Minimal Cost:**
+- Functions run only when needed (~$0.0001 per upload)
+- No always-on server costs
+- Free tier covers most personal usage
+
+**Optimal Performance:**
+- Files upload directly to S3 (fastest possible)
+- No file size limits or server bottlenecks
+- Global CDN delivery for downloads
+
+### 🏗️ Architecture Comparison
+
+#### ❌ Insecure SPA-Only Approach
+```
+Browser ──(with exposed credentials)──► S3 Bucket
+   │                                      │
+   └─── 😱 Anyone can access ──────────────┘
+```
+
+#### ✅ Secure Serverless Approach  
+```
+Browser ──(API calls)──► Functions ──(secure)──► S3 Bucket
+   │                        │                      │
+   └─(signed URLs)────────────────────────────────┘
+```
+
+### 🚀 Development vs Production
+
+**Local Development:**
+- Functions run in Express server at `localhost:3001`
+- Uses same code as production
+- S3 credentials loaded from `.env.local`
+
+**Production:**
+- Functions deploy automatically to DigitalOcean
+- Credentials set as encrypted environment variables
+- Zero-downtime deployments
+
+### 🔧 What Functions Handle
+
+The serverless functions provide these secure endpoints:
+
+| Function | Purpose | Security Benefit |
+|----------|---------|------------------|
+| `create-multipart` | Start large file uploads | Validates auth before S3 access |
+| `sign-part` | Sign upload chunks | Prevents unauthorized uploads |
+| `complete-multipart` | Finish uploads | Ensures proper file completion |
+| `get-upload-url` | Generate upload URLs | Pre-signed, time-limited access |
+| `create-metadata` | Store file info | Server-side metadata validation |
+| `get-metadata` | Retrieve file info | Controlled access to file data |
+| `get-download-url` | Generate download URLs | Passcode verification + tracking |
+| `list-files` | Admin file listing | Authentication required |
+| `delete-file` | Remove files | Admin-only with verification |
+| `clean-expired` | Bulk cleanup | Automated maintenance |
+
+### 🛡️ Security Best Practices Implemented
+
+1. **Zero Trust**: No client-side credentials ever
+2. **Least Privilege**: Functions have minimal required permissions
+3. **Time-limited Access**: All URLs expire automatically
+4. **Input Validation**: All parameters sanitized and validated
+5. **Error Handling**: No sensitive info leaked in error messages
+6. **Audit Logging**: All operations logged for monitoring
+
+**This architecture makes VibeDrop enterprise-ready while remaining simple to deploy and maintain.**
 
 ## 🎨 UI Features
 

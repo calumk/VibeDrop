@@ -162,28 +162,12 @@ export class S3Service {
   // Get metadata
   static async getMetadata(fileId) {
     try {
-      const metadataKey = `links/${fileId}.json`
+      const result = await this.apiCall(`/get-metadata`, {
+        method: 'POST',
+        body: JSON.stringify({ fileId })
+      })
       
-      const response = await s3Client.send(new GetObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: metadataKey
-      }))
-
-      const metadataJson = await response.Body.transformToString()
-      const metadata = JSON.parse(metadataJson)
-
-      // Check if file has expired (only if expiryDate is set)
-      if (metadata.expiryDate && new Date() > new Date(metadata.expiryDate)) {
-        return {
-          success: false,
-          error: 'File has expired'
-        }
-      }
-
-      return {
-        success: true,
-        metadata
-      }
+      return result
     } catch (error) {
       console.error('Metadata retrieval error:', error)
       return {
@@ -196,39 +180,12 @@ export class S3Service {
   // Generate signed URL for download
   static async getDownloadUrl(fileId, passcode = null) {
     try {
-      const metadataResult = await this.getMetadata(fileId)
-      
-      if (!metadataResult.success) {
-        return metadataResult
-      }
-
-      const metadata = metadataResult.metadata
-
-      // Check passcode if required
-      if (metadata.passcode && metadata.passcode !== passcode) {
-        return {
-          success: false,
-          error: 'Invalid passcode'
-        }
-      }
-
-      // Generate signed URL for download
-      const command = new GetObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: metadata.filePath,
-        ResponseContentDisposition: `attachment; filename="${metadata.originalName}"`
+      const result = await this.apiCall('/get-download-url', {
+        method: 'POST',
+        body: JSON.stringify({ fileId, passcode })
       })
-
-      const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 }) // 1 hour
-
-      // Update download count
-      await this.updateDownloadCount(fileId, metadata.downloadCount + 1)
-
-      return {
-        success: true,
-        downloadUrl: signedUrl,
-        metadata
-      }
+      
+      return result
     } catch (error) {
       console.error('Download URL generation error:', error)
       return {
@@ -238,68 +195,21 @@ export class S3Service {
     }
   }
 
-  // Update download count
+  // Update download count (now handled by get-download-url API)
   static async updateDownloadCount(fileId, count) {
-    try {
-      const metadataResult = await this.getMetadata(fileId)
-      if (metadataResult.success) {
-        const metadata = metadataResult.metadata
-        metadata.downloadCount = count
-        
-        await s3Client.send(new PutObjectCommand({
-          Bucket: SPACES_BUCKET,
-          Key: `links/${fileId}.json`,
-          Body: JSON.stringify(metadata),
-          ContentType: 'application/json',
-          ACL: 'private'
-        }))
-      }
-    } catch (error) {
-      console.error('Download count update error:', error)
-    }
+    // This is now handled automatically by the get-download-url API endpoint
+    // Keeping this method for compatibility but it's no longer needed
+    console.log(`Download count update for ${fileId} now handled by API`)
   }
 
   // Get all files (both active and expired)
   static async getAllFiles() {
     try {
-      const listResponse = await s3Client.send(new ListObjectsV2Command({
-        Bucket: SPACES_BUCKET,
-        Prefix: 'links/'
-      }))
-
-      const files = []
-      const now = new Date()
-
-      for (const object of listResponse.Contents || []) {
-        try {
-          const response = await s3Client.send(new GetObjectCommand({
-            Bucket: SPACES_BUCKET,
-            Key: object.Key
-          }))
-
-          const metadataJson = await response.Body.transformToString()
-          const metadata = JSON.parse(metadataJson)
-          
-          // Handle files that never expire (expiryDate is null)
-          const isExpired = metadata.expiryDate ? now > new Date(metadata.expiryDate) : false
-          const status = metadata.expiryDate ? (isExpired ? 'Expired' : 'Active') : 'Permanent'
-
-          files.push({
-            ...metadata,
-            metadataKey: object.Key,
-            isExpired,
-            lastModified: object.LastModified,
-            status
-          })
-        } catch (error) {
-          console.error('Error processing file:', object.Key, error)
-        }
-      }
-
-      return {
-        success: true,
-        files: files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-      }
+      const result = await this.apiCall('/list-files', {
+        method: 'GET'
+      })
+      
+      return result
     } catch (error) {
       console.error('Get all files error:', error)
       return {
@@ -312,31 +222,12 @@ export class S3Service {
   // Delete individual file
   static async deleteFile(fileId) {
     try {
-      // Get metadata first to get file path
-      const metadataResult = await this.getMetadata(fileId)
+      const result = await this.apiCall('/delete-file', {
+        method: 'POST',
+        body: JSON.stringify({ fileId })
+      })
       
-      if (!metadataResult.success) {
-        return metadataResult
-      }
-
-      const metadata = metadataResult.metadata
-
-      // Delete main file
-      await s3Client.send(new DeleteObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: metadata.filePath
-      }))
-
-      // Delete metadata file
-      await s3Client.send(new DeleteObjectCommand({
-        Bucket: SPACES_BUCKET,
-        Key: `links/${fileId}.json`
-      }))
-
-      return {
-        success: true,
-        message: `File ${metadata.originalName} deleted successfully`
-      }
+      return result
     } catch (error) {
       console.error('Delete file error:', error)
       return {
@@ -349,60 +240,11 @@ export class S3Service {
   // Clean expired files
   static async cleanExpiredFiles() {
     try {
-      const listResponse = await s3Client.send(new ListObjectsV2Command({
-        Bucket: SPACES_BUCKET,
-        Prefix: 'links/'
-      }))
-
-      const expiredFiles = []
-      const now = new Date()
-
-      for (const object of listResponse.Contents || []) {
-        try {
-          const response = await s3Client.send(new GetObjectCommand({
-            Bucket: SPACES_BUCKET,
-            Key: object.Key
-          }))
-
-          const metadataJson = await response.Body.transformToString()
-          const metadata = JSON.parse(metadataJson)
-
-          // Only check expiry for files that have an expiry date
-          if (metadata.expiryDate && now > new Date(metadata.expiryDate)) {
-            expiredFiles.push({
-              fileId: metadata.fileId,
-              filePath: metadata.filePath,
-              metadataKey: object.Key
-            })
-          }
-        } catch (error) {
-          console.error('Error processing file:', object.Key, error)
-        }
-      }
-
-      // Delete expired files
-      for (const expired of expiredFiles) {
-        try {
-          // Delete main file
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: SPACES_BUCKET,
-            Key: expired.filePath
-          }))
-
-          // Delete metadata file
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: SPACES_BUCKET,
-            Key: expired.metadataKey
-          }))
-        } catch (error) {
-          console.error('Error deleting expired file:', expired.fileId, error)
-        }
-      }
-
-      return {
-        success: true,
-        deletedCount: expiredFiles.length
-      }
+      const result = await this.apiCall('/clean-expired', {
+        method: 'POST'
+      })
+      
+      return result
     } catch (error) {
       console.error('Cleanup error:', error)
       return {
