@@ -1,16 +1,11 @@
 spec:
   name: vibedrop
-  services:
+  static_sites:
   - name: web
     git:
       branch: main
       repo_clone_url: https://github.com/calumk/VibeDrop.git
-    build_command: npm run build
-    run_command: npm run preview
-    environment_slug: node-js
-    instance_count: 1
-    instance_size_slug: basic-xxs
-    source_dir: /
+    source_dir: /dist
     routes:
     - path: /
     envs:

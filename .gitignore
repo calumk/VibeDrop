@@ -86,7 +86,7 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist - Commented out for DigitalOcean static deployment
 
 # Gatsby files
 .cache/
@@ -120,7 +120,7 @@ dist
 .pnp.*
 
 # Vite build output
-dist/
+# dist/ - Commented out for DigitalOcean static deployment
 dist-ssr/
 
 # Vite cache
