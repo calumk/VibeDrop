@@ -1,7 +1,7 @@
 // API base URL for serverless functions
 const API_BASE = import.meta.env.DEV 
   ? 'http://localhost:3001/api'  // Local development
-  : '/api/default';              // Production - DigitalOcean Functions format
+  : '/api/vibedrop';             // Production - DigitalOcean Functions format
 
 export class S3Service {
   // Get auth token for API calls
