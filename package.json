@@ -1,44 +1,42 @@
 {
-  "name": "wetransfer-clone",
+  "name": "vibedrop",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\"",
     "dev:frontend": "vite",
-    "dev:api": "node dev-server.cjs",
+    "dev:api": "cd functions && wrangler dev",
     "build": "vite build",
     "preview": "vite preview",
-    "setup-cors": "node scripts/setup-cors.js",
-    "setup-s3": "node scripts/s3Setup.js",
-    "setup-cors-aws": "node scripts/setup-cors-aws.cjs",
-    "setup-cors-s3cmd": "chmod +x scripts/setup-cors-s3cmd.sh && ./scripts/setup-cors-s3cmd.sh"
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.682.0",
-    "@aws-sdk/lib-storage": "^3.682.0",
-    "@aws-sdk/s3-request-presigner": "^3.682.0",
-    "@primevue/themes": "^4.2.0",
-    "@uppy/aws-s3": "^4.1.0",
+    "@cloudflare/workers-types": "^4.20240208.0",
+    "@primevue/themes": "^4.3.5",
+    "@uppy/aws-s3": "^4.2.3",
     "@uppy/core": "^4.2.1",
     "@uppy/dashboard": "^4.1.0",
     "@uppy/drag-drop": "^4.0.3",
     "@uppy/file-input": "^4.0.1",
     "@uppy/progress-bar": "^4.0.1",
-    "aws-sdk": "^2.1691.0",
-    "dotenv": "^16.5.0",
+    "@uppy/xhr-upload": "^4.0.1",
+    "@vue/compiler-sfc": "^3.5.16",
+    "hono": "^4.0.5",
     "plyr": "^3.7.8",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.0",
     "prismjs": "^1.30.0",
-    "vue": "^3.5.13",
+    "vue": "^3.5.16",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@cloudflare/workers-types": "^4.20240208.0",
+    "@types/node": "^20.11.19",
+    "@vitejs/plugin-vue": "^5.2.4",
     "concurrently": "^7.6.0",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "vite": "^6.0.1"
+    "typescript": "^5.3.3",
+    "vite": "^6.0.1",
+    "wrangler": "^3.28.1"
   }
 }

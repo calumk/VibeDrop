@@ -20,6 +20,36 @@ export default {
 </script>
 
 <style>
+/* Global styles */
+:root {
+  --button-height: 2rem;
+  --button-padding: 1rem;
+  --button-font-size: 1rem;
+  --button-icon-size: 1rem;
+}
+
+/* Base button styles */
+.p-button {
+  height: var(--button-height) !important;
+  padding: var(--button-padding) !important;
+  font-size: var(--button-font-size) !important;
+}
+
+.p-button .p-button-icon {
+  font-size: var(--button-icon-size) !important;
+}
+
+/* Small button styles */
+.p-button.p-button-sm {
+  height: 2rem !important;
+  padding: 0.5rem !important;
+  font-size: 0.875rem !important;
+}
+
+.p-button.p-button-sm .p-button-icon {
+  font-size: 0.875rem !important;
+}
+
 .footer {
   text-align: center;
   color: white;
@@ -52,7 +82,8 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 1.5rem;
+  width: 100%;
 }
 
 .glass-card {

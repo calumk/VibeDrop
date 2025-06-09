@@ -1,7 +1,5 @@
 // API base URL for serverless functions
-const API_BASE = import.meta.env.DEV 
-  ? 'http://localhost:3001/api'  // Local development
-  : '/api/vibedrop';             // Production - DigitalOcean Functions format
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8787/api';  // Default to Wrangler dev server port
 
 export class S3Service {
   // Get auth token for API calls
@@ -222,18 +220,13 @@ export class S3Service {
   // Delete individual file
   static async deleteFile(fileId) {
     try {
-      const result = await this.apiCall('/delete-file', {
-        method: 'POST',
-        body: JSON.stringify({ fileId })
-      })
-      
-      return result
+      const response = await this.apiCall(`/delete-file?fileId=${encodeURIComponent(fileId)}`, {
+        method: 'DELETE'
+      });
+      return response;
     } catch (error) {
-      console.error('Delete file error:', error)
-      return {
-        success: false,
-        error: error.message
-      }
+      console.error('Delete file error:', error);
+      return { success: false, error: error.message };
     }
   }
 
@@ -247,6 +240,24 @@ export class S3Service {
       return result
     } catch (error) {
       console.error('Cleanup error:', error)
+      return {
+        success: false,
+        error: error.message
+      }
+    }
+  }
+
+  // Update metadata
+  static async updateMetadata(fileId, metadata) {
+    try {
+      const result = await this.apiCall('/update-metadata', {
+        method: 'POST',
+        body: JSON.stringify({ fileId, metadata })
+      })
+      
+      return result
+    } catch (error) {
+      console.error('Metadata update error:', error)
       return {
         success: false,
         error: error.message

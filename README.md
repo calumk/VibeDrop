@@ -2,9 +2,7 @@
 
 A beautiful, modern file transfer application that lets you share files up to 5GB securely and magically. Built with Vue 3 and designed for simplicity and elegance.
 
-VibeDrop requires NO database, and can operate either with the provided development server, or using DigitalOcean Functions
-
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
+VibeDrop requires NO database, and can operate either with the provided development server, or using Cloudflare Workers
 
 ## ✨ Features
 
@@ -37,20 +35,15 @@ VibeDrop requires NO database, and can operate either with the provided developm
 
 - **Frontend**: Vue 3 + Vite + Vue Router
 - **UI Library**: PrimeVue v4 with Aura theme
-- **File Upload**: Uppy.js with multipart S3 integration
+- **File Upload**: Uppy.js with multipart R2 integration
 - **Media Player**: Plyr for video/audio playback
 - **Syntax Highlighting**: Prism.js for code preview
-- **Storage**: DigitalOcean Spaces (S3-compatible)
+- **Storage**: Cloudflare R2 (S3-compatible)
 - **Authentication**: Custom auth service with session management
 - **Package Manager**: Bun.js or npm
+- **Backend**: Cloudflare Workers
 
 ## 🚀 Quick Start
-
-### One-Click Deploy
-
-Deploy to DigitalOcean App Platform with one click:
-
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
 
 ### Local Development
 
@@ -86,34 +79,15 @@ VITE_USE_SIMPLE_LOGIN=false
 VITE_ADMIN_PASSWORD=your-secure-password
 VITE_SIMPLE_AUTH_STRING=your-secret-auth-string
 
-# DigitalOcean Spaces (for local dev server only)
-VITE_S3_ENDPOINT=https://lon1.digitaloceanspaces.com
-VITE_S3_REGION=lon1
-VITE_S3_BUCKET=your-bucket-name
-VITE_S3_ACCESS_KEY_ID=your-access-key
-VITE_S3_SECRET_ACCESS_KEY=your-secret-key
+# Cloudflare R2 (for local dev server only)
+VITE_R2_ACCOUNT_ID=your-account-id
+VITE_R2_ACCESS_KEY_ID=your-access-key
+VITE_R2_SECRET_ACCESS_KEY=your-secret-key
+VITE_R2_BUCKET=your-bucket-name
 
 # Support the Developer
 VITE_I_HAVE_DONATED_TO_CALUMK=false
 ```
-
-**For Production Deployment:**
-In DigitalOcean App Platform, set these as **encrypted environment variables**:
-```env
-# Frontend Variables (same as above)
-VITE_APP_NAME=VibeDrop
-VITE_ADMIN_PASSWORD=your-secure-password
-# ... other VITE_ variables
-
-# Server-side Function Variables (SECURE - not exposed to client)
-S3_ACCESS_KEY_ID=your-access-key
-S3_SECRET_ACCESS_KEY=your-secret-key  
-S3_ENDPOINT=https://lon1.digitaloceanspaces.com
-S3_REGION=lon1
-S3_BUCKET=your-bucket-name
-```
-
-> **🔒 Security Note**: In production, S3 credentials use non-VITE prefixed variables so they remain server-side only. The VITE_ prefixed versions are only used for local development convenience.
 
 4. **Start development servers**
 
@@ -124,7 +98,7 @@ npm run dev
 
 This automatically starts:
 - **Frontend** at `http://localhost:5173` (Vite dev server)
-- **API Server** at `http://localhost:3001` (for secure S3 operations)
+- **API Server** at `http://localhost:8787` (Cloudflare Workers dev server)
 
 You can also run them separately if needed:
 ```bash
@@ -138,9 +112,6 @@ npm run dev:frontend
 5. **Build for production (when ready to deploy)**
 ```bash
 npm run build
-git add dist/
-git commit -m "Update production build"
-git push
 ```
 
 ## 🎯 How It Works
@@ -148,7 +119,7 @@ git push
 ### Upload Process
 1. User authenticates with admin password or secret URL
 2. Select files with optional passcode and expiry settings
-3. Files upload directly to S3 with resumable support
+3. Files upload directly to R2 with resumable support
 4. Metadata stored securely with optional encryption
 5. Share generated link instantly
 
@@ -184,8 +155,8 @@ VibeDrop uses a **secure serverless architecture** that separates frontend and b
 - `/admin` - Admin dashboard for file management (protected)  
 - `/file/:fileId` - Public file view and download
 
-### Backend (DigitalOcean Functions)
-- **Serverless functions** handle all S3 operations securely
+### Backend (Cloudflare Workers)
+- **Serverless functions** handle all R2 operations securely
 - **Pre-signed URLs** for direct file uploads/downloads  
 - **Authentication validation** for protected operations
 - **Metadata management** with encryption support
@@ -198,9 +169,9 @@ VibeDrop uses a **secure serverless architecture** that separates frontend and b
 
 ### Services
 - `AuthService` - Session management and authentication
-- `S3Service` - API client for serverless functions (no direct S3 access)
+- `R2Service` - API client for serverless functions (no direct R2 access)
 
-### Serverless Functions (`/functions/packages/api/`)
+### Serverless Functions (`/functions/`)
 - `create-multipart` - Initialize large file uploads
 - `sign-part` - Sign individual upload chunks
 - `complete-multipart` - Finalize multipart uploads
@@ -226,26 +197,26 @@ VibeDrop uses a **secure serverless architecture** that separates frontend and b
 - **Auto Expiry**: Configurable file lifetimes
 - **Admin Controls**: Bulk cleanup and management
 
-## 🛡️ Why DigitalOcean Functions Are Essential for Security
+## 🛡️ Why Cloudflare Workers Are Essential for Security
 
-VibeDrop uses DigitalOcean Functions (serverless backend) to solve a **critical security vulnerability** that exists in traditional Single Page Applications (SPAs) when dealing with cloud storage.
+VibeDrop uses Cloudflare Workers (serverless backend) to solve a **critical security vulnerability** that exists in traditional Single Page Applications (SPAs) when dealing with cloud storage.
 
 ### 🚨 The Problem: Exposed Credentials in SPAs
 
-In a traditional SPA-only setup, your S3/Spaces credentials would need to be included in the client-side JavaScript bundle:
+In a traditional SPA-only setup, your R2 credentials would need to be included in the client-side JavaScript bundle:
 
 ```javascript
 // ❌ DANGEROUS - Credentials exposed to everyone
-const s3Client = new S3Client({
+const r2Client = new R2Client({
   credentials: {
-    accessKeyId: "DO00ABC123XYZ789",     // 😱 Visible to all users!
+    accessKeyId: "CF_ACCESS_KEY",     // 😱 Visible to all users!
     secretAccessKey: "secret_key_here"   // 😱 Anyone can see this!
   }
 })
 ```
 
 **This means:**
-- ✅ Anyone visiting your site can see your S3 credentials in browser dev tools
+- ✅ Anyone visiting your site can see your R2 credentials in browser dev tools
 - ✅ Malicious users can upload unlimited files to your bucket
 - ✅ Attackers can delete all your files or rack up huge storage costs
 - ✅ No way to control access or implement proper authentication
@@ -256,8 +227,8 @@ VibeDrop's serverless architecture keeps credentials **completely hidden** on th
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Browser/SPA   │────│ DO Functions    │────│ DigitalOcean    │
-│                 │    │ (Server-side)    │    │ Spaces          │
+│   Browser/SPA   │────│ Cloudflare      │────│ Cloudflare      │
+│                 │    │ Workers          │    │ R2              │
 │ • No credentials│────│ • Has credentials│────│ • Secure access │
 │ • Makes API calls│   │ • Validates auth │    │ • Pre-signed URLs│
 │ • Gets signed URLs│  │ • Generates URLs │    │ • Direct uploads │
@@ -266,21 +237,21 @@ VibeDrop's serverless architecture keeps credentials **completely hidden** on th
 
 ### 🔐 How It Works Securely
 
-1. **Hidden Credentials**: S3 credentials stay on the server, never sent to browsers
-2. **Authentication Validation**: Functions verify user permissions before any S3 operations
+1. **Hidden Credentials**: R2 credentials stay on the server, never sent to browsers
+2. **Authentication Validation**: Workers verify user permissions before any R2 operations
 3. **Pre-signed URLs**: Temporary, secure URLs for uploads/downloads (1-hour expiry)
-4. **Direct Uploads**: Files go straight from browser to S3 (no server bandwidth used)
+4. **Direct Uploads**: Files go straight from browser to R2 (no server bandwidth used)
 5. **Audit Trail**: All operations logged and controllable
 
 ### 💰 Cost & Performance Benefits
 
 **Minimal Cost:**
-- Functions run only when needed (~$0.0001 per upload)
+- Workers run only when needed (generous free tier)
 - No always-on server costs
 - Free tier covers most personal usage
 
 **Optimal Performance:**
-- Files upload directly to S3 (fastest possible)
+- Files upload directly to R2 (fastest possible)
 - No file size limits or server bottlenecks
 - Global CDN delivery for downloads
 
@@ -288,14 +259,14 @@ VibeDrop's serverless architecture keeps credentials **completely hidden** on th
 
 #### ❌ Insecure SPA-Only Approach
 ```
-Browser ──(with exposed credentials)──► S3 Bucket
+Browser ──(with exposed credentials)──► R2 Bucket
    │                                      │
    └─── 😱 Anyone can access ──────────────┘
 ```
 
 #### ✅ Secure Serverless Approach  
 ```
-Browser ──(API calls)──► Functions ──(secure)──► S3 Bucket
+Browser ──(API calls)──► Workers ──(secure)──► R2 Bucket
    │                        │                      │
    └─(signed URLs)────────────────────────────────┘
 ```
@@ -303,42 +274,14 @@ Browser ──(API calls)──► Functions ──(secure)──► S3 Bucket
 ### 🚀 Development vs Production
 
 **Local Development:**
-- Functions run in Express server at `localhost:3001`
+- Workers run in Wrangler dev server at `localhost:8787`
 - Uses same code as production
-- S3 credentials loaded from `.env.local`
+- R2 credentials loaded from `.env.local`
 
 **Production:**
-- Functions deploy automatically to DigitalOcean
+- Workers deploy automatically to Cloudflare
 - Credentials set as encrypted environment variables
 - Zero-downtime deployments
-
-### 🔧 What Functions Handle
-
-The serverless functions provide these secure endpoints:
-
-| Function | Purpose | Security Benefit |
-|----------|---------|------------------|
-| `create-multipart` | Start large file uploads | Validates auth before S3 access |
-| `sign-part` | Sign upload chunks | Prevents unauthorized uploads |
-| `complete-multipart` | Finish uploads | Ensures proper file completion |
-| `get-upload-url` | Generate upload URLs | Pre-signed, time-limited access |
-| `create-metadata` | Store file info | Server-side metadata validation |
-| `get-metadata` | Retrieve file info | Controlled access to file data |
-| `get-download-url` | Generate download URLs | Passcode verification + tracking |
-| `list-files` | Admin file listing | Authentication required |
-| `delete-file` | Remove files | Admin-only with verification |
-| `clean-expired` | Bulk cleanup | Automated maintenance |
-
-### 🛡️ Security Best Practices Implemented
-
-1. **Zero Trust**: No client-side credentials ever
-2. **Least Privilege**: Functions have minimal required permissions
-3. **Time-limited Access**: All URLs expire automatically
-4. **Input Validation**: All parameters sanitized and validated
-5. **Error Handling**: No sensitive info leaked in error messages
-6. **Audit Logging**: All operations logged for monitoring
-
-**This architecture makes VibeDrop enterprise-ready while remaining simple to deploy and maintain.**
 
 ## 🎨 UI Features
 
@@ -363,22 +306,15 @@ The serverless functions provide these secure endpoints:
 
 ## 🚀 Deployment Options
 
-### DigitalOcean App Platform (Recommended)
-1. Click the deploy button above
+### Cloudflare Pages + Workers (Recommended)
+1. Connect your repository to Cloudflare Pages
 2. Configure environment variables
 3. Deploy automatically (pre-built static files)
 
 ### Manual Deployment
 1. Build the project: `npm run build`
-2. Upload `dist/` folder to any static hosting
+2. Deploy Workers: `wrangler deploy`
 3. Configure environment variables for production
-
-### Supported Platforms
-- DigitalOcean App Platform
-- Netlify
-- Vercel
-- GitHub Pages
-- Any static hosting service
 
 ## 🛠 Configuration
 
@@ -387,7 +323,7 @@ The serverless functions provide these secure endpoints:
 All configuration is done through environment variables. See `env.example` for all available options.
 
 **Required:**
-- `VITE_S3_*` - DigitalOcean Spaces credentials
+- `R2_*` - Cloudflare R2 credentials
 - `VITE_ADMIN_PASSWORD` - Admin access password
 
 **Optional:**
@@ -395,16 +331,14 @@ All configuration is done through environment variables. See `env.example` for a
 - `VITE_FAVICON_URL` - Custom favicon
 - `VITE_USE_SIMPLE_LOGIN` - Interface mode toggle
 
-### S3 Setup
+### R2 Setup
 
-1. Create a DigitalOcean Spaces bucket
+1. Create a Cloudflare R2 bucket
 2. Generate API keys with read/write permissions
-3. Configure CORS policy (see `CORS-Setup-Guide.md`)
+3. Configure CORS policy
 
 ## 📚 Documentation
 
-- [`DEPLOYMENT.md`](DEPLOYMENT.md) - Detailed deployment guide
-- [`CORS-Setup-Guide.md`](CORS-Setup-Guide.md) - S3 CORS configuration
 - [`env.example`](env.example) - Environment variable reference
 
 ## 🤝 Contributing
@@ -442,7 +376,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Made with ❤️ by [calumk](https://github.com/calumk)**
 
 **Buy me a Coffee ☕ [https://ko-fi.com/calumk](https://ko-fi.com/calumk)**
-
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/calumk/VibeDrop/tree/main)
 
 </div> 

@@ -8,10 +8,9 @@
     <div class="auth-buttons">
       <Button 
       @click="goToNewUpload"
-      label="New Upload"
+      label="Upload"
       icon="pi pi-upload"
       severity="secondary"
-      size="small"
       class="logout-btn"
     />
       
@@ -20,7 +19,6 @@
       label="Admin"
       icon="pi pi-cog"
       severity="secondary"
-      size="small"
       class="logout-btn"
     />
     <Button 
@@ -28,7 +26,6 @@
       label="Logout"
       icon="pi pi-sign-out"
       severity="secondary"
-      size="small"
       class="logout-btn"
     />
     

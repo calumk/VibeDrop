@@ -88,7 +88,7 @@
               <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #667eea;"></i>
               <h3>Uploading your file...</h3>
               <ProgressBar :value="uploadProgress" class="progress-bar" />
-              <p>{{ uploadProgress }}% complete</p>
+              <!-- <p>{{ uploadProgress }}% complete</p> -->
             </div>
           </div>
 
@@ -269,7 +269,8 @@ export default {
             type: file.type,
             description: this.description || null,
             passcode: this.passcode || null,
-            expiryDays: this.selectedExpiry
+            expiryDays: this.selectedExpiry,
+            createdAt: new Date().toISOString()
           })
 
           if (metadataResult.success) {
@@ -495,8 +496,7 @@ export default {
 <style scoped>
 .upload-view {
   min-height: 100vh;
-  /* display: flex; */
-  align-items: center;
+  padding: 2rem 0;
 }
 
 .hero-section {
@@ -675,5 +675,12 @@ export default {
 
 .text-white {
   color: white;
+}
+
+.p-progressbar-determinate .p-progressbar-value-animate {
+    transition: none;
+}
+.p-progressbar {
+    transition: none
 }
 </style> 

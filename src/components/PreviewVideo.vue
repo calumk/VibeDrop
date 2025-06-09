@@ -50,7 +50,21 @@ export default {
   },
   beforeUnmount() {
     if (this.plyrInstance) {
+      // Remove all event listeners
+      this.plyrInstance.off('ready')
+      this.plyrInstance.off('error')
+      
+      // Destroy the Plyr instance
       this.plyrInstance.destroy()
+      this.plyrInstance = null
+    }
+
+    // Clean up video element
+    if (this.$refs.videoPlayer) {
+      const video = this.$refs.videoPlayer
+      video.pause()
+      video.removeAttribute('src')
+      video.load()
     }
   },
   watch: {

@@ -122,10 +122,13 @@
               :rowsPerPageOptions="[5, 10, 20, 50]"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} files"
-              sortField="uploadDate" 
+              sortField="createdAt" 
               :sortOrder="-1"
               class="files-table"
               responsiveLayout="scroll"
+              :globalFilterFields="['name', 'status']"
+              v-model:filters="filters"
+              filterDisplay="menu"
             >
                              <Column field="displayName" header="File Name" sortable>
                  <template #body="{ data }">
@@ -145,9 +148,9 @@
                 </template>
               </Column>
               
-              <Column field="uploadDate" header="Uploaded" sortable>
+              <Column field="createdAt" header="Uploaded" sortable>
                 <template #body="{ data }">
-                  <span class="upload-date">{{ formatDate(data.uploadDate) }}</span>
+                  <span class="upload-date">{{ formatDate(data.createdAt) }}</span>
                 </template>
               </Column>
               
@@ -160,49 +163,44 @@
                  </template>
                </Column>
               
-                             <Column field="status" header="Status" sortable>
-                 <template #body="{ data }">
-                   <Tag 
-                     :value="data.status" 
-                     :severity="data.status === 'Expired' ? 'danger' : (data.status === 'Permanent' ? 'info' : 'success')"
-                     :icon="data.status === 'Expired' ? 'pi pi-times' : (data.status === 'Permanent' ? 'pi pi-infinity' : 'pi pi-check')"
-                   />
-                 </template>
-               </Column>
-              
               <Column field="downloadCount" header="Downloads" sortable>
                 <template #body="{ data }">
                   <span class="download-count">{{ data.downloadCount }}</span>
                 </template>
               </Column>
               
-              <Column field="passcode" header="Protected" sortable>
+              <Column field="passcode" header="Protected">
                 <template #body="{ data }">
-                  <i v-if="data.passcode" class="pi pi-lock protected-icon" title="Password Protected"></i>
-                  <i v-else class="pi pi-unlock unprotected-icon" title="No Password"></i>
+                  <i v-if="data.passcode && data.passcode !== ''" class="pi pi-check-circle protected-icon" style="color: #22c55e;" title="Password Protected"></i>
+                  <i v-else class="pi pi-times-circle unprotected-icon" style="color: #6b7280;" title="No Password"></i>
                 </template>
               </Column>
               
-              <Column header="Actions">
+              <Column header="Actions" :style="{ width: '100px' }">
                 <template #body="{ data }">
                   <div class="action-buttons">
                     <Button 
-                      @click="viewFile(data.fileId)"
+                      @click="viewFile(data.id)"
                       icon="pi pi-eye"
                       class="p-button-rounded p-button-text p-button-sm view-btn"
                       title="View File"
                     />
                     <Button 
-                      @click="copyLink(data.fileId)"
+                      @click="copyLink(data.id)"
                       icon="pi pi-copy"
                       class="p-button-rounded p-button-text p-button-sm copy-btn"
                       title="Copy Link"
                     />
                     <Button 
+                      @click="showExtendOptions(data)"
+                      icon="pi pi-clock"
+                      class="p-button-rounded p-button-text p-button-sm extend-btn"
+                      title="Extend Expiry"
+                    />
+                    <Button 
                       @click="confirmDelete(data)"
                       icon="pi pi-trash"
                       class="p-button-rounded p-button-text p-button-sm delete-btn"
-                      severity="danger"
                       title="Delete File"
                     />
                   </div>
@@ -246,6 +244,14 @@
           />
         </template>
       </Dialog>
+
+      <!-- Extend Expiry Dialog -->
+      <Dialog v-model:visible="extendDialogVisible" header="Extend Expiry" :modal="true" :style="{ width: '400px' }">
+        <div class="flex flex-column gap-3 p-3">
+          <Button label="Extend by 7 days" icon="pi pi-calendar-plus" class="p-button-info" @click="extendExpiry(7)" style="width: 100%; margin-bottom: 1rem"/>
+          <Button label="Set to never expire" icon="pi pi-infinity" class="p-button-success" @click="extendExpiry(null)"  style="width: 100%; margin-bottom: 1rem"/>
+        </div>
+      </Dialog>
     </div>
   </div>
 </template>
@@ -268,7 +274,10 @@ export default {
       files: [],
       error: null,
       showDeleteDialog: false,
-      fileToDelete: null
+      fileToDelete: null,
+      extendDialogVisible: false,
+      selectedFile: null,
+      filters: null,
     }
   },
   computed: {
@@ -311,6 +320,7 @@ export default {
         
         if (result.success) {
           this.files = result.files
+          console.log('Files data:', this.files) // Debug log
         } else {
           this.error = result.error
         }
@@ -364,7 +374,7 @@ export default {
       this.deleting = true
       
       try {
-        const result = await S3Service.deleteFile(this.fileToDelete.fileId)
+        const result = await S3Service.deleteFile(this.fileToDelete.id)
         
         this.$toast.add({
           severity: result.success ? 'success' : 'error',
@@ -453,6 +463,50 @@ export default {
         hour: '2-digit',
         minute: '2-digit'
       })
+    },
+
+    isExpired(file) {
+      if (!file.expiryDate) return false;
+      return new Date(file.expiryDate) < new Date();
+    },
+
+    showExtendOptions(file) {
+      this.selectedFile = file;
+      this.extendDialogVisible = true;
+    },
+
+    async extendExpiry(days) {
+      if (!this.selectedFile) return;
+      
+      try {
+        const newExpiryDate = days ? new Date(Date.now() + days * 24 * 60 * 60 * 1000) : null;
+        const result = await S3Service.updateMetadata(this.selectedFile.id, {
+          ...this.selectedFile,
+          expiryDate: newExpiryDate ? newExpiryDate.toISOString() : null,
+          expiryDays: days
+        });
+
+        if (result.success) {
+          this.$toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: days ? 'File expiry extended by 7 days' : 'File set to never expire',
+            life: 3000
+          });
+          await this.loadFiles();
+        }
+      } catch (error) {
+        console.error('Error extending expiry:', error);
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to extend file expiry',
+          life: 3000
+        });
+      } finally {
+        this.extendDialogVisible = false;
+        this.selectedFile = null;
+      }
     }
   }
 }
@@ -464,11 +518,12 @@ export default {
   padding: 2rem 0;
 }
 
-.container {
+/* Remove duplicate container styles */
+/* .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 1rem;
-}
+} */
 
 /* Header Card */
 .header-card {
@@ -508,7 +563,9 @@ export default {
 
 .action-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  padding: 0 0.5rem;
 }
 
 .refresh-btn {
@@ -610,9 +667,20 @@ export default {
   color: #374151;
 }
 
-/* Data Table Styling */
+/* Table Styles */
 .files-table {
-  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+:deep(.p-datatable .p-datatable-thead > tr > th) {
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+  padding: 0.75rem;
 }
 
 .file-name-cell {
@@ -622,79 +690,61 @@ export default {
 }
 
 .file-icon {
-  color: #667eea;
-  font-size: 1.1rem;
-  flex-shrink: 0;
+  font-size: 1rem;
+  color: #6b7280;
 }
 
 .file-name-info {
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .file-name {
-  font-weight: 500;
+  font-size: 0.9rem;
   color: #374151;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .file-description-small {
-  color: #6b7280;
   font-size: 0.75rem;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-top: 0.125rem;
-}
-
-.file-size {
-  font-weight: 500;
   color: #6b7280;
 }
 
-.upload-date, .expiry-date {
-  font-size: 0.9rem;
-  color: #6b7280;
+.file-size, .upload-date, .expiry-date, .download-count {
+  font-size: 0.85rem;
+  color: #4b5563;
 }
 
-.expiry-date.expired {
-  color: #ef4444;
-  font-weight: 600;
+:deep(.p-tag) {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
 }
 
-.download-count {
-  font-weight: 600;
-  color: #10b981;
+:deep(.p-button.p-button-sm) {
+  width: 2rem;
+  height: 2rem;
 }
 
-.protected-icon {
-  color: #f59e0b;
+:deep(.p-button.p-button-sm .p-button-icon) {
+  font-size: 0.875rem;
 }
 
+/* Protected Icons */
+.protected-icon,
 .unprotected-icon {
-  color: #9ca3af;
+  font-size: 0.875rem;
 }
 
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 0.25rem;
+/* Pagination */
+:deep(.p-paginator) {
+  font-size: 0.85rem;
 }
 
-.view-btn {
-  color: #667eea !important;
+:deep(.p-paginator .p-paginator-current) {
+  font-size: 0.85rem;
 }
 
-.copy-btn {
-  color: #10b981 !important;
-}
-
-.delete-btn {
-  color: #ef4444 !important;
+:deep(.p-dropdown-label) {
+  font-size: 0.85rem;
 }
 
 /* Delete Dialog */
@@ -796,5 +846,35 @@ export default {
   .file-name {
     max-width: 120px;
   }
+}
+
+/* Action Buttons */
+.view-btn {
+  color: #2196F3;
+}
+
+.copy-btn {
+  color: #4CAF50;
+}
+
+.extend-btn {
+  color: #2196F3;
+}
+
+.delete-btn {
+  color: #f44336;
+}
+
+.p-button.p-button-text:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.p-button.p-button-sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.p-button.p-button-sm .p-button-icon {
+  font-size: 0.875rem;
 }
 </style> 

@@ -46,6 +46,24 @@
         </Card>
       </div>
 
+      <div v-else-if="isExpired" class="expired-section">
+        <Card class="glass-card">
+          <template #content>
+            <div class="expired-content">
+              <i class="pi pi-clock" style="font-size: 3rem; color: #ef4444;"></i>
+              <h2>File Has Expired</h2>
+              <p>This file has reached its expiry date and is no longer available.</p>
+              <Button 
+                @click="$router.push('/')" 
+                label="Go Home" 
+                icon="pi pi-home"
+                class="home-button"
+              />
+            </div>
+          </template>
+        </Card>
+      </div>
+
       <div v-else-if="needsPasscode && !authenticated" class="passcode-section">
         <Card class="glass-card">
           <template #content>
@@ -188,36 +206,35 @@ export default {
       previewUrl: null
     }
   },
+  computed: {
+    isExpired() {
+      if (!this.fileMetadata?.expiryDate) return false;
+      return new Date(this.fileMetadata.expiryDate) < new Date();
+    }
+  },
   async mounted() {
     await this.loadFileMetadata()
   },
   methods: {
-
     async loadFileMetadata() {
       try {
-        this.loading = true
-        this.error = null
+        this.loading = true;
+        this.error = null;
         
-        const result = await S3Service.getMetadata(this.fileId)
+        const result = await S3Service.getMetadata(this.fileId);
         
-        if (!result.success) {
-          this.error = result.error
-          return
-        }
-        
-        this.fileMetadata = result.metadata
-        
-        if (this.fileMetadata.passcode) {
-          this.needsPasscode = true
+        if (result.success) {
+          this.fileMetadata = result.metadata;
+          this.needsPasscode = !!this.fileMetadata.passcode;
+          this.authenticated = false;
         } else {
-          this.authenticated = true
-          await this.setupPreview()
+          this.error = result.error;
         }
       } catch (error) {
-        console.error('Error loading file metadata:', error)
-        this.error = 'Failed to load file information'
+        console.error('Load metadata error:', error);
+        this.error = error.message;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
 
@@ -380,7 +397,7 @@ export default {
         hour: '2-digit',
         minute: '2-digit'
       })
-    }
+    },
   }
 }
 </script>
@@ -388,7 +405,7 @@ export default {
 <style scoped>
 .file-view {
   min-height: 100vh;
-  /* padding: 2rem 0; */
+  padding: 2rem 0;
 }
 
 .back-link {
@@ -533,5 +550,25 @@ export default {
   .passcode-form {
     flex-direction: column;
   }
+}
+
+.expired-section {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.expired-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.expired-content h2 {
+  color: #ef4444;
+  margin: 1rem 0;
+}
+
+.expired-content p {
+  color: #6b7280;
+  margin-bottom: 2rem;
 }
 </style> 
