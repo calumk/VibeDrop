@@ -1,0 +1,17 @@
+name = "vibedrop"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+R2_BUCKET_NAME = "vibedrop"
+R2_PUBLIC_DOMAIN = "6757efb2b47eb67c8a2bb8c61923db8d.r2.cloudflarestorage.com"
+ACCOUNT_ID = "6757efb2b47eb67c8a2bb8c61923db8d"
+
+# Secrets should be set using `wrangler secret put`
+# wrangler secret put R2_ACCESS_KEY_ID
+# wrangler secret put R2_SECRET_ACCESS_KEY
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "vibedrop"
+preview_bucket_name = "vibedrop-dev" 
