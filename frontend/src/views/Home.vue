@@ -61,7 +61,7 @@
               <i class="pi pi-cloud-upload"></i>
             </div>
             <h3>Upload Large Files</h3>
-            <p>Share files up to 5GB with resumable uploads</p>
+            <p>Share files up to 10GB with resumable uploads</p>
           </div>
           
           <div class="feature-card">

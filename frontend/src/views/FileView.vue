@@ -106,7 +106,7 @@
               </div>
               <div class="file-details">
                 <h1 class="file-name">{{ fileMetadata.displayName || fileMetadata.originalName }}</h1>
-                <p v-if="fileMetadata.description" class="file-description">{{ fileMetadata.description }}</p>
+
                 <div class="file-meta">
                   <Chip :label="formatFileSize(fileMetadata.size)" icon="pi pi-info-circle" />
                   <Chip :label="formatDate(fileMetadata.createdAt)" icon="pi pi-calendar" />
@@ -115,6 +115,12 @@
                   <Chip v-if="fileMetadata.expiryDate" :label="`Expires ${formatDate(fileMetadata.expiryDate)}`" icon="pi pi-clock" severity="warning" />
                   <Chip v-else label="Never Expires" icon="pi pi-infinity" severity="success" />
                 </div>
+
+
+                <div v-if="fileMetadata.description" class="file-description" style="padding: 1rem; margin-top:1rem; border:1px solid #E2E8F0; border-radius: 5px;">
+                  <div v-html="fileMetadata.description"></div>
+                </div>
+                
               </div>
             </div>
 
@@ -177,6 +183,7 @@ import AuthHeader from '../components/AuthHeader.vue'
 import PreviewVideo from '../components/PreviewVideo.vue'
 import PreviewImage from '../components/PreviewImage.vue'
 import PreviewText from '../components/PreviewText.vue'
+import Editor from 'primevue/editor'
 
 export default {
   name: 'FileView',
@@ -190,7 +197,8 @@ export default {
     AuthHeader,
     PreviewVideo,
     PreviewImage,
-    PreviewText
+    PreviewText,
+    Editor
   },
   data() {
     return {
@@ -495,7 +503,23 @@ export default {
   color: #6b7280;
   line-height: 1.5;
   margin-bottom: 1rem;
+}
+
+.file-description .ql-editor {
+  padding: 0 !important;
   font-style: italic;
+  color: #6b7280;
+  border: none !important;
+  background: transparent !important;
+}
+
+.file-description .ql-container {
+  border: none !important;
+  font-family: inherit;
+}
+
+.file-description .ql-toolbar {
+  display: none !important;
 }
 
 .file-meta {

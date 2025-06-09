@@ -136,7 +136,7 @@
                      <i :class="getFileIcon(data.type)" class="file-icon"></i>
                      <div class="file-name-info">
                        <span class="file-name" :title="data.displayName || data.originalName">{{ data.displayName || data.originalName }}</span>
-                       <small v-if="data.description" class="file-description-small">{{ data.description }}</small>
+                       <!-- <small v-if="data.description" class="file-description-small">{{ data.description }}</small> -->
                      </div>
                    </div>
                  </template>

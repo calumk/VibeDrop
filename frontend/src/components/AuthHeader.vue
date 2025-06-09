@@ -1,5 +1,10 @@
 <template>
   <div class="auth-header" v-if="isAuthenticated">
+
+    <h1 class="hero-title" style="font-size: 1.5rem; font-weight: 600; color: #fff; margin-bottom: 0; padding:0">
+           {{ appName }}
+          </h1>
+
     <div class="auth-info">
       <i class="pi pi-check-circle"></i>
       <span>{{ label }}</span>
@@ -55,6 +60,9 @@ export default {
     }
   },
   computed: {
+    appName() {
+      return import.meta.env.VITE_APP_NAME
+    },
     isAuthenticated() {
       return AuthService.isAuthenticated()
     }

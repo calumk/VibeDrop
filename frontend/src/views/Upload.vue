@@ -9,7 +9,7 @@
           Upload A File
         </h1>
         <p class="hero-subtitle">
-          Upload any file up to 5GB and share it with optional passcode.
+          Upload any file up to 10GB and share it with optional passcode.
           Customize expiry settings and descriptions.
         </p>
       </div>
@@ -27,13 +27,14 @@
               
               <div class="parameter-grid">
                 <!-- File Name -->
-                <div class="parameter-field">
+                <div class="parameter-field" style="width:100%">
                   <label for="fileName">File Name</label>
                   <InputText 
                     id="fileName"
                     v-model="customFileName" 
                     :placeholder="originalFileName || 'File name will appear here'"
                     class="parameter-input"
+                    style="width:100%"
                   />
                   <small class="field-hint">Custom name for sharing (optional)</small>
                 </div>
@@ -41,15 +42,26 @@
                 <!-- Description -->
                 <div class="parameter-field">
                   <label for="description">Description</label>
-                  <Textarea 
+                  <Editor 
                     id="description"
                     v-model="description" 
                     placeholder="Describe your file (optional)"
                     class="parameter-input"
-                    rows="3"
-                    maxlength="500"
-                  />
-                  <small class="field-hint">Help others understand what this file contains</small>
+                    editorStyle="height: 120px"
+                  >
+                    <template v-slot:toolbar>
+                      <span class="ql-formats">
+                        <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
+                        <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
+                        <button v-tooltip.bottom="'Underline'" class="ql-underline"></button>
+                      </span>
+                      <span class="ql-formats">
+                        <button v-tooltip.bottom="'Header 1'" class="ql-header" value="1"></button>
+                        <button v-tooltip.bottom="'Header 2'" class="ql-header" value="2"></button>
+                      </span>
+                    </template>
+                  </Editor>
+                  <small class="field-hint">Help others understand what this file contains (supports basic formatting)</small>
                 </div>
                 
                 <!-- Expiry Options -->
@@ -87,8 +99,22 @@
             <div class="progress-content">
               <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #667eea;"></i>
               <h3>Uploading your file...</h3>
-              <ProgressBar :value="uploadProgress" class="progress-bar" />
-              <!-- <p>{{ uploadProgress }}% complete</p> -->
+              <ProgressBar :value="uploadProgress" class="progress-bar">
+                <template #value>
+                  <span class="progress-text">{{ uploadProgress }}%</span>
+                </template>
+              </ProgressBar>
+              
+              <div class="upload-stats" style="width:300px; margin: 0 auto;">
+                <div class="upload-stat">
+                  <span class="stat-label">Speed:</span>
+                  <span class="stat-value">{{ formatSpeed(uploadSpeed) }}</span>
+                </div>
+                <div class="upload-stat" v-if="estimatedTimeRemaining">
+                  <span class="stat-label">Time remaining:</span>
+                  <span class="stat-value">{{ formatTimeRemaining(estimatedTimeRemaining) }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -148,6 +174,7 @@ import AwsS3 from '@uppy/aws-s3'
 import { S3Service } from '../services/s3Service'
 import { AuthService } from '../services/authService'
 import AuthHeader from '../components/AuthHeader.vue'
+import Editor from 'primevue/editor'
 
 import '@uppy/core/dist/style.min.css'
 import '@uppy/dashboard/dist/style.min.css'
@@ -155,7 +182,8 @@ import '@uppy/dashboard/dist/style.min.css'
 export default {
   name: 'Upload',
   components: {
-    AuthHeader
+    AuthHeader,
+    Editor
   },
   data() {
     return {
@@ -173,6 +201,9 @@ export default {
       fileSize: 0,
       copied: false,
       currentFileId: null,
+      uploadStartTime: null,
+      estimatedTimeRemaining: null,
+      uploadSpeed: 0,
       expiryOptions: [
         { label: '1 Day', value: 1 },
         { label: '7 Days (Default)', value: 7 },
@@ -208,7 +239,7 @@ export default {
     initUppy() {
       this.uppy = new Uppy({
         restrictions: {
-          maxFileSize: 5 * 1024 * 1024 * 1024, // 5GB
+          maxFileSize: 10 * 1024 * 1024 * 1024, // 5GB
           maxNumberOfFiles: 1
         },
         autoProceed: false
@@ -242,6 +273,9 @@ export default {
       this.uppy.on('upload', (data) => {
         this.uploading = true
         this.uploadProgress = 0
+        this.uploadStartTime = Date.now()
+        this.estimatedTimeRemaining = null
+        this.uploadSpeed = 0
         
         // Get file info safely
         if (data && data.fileIDs && data.fileIDs.length > 0) {
@@ -256,6 +290,16 @@ export default {
       // Handle upload progress
       this.uppy.on('upload-progress', (file, progress) => {
         this.uploadProgress = Math.round((progress.bytesUploaded / progress.bytesTotal) * 100)
+        
+        // Calculate upload speed and estimated time remaining
+        if (this.uploadStartTime) {
+          const timeElapsed = (Date.now() - this.uploadStartTime) / 1000 // seconds
+          if (timeElapsed > 1) { // Only calculate after 1 second to avoid initial fluctuations
+            this.uploadSpeed = progress.bytesUploaded / timeElapsed
+            const remainingBytes = progress.bytesTotal - progress.bytesUploaded
+            this.estimatedTimeRemaining = remainingBytes / this.uploadSpeed
+          }
+        }
       })
 
       // Handle upload success
@@ -320,15 +364,16 @@ export default {
         createMultipartUpload: async (file) => {
           try {
             console.log('Creating multipart upload for:', file.name, file.type)
-            this.currentFileId = S3Service.generateFileId()
             
-            const result = await S3Service.createMultipartUpload(this.currentFileId, file.name, file.type)
+            const result = await S3Service.createMultipartUpload(file.name, file.type)
             
             if (!result.success) {
               console.error('Failed to create multipart upload:', result.error)
               throw new Error(result.error)
             }
             
+            // Use the fileId returned from the server
+            this.currentFileId = result.fileId
             console.log('Multipart upload created successfully for file ID:', this.currentFileId)
             
             return {
@@ -464,6 +509,9 @@ export default {
       this.uploading = false
       this.uploadComplete = false
       this.uploadProgress = 0
+      this.uploadStartTime = null
+      this.estimatedTimeRemaining = null
+      this.uploadSpeed = 0
       this.passcode = ''
       this.customFileName = ''
       this.originalFileName = ''
@@ -488,6 +536,22 @@ export default {
       const sizes = ['Bytes', 'KB', 'MB', 'GB']
       const i = Math.floor(Math.log(bytes) / Math.log(k))
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+    },
+
+    formatSpeed(bytesPerSecond) {
+      if (bytesPerSecond === 0) return '0 Bytes/s'
+      const k = 1024
+      const sizes = ['Bytes/s', 'KB/s', 'MB/s', 'GB/s']
+      const i = Math.floor(Math.log(bytesPerSecond) / Math.log(k))
+      return parseFloat((bytesPerSecond / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+    },
+
+    formatTimeRemaining(seconds) {
+      if (seconds === null || seconds === Infinity) return 'Calculating...'
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      const remainingSeconds = Math.round(seconds % 60)
+      return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${remainingSeconds.toString().padStart(2, '0')}s`
     }
   }
 }
@@ -566,6 +630,19 @@ export default {
 
 .parameter-input {
   width: 100%;
+}
+
+.parameter-input .ql-editor {
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.parameter-input .ql-toolbar {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.parameter-input .ql-container {
+  font-family: inherit;
 }
 
 .field-hint {
@@ -682,5 +759,28 @@ export default {
 }
 .p-progressbar {
     transition: none
+}
+
+.upload-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.upload-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
 }
 </style> 

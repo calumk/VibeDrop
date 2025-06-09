@@ -30,22 +30,55 @@ export function initS3Client(environment) {
 }
 
 export async function createMultipartUpload(fileName, fileType) {
-  const key = `files/${Date.now()}-${fileName}`;
+  console.log('createMultipartUpload called with:');
+  console.log('- fileName:', JSON.stringify(fileName));
+  console.log('- fileType:', JSON.stringify(fileType));
+  
+  // Use fileId instead of timestamp-filename to avoid spaces and ensure consistency
+  const fileId = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  const key = `files/${fileId}`;
+  
+  console.log('Generated fileId:', fileId);
+  console.log('Generated key:', key);
+  
   const command = new CreateMultipartUploadCommand({
     Bucket: env.R2_BUCKET_NAME,
     Key: key,
     ContentType: fileType,
   });
 
+  console.log('CreateMultipartUploadCommand params:', {
+    Bucket: env.R2_BUCKET_NAME,
+    Key: key,
+    ContentType: fileType,
+  });
+
   try {
+    console.log('Sending command to S3...');
     const response = await s3Client.send(command);
-    return {
+    console.log('S3 response received:', {
+      UploadId: response.UploadId,
+      Key: response.Key,
+      Bucket: response.Bucket
+    });
+    
+    const result = {
       success: true,
       uploadId: response.UploadId,
-      key: key
+      key: key,
+      fileId: fileId
     };
+    
+    console.log('Returning result:', JSON.stringify(result));
+    return result;
   } catch (error) {
     console.error('Error creating multipart upload:', error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      code: error.Code,
+      statusCode: error.$metadata?.httpStatusCode
+    });
     throw new Error(`Failed to create multipart upload: ${error.message}`);
   }
 }
@@ -228,9 +261,12 @@ export async function getDownloadUrl(fileId, passcode) {
   }
 
   const key = `files/${fileId}`;
+  // Use original filename for Content-Disposition header
+  const originalFilename = metadata.metadata.originalName || metadata.metadata.name || 'download';
   const command = new GetObjectCommand({
     Bucket: env.R2_BUCKET_NAME,
     Key: key,
+    ResponseContentDisposition: `attachment; filename="${originalFilename}"`,
   });
 
   try {
