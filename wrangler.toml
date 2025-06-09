@@ -1,0 +1,11 @@
+name = "vibedrop"
+compatibility_date = "2024-06-09"
+
+[site]
+bucket = "./dist"
+
+[build]
+command = "npm run build"
+
+[pages]
+pages_build_output_dir = "dist" 

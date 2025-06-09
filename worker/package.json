@@ -1,7 +1,7 @@
 {
-  "name": "vibedrop",
+  "name": "vibedrop-worker",
   "version": "1.0.0",
-  "description": "VibeDrop file sharing service",
+  "description": "VibeDrop file sharing service API",
   "main": "index.js",
   "scripts": {
     "dev": "wrangler dev",

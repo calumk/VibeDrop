@@ -1,42 +1,21 @@
 {
-  "name": "vibedrop",
+  "name": "vibedrop-monorepo",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "frontend",
+    "worker"
+  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\"",
-    "dev:frontend": "vite",
-    "dev:api": "cd functions && wrangler dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "wrangler deploy"
-  },
-  "dependencies": {
-    "@cloudflare/workers-types": "^4.20240208.0",
-    "@primevue/themes": "^4.3.5",
-    "@uppy/aws-s3": "^4.2.3",
-    "@uppy/core": "^4.2.1",
-    "@uppy/dashboard": "^4.1.0",
-    "@uppy/drag-drop": "^4.0.3",
-    "@uppy/file-input": "^4.0.1",
-    "@uppy/progress-bar": "^4.0.1",
-    "@uppy/xhr-upload": "^4.0.1",
-    "@vue/compiler-sfc": "^3.5.16",
-    "hono": "^4.0.5",
-    "plyr": "^3.7.8",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.2.0",
-    "prismjs": "^1.30.0",
-    "vue": "^3.5.16",
-    "vue-router": "^4.4.5"
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:worker": "cd worker && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "build:worker": "cd worker && npm run build",
+    "deploy:frontend": "cd frontend && wrangler pages deploy dist --project-name vibedrop",
+    "deploy:worker": "cd worker && wrangler deploy",
+    "install:all": "npm install && cd frontend && npm install && cd ../worker && npm install"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240208.0",
-    "@types/node": "^20.11.19",
-    "@vitejs/plugin-vue": "^5.2.4",
-    "concurrently": "^7.6.0",
-    "typescript": "^5.3.3",
-    "vite": "^6.0.1",
-    "wrangler": "^3.28.1"
+    "wrangler": "^3.0.0"
   }
-}
+} 

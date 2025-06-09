@@ -1,5 +1,5 @@
 // API base URL for serverless functions
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8787/api';  // Default to Wrangler dev server port
+const API_URL = import.meta.env.VITE_API_URL;
 
 export class S3Service {
   // Get auth token for API calls
@@ -9,13 +9,30 @@ export class S3Service {
   }
 
   // Make API call with auth
-  static async apiCall(endpoint, options = {}) {
-    const response = await fetch(`${API_BASE}${endpoint}`, {
-      ...options,
+  static async apiCall(endpoint, methodOrOptions = 'GET', body = null) {
+    // Handle both calling patterns: (endpoint, method, body) and (endpoint, {method, body})
+    let method, requestBody;
+    
+    if (typeof methodOrOptions === 'string') {
+      // New pattern: (endpoint, method, body)
+      method = methodOrOptions;
+      requestBody = body;
+    } else {
+      // Old pattern: (endpoint, {method, body})
+      method = methodOrOptions.method || 'GET';
+      requestBody = methodOrOptions.body || null;
+    }
+    
+    // Remove leading slash if present
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+    // Only add /api prefix if it's not the root endpoint
+    const url = cleanEndpoint === '' ? API_URL : `${API_URL}/api/${cleanEndpoint}`;
+    const response = await fetch(url, {
+      method: method,
+      body: requestBody,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.getAuthToken()}`,
-        ...options.headers
       }
     })
 
@@ -203,9 +220,7 @@ export class S3Service {
   // Get all files (both active and expired)
   static async getAllFiles() {
     try {
-      const result = await this.apiCall('/list-files', {
-        method: 'GET'
-      })
+      const result = await this.apiCall('/list-files', 'GET')
       
       return result
     } catch (error) {

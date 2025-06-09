@@ -109,7 +109,7 @@
                 <p v-if="fileMetadata.description" class="file-description">{{ fileMetadata.description }}</p>
                 <div class="file-meta">
                   <Chip :label="formatFileSize(fileMetadata.size)" icon="pi pi-info-circle" />
-                  <Chip :label="formatDate(fileMetadata.uploadDate)" icon="pi pi-calendar" />
+                  <Chip :label="formatDate(fileMetadata.createdAt)" icon="pi pi-calendar" />
                   <Chip v-if="fileMetadata.passcode" label="Password Protected" icon="pi pi-lock" />
                   <Chip :label="`${fileMetadata.downloadCount} downloads`" icon="pi pi-download" />
                   <Chip v-if="fileMetadata.expiryDate" :label="`Expires ${formatDate(fileMetadata.expiryDate)}`" icon="pi pi-clock" severity="warning" />
@@ -227,6 +227,11 @@ export default {
           this.fileMetadata = result.metadata;
           this.needsPasscode = !!this.fileMetadata.passcode;
           this.authenticated = false;
+          
+          // If no passcode is needed, set up preview immediately
+          if (!this.needsPasscode) {
+            await this.setupPreview();
+          }
         } else {
           this.error = result.error;
         }
@@ -268,7 +273,10 @@ export default {
     async setupPreview() {
       if (this.isPreviewable(this.fileMetadata.type)) {
         try {
-          const result = await S3Service.getDownloadUrl(this.fileId, this.enteredPasscode)
+          const result = await S3Service.getDownloadUrl(
+            this.fileId, 
+            this.needsPasscode ? this.enteredPasscode : null
+          )
           if (result.success) {
             this.previewUrl = result.downloadUrl
           }

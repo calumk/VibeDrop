@@ -1,8 +1,57 @@
-# 🎵 VibeDrop
+# VibeDrop
 
-A beautiful, modern file transfer application that lets you share files up to 5GB securely and magically. Built with Vue 3 and designed for simplicity and elegance.
+A modern file sharing platform built with Vue.js and Cloudflare Workers.
 
-VibeDrop requires NO database, and can operate either with the provided development server, or using Cloudflare Workers
+## Project Structure
+
+This is a monorepo containing:
+
+- `frontend/`: Vue.js application (Cloudflare Pages)
+- `worker/`: Cloudflare Worker API
+
+## Development
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start development servers:
+```bash
+# Start frontend
+npm run dev:frontend
+
+# Start worker
+npm run dev:worker
+```
+
+## Deployment
+
+### Frontend (Cloudflare Pages)
+```bash
+npm run deploy:frontend
+```
+
+### Worker (Cloudflare Workers)
+```bash
+npm run deploy:worker
+```
+
+## Environment Variables
+
+### Frontend
+Create a `.env` file in the `frontend` directory:
+```
+VITE_API_URL=https://vibedrop-api.<your-subdomain>.workers.dev
+```
+
+### Worker
+Create a `.dev.vars` file in the `worker` directory:
+```
+R2_BUCKET_NAME=vibedrop
+R2_ACCESS_KEY_ID=your_access_key
+R2_SECRET_ACCESS_KEY=your_secret_key
+```
 
 ## ✨ Features
 
