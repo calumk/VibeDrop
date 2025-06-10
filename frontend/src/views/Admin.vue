@@ -24,7 +24,7 @@
                 class="refresh-btn"
               />
               <Button 
-                @click="cleanupExpiredFiles"
+                @click="cleanExpiredFiles"
                 :loading="cleaningExpired"
                 label="Clean Expired"
                 icon="pi pi-trash"
@@ -38,7 +38,7 @@
 
       <!-- Stats Cards -->
       <div class="stats-grid">
-        <Card class="stat-card">
+        <Card class="stat-card clickable" @click="filterBy('all')">
           <template #content>
             <div class="stat-content">
               <div class="stat-icon total">
@@ -52,7 +52,7 @@
           </template>
         </Card>
         
-        <Card class="stat-card">
+        <Card class="stat-card clickable" @click="filterBy('active')">
           <template #content>
             <div class="stat-content">
               <div class="stat-icon active">
@@ -66,7 +66,7 @@
           </template>
         </Card>
         
-        <Card class="stat-card">
+        <Card class="stat-card clickable" @click="filterBy('expired')">
           <template #content>
             <div class="stat-content">
               <div class="stat-icon expired">
@@ -80,15 +80,15 @@
           </template>
         </Card>
         
-        <Card class="stat-card">
+        <Card class="stat-card storage-card special-card">
           <template #content>
             <div class="stat-content">
               <div class="stat-icon storage">
                 <i class="pi pi-database"></i>
               </div>
               <div class="stat-info">
-                <h3>{{ formatTotalSize(totalSize) }}</h3>
-                <p>Total Storage</p>
+                <h2 style="color: #fff !important; font-size: 1.3rem;">{{ formatTotalSize(totalSize) }}</h2>
+                <p style="color: #fff !important;">Total Storage</p>
               </div>
             </div>
           </template>
@@ -116,7 +116,7 @@
           
           <div v-else>
             <DataTable 
-              :value="files" 
+              :value="filteredFiles" 
               :paginator="true" 
               :rows="10"
               :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -281,6 +281,7 @@ export default {
       filters: {},
       sortField: 'createdAt',
       sortOrder: -1,
+      currentFilter: 'all',
     }
   },
   computed: {
@@ -298,6 +299,16 @@ export default {
     },
     totalSize() {
       return this.files.reduce((total, file) => total + file.size, 0)
+    },
+    filteredFiles() {
+      if (this.currentFilter === 'all') {
+        return this.files
+      } else if (this.currentFilter === 'active') {
+        return this.files.filter(file => !file.isExpired)
+      } else if (this.currentFilter === 'expired') {
+        return this.files.filter(file => file.isExpired)
+      }
+      return this.files
     }
   },
   async mounted() {
@@ -337,11 +348,11 @@ export default {
       }
     },
 
-    async cleanupExpiredFiles() {
+    async cleanExpiredFiles() {
       this.cleaningExpired = true
       
       try {
-        const result = await S3Service.cleanupExpiredFiles()
+        const result = await S3Service.cleanExpiredFiles()
         
         this.$toast.add({
           severity: result.success ? 'success' : 'error',
@@ -532,13 +543,17 @@ export default {
       this.sortField = event.sortField
       this.sortOrder = event.sortOrder
     },
+
+    filterBy(type) {
+      this.currentFilter = type
+    },
   }
 }
 </script>
 
 <style scoped>
 .clean-view {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 2rem 0;
 }
 
@@ -904,5 +919,22 @@ export default {
 
 .p-button.p-button-sm .p-button-icon {
   font-size: 0.875rem;
+}
+
+.stat-card.clickable {
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.stat-card.clickable:hover {
+  box-shadow: 0 0 0 2px #6366f1;
+  border-color: #6366f1;
+}
+.special-card {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  color: #fff !important;
+  border: 1.5px solid #374151;
+}
+.special-card .stat-icon.storage {
+  color: #fff !important;
 }
 </style> 

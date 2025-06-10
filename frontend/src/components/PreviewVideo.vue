@@ -80,20 +80,24 @@ export default {
   },
   methods: {
     onVideoLoaded() {
-      console.log('Video metadata loaded, initializing Plyr...')
+      // console.log('Video metadata loaded, initializing Plyr...')
       this.$nextTick(() => {
         this.initializePlyr()
       })
     },
 
     initializePlyr() {
-      console.log('Attempting to initialize Plyr...')
-      console.log('Video ref exists:', !!this.$refs.videoPlayer)
-      console.log('Plyr already initialized:', !!this.plyrInstance)
+      // console.log('Attempting to initialize Plyr...')
+      // console.log('Video ref exists:', !!this.$refs.videoPlayer)
+      // console.log('Plyr already initialized:', !!this.plyrInstance)
+      // console.log('Initializing Plyr...')
+      // console.log('Plyr initialized successfully!')
+      // console.log('Plyr is ready!')
+      // console.log('Video player ref not found, retrying in 200ms...')
       
       if (this.$refs.videoPlayer && !this.plyrInstance) {
         try {
-          console.log('Initializing Plyr...')
+          // console.log('Initializing Plyr...')
           this.plyrInstance = new Plyr(this.$refs.videoPlayer, {
             controls: [
               'play-large',
@@ -116,22 +120,22 @@ export default {
               options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
             }
           })
-          console.log('Plyr initialized successfully!')
+          // console.log('Plyr initialized successfully!')
           
           // Add event listeners for debugging
           this.plyrInstance.on('ready', () => {
-            console.log('Plyr is ready!')
+            // console.log('Plyr is ready!')
           })
           
           this.plyrInstance.on('error', (error) => {
-            console.error('Plyr error:', error)
+            // console.error('Plyr error:', error)
           })
           
         } catch (error) {
-          console.error('Plyr initialization error:', error)
+          // console.error('Plyr initialization error:', error)
         }
       } else if (!this.$refs.videoPlayer) {
-        console.log('Video player ref not found, retrying in 200ms...')
+        // console.log('Video player ref not found, retrying in 200ms...')
         setTimeout(() => {
           this.initializePlyr()
         }, 200)

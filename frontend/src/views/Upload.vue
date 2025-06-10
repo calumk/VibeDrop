@@ -293,12 +293,12 @@ export default {
         this.originalFileName = file.name
         this.customFileName = file.name // Set as default
         this.fileSize = file.size
-        console.log('File added:', file.name, this.formatFileSize(file.size))
+        // console.log('File added:', file.name, this.formatFileSize(file.size))
       })
 
       // Debug: Log all uppy events
       this.uppy.on('*', (event, ...args) => {
-        console.log('Uppy event:', event, args)
+        // console.log('Uppy event:', event, args)
       })
 
       // Handle upload start
@@ -416,18 +416,18 @@ export default {
         // Multipart upload configuration for large files
         createMultipartUpload: async (file) => {
           try {
-            console.log('Creating multipart upload for:', file.name, file.type, file.size)
+            // console.log('Creating multipart upload for:', file.name, file.type, file.size)
             
             const result = await S3Service.createMultipartUpload(file.name, file.type, file.size)
             
             if (!result.success) {
-              console.error('Failed to create multipart upload:', result.error)
+              // console.error('Failed to create multipart upload:', result.error)
               throw new Error(result.error)
             }
             
             // Use the fileId returned from the server
             this.currentFileId = result.fileId
-            console.log('Multipart upload created successfully for file ID:', this.currentFileId)
+            // console.log('Multipart upload created successfully for file ID:', this.currentFileId)
             
             return {
               uploadId: result.uploadId,
@@ -444,7 +444,7 @@ export default {
         companionUrl: false, // We're not using companion
         getUploadParameters: async (file) => {
           try {
-            console.log('Getting upload parameters for:', file.name, file.type)
+            // console.log('Getting upload parameters for:', file.name, file.type)
             
             // Use existing file ID if already created, otherwise generate new one
             if (!this.currentFileId) {
@@ -454,11 +454,11 @@ export default {
             const result = await S3Service.getUploadUrl(this.currentFileId, file.name, file.type)
             
             if (!result.success) {
-              console.error('Failed to get upload URL:', result.error)
+              // console.error('Failed to get upload URL:', result.error)
               throw new Error(result.error)
             }
             
-            console.log('Upload URL generated successfully for file ID:', this.currentFileId)
+            // console.log('Upload URL generated successfully for file ID:', this.currentFileId)
             
             return {
               method: 'PUT',
@@ -520,11 +520,11 @@ export default {
             const result = await S3Service.abortMultipartUpload(uploadId, key)
             
             if (!result.success) {
-              console.error('Failed to abort multipart upload:', result.error)
+              // console.error('Failed to abort multipart upload:', result.error)
               throw new Error(result.error)
             }
             
-            console.log('Multipart upload aborted successfully')
+            // console.log('Multipart upload aborted successfully')
             return result
           } catch (error) {
             console.error('Error in abortMultipartUpload:', error)
@@ -638,7 +638,7 @@ export default {
 
 <style scoped>
 .upload-view {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 2rem 0;
 }
 

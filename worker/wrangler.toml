@@ -1,17 +1,19 @@
 name = "vibedrop-api"
 main = "index.js"
 compatibility_date = "2024-06-09"
+account_id = "b02dc00a26e26ddd6aa4c1b53d00c70e"
 
 [vars]
 R2_BUCKET_NAME = "vibedrop"
-R2_PUBLIC_DOMAIN = "6757efb2b47eb67c8a2bb8c61923db8d.r2.cloudflarestorage.com"
-ACCOUNT_ID = "6757efb2b47eb67c8a2bb8c61923db8d"
+ACCOUNT_ID = "b02dc00a26e26ddd6aa4c1b53d00c70e"
+R2_CUSTOM_DOMAIN = "transfer-files.didacticservices.co.uk"
 
 # Secrets should be set using `wrangler secret put`
 # wrangler secret put R2_ACCESS_KEY_ID
 # wrangler secret put R2_SECRET_ACCESS_KEY
+# wrangler secret put R2_PUBLIC_DOMAIN
 
 [[r2_buckets]]
 binding = "R2_BUCKET"
 bucket_name = "vibedrop"
-preview_bucket_name = "vibedrop-dev" 
+preview_bucket_name = "vibedrop-dev"

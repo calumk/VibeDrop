@@ -68,9 +68,9 @@ export default {
   },
   async mounted() {
     // Debug Prism availability
-    console.log('Prism available:', !!Prism)
+    // console.log('Prism available:', !!Prism)
     if (Prism && Prism.languages) {
-      console.log('Prism languages loaded:', Object.keys(Prism.languages))
+      // console.log('Prism languages loaded:', Object.keys(Prism.languages))
     }
     
     await this.loadTextContent()
@@ -142,7 +142,7 @@ export default {
       }
       
       const detected = languageMap[extension] || 'text'
-      console.log(`Detected language for .${extension}: ${detected}`)
+      // console.log(`Detected language for .${extension}: ${detected}`)
       return detected
     },
     
@@ -156,21 +156,21 @@ export default {
         
         // Check if Prism and the language grammar are available
         if (!Prism || !Prism.languages) {
-          console.warn('Prism not available, falling back to plain text')
+          // console.warn('Prism not available, falling back to plain text')
           this.highlightedCode = `<pre class="language-text"><code>${this.escapeHtml(this.textContent)}</code></pre>`
           this.detectedLanguage = 'text (prism unavailable)'
           return
         }
         
         const grammar = Prism.languages[this.detectedLanguage]
-        console.log(`Grammar for ${this.detectedLanguage}:`, !!grammar)
-        console.log('Available languages:', Object.keys(Prism.languages))
+        // console.log(`Grammar for ${this.detectedLanguage}:`, !!grammar)
+        // console.log('Available languages:', Object.keys(Prism.languages))
         
         if (grammar && typeof grammar === 'object') {
           try {
             const highlighted = Prism.highlight(this.textContent, grammar, this.detectedLanguage)
             this.highlightedCode = `<pre class="language-${this.detectedLanguage}"><code>${highlighted}</code></pre>`
-            console.log(`Successfully highlighted as ${this.detectedLanguage}`)
+            // console.log(`Successfully highlighted as ${this.detectedLanguage}`)
           } catch (highlightError) {
             console.error('Error during highlighting:', highlightError)
             this.highlightedCode = `<pre class="language-text"><code>${this.escapeHtml(this.textContent)}</code></pre>`
@@ -178,7 +178,7 @@ export default {
           }
         } else {
           // Fallback if language not supported
-          console.warn(`Language ${this.detectedLanguage} not supported, available:`, Object.keys(Prism.languages))
+          // console.warn(`Language ${this.detectedLanguage} not supported, available:`, Object.keys(Prism.languages))
           this.highlightedCode = `<pre class="language-text"><code>${this.escapeHtml(this.textContent)}</code></pre>`
           this.detectedLanguage = 'text (unsupported)'
         }

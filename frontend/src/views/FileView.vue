@@ -468,7 +468,7 @@ export default {
 
 <style scoped>
 .file-view {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 2rem 0;
 }
 

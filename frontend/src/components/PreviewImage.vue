@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onImageLoad() {
-      console.log('Image loaded successfully')
+      // console.log('Image loaded successfully')
     },
     
     onImageError() {

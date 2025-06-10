@@ -214,7 +214,7 @@ export class S3Service {
   static async updateDownloadCount(fileId, count) {
     // This is now handled automatically by the get-download-url API endpoint
     // Keeping this method for compatibility but it's no longer needed
-    console.log(`Download count update for ${fileId} now handled by API`)
+    // console.log(`Download count update for ${fileId} now handled by API`)
   }
 
   // Get all files (both active and expired)

@@ -11,13 +11,10 @@
     "dev:worker": "cd worker && npm run dev",
     "build:frontend": "cd frontend && npm run build",
     "build:worker": "cd worker && npm run build",
-    "deploy:frontend": "cd frontend && wrangler pages deploy dist --project-name vibedrop",
+    "deploy:frontend": "cd frontend && wrangler pages deploy dist --project-name dsl-vibedrop",
     "deploy:worker": "cd worker && wrangler deploy",
     "install:all": "npm install && cd frontend && npm install && cd ../worker && npm install",
     "deploy:all": "npm run build:frontend && npm run deploy:frontend && npm run build:worker && npm run deploy:worker",
     "dev:all": "npm run dev:frontend & npm run dev:worker"
-  },
-  "devDependencies": {
-    "wrangler": "^3.0.0"
   }
-} 
+}

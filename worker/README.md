@@ -13,9 +13,9 @@ This directory contains the serverless functions that handle secure file uploads
 2. **Set environment variables:**
    Create a `.env` file in the project root with:
    ```bash
-   # S3/Spaces Configuration (NO VITE_ prefix - server-side only)
-   S3_ENDPOINT=https://lon1.digitaloceanspaces.com
-   S3_REGION=lon1
+   # S3 Configuration (NO VITE_ prefix - server-side only)
+   S3_ENDPOINT=https://your-s3-endpoint
+   S3_REGION=your-region
    S3_BUCKET=your-bucket-name
    S3_ACCESS_KEY_ID=your-access-key
    S3_SECRET_ACCESS_KEY=your-secret-key
@@ -54,6 +54,6 @@ This directory contains the serverless functions that handle secure file uploads
 
 ## Deployment
 
-Functions automatically deploy to DigitalOcean App Platform when pushed to main branch.
+Functions automatically deploy to your cloud platform when pushed to main branch.
 
-Environment variables are configured in `.do/deploy.template.yaml`. 
+Environment variables are configured in your deployment configuration files. 

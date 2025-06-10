@@ -1,0 +1,3417 @@
+{
+  "version": "1.0.0",
+  "name": "vibedrop-monorepo",
+  "dependencies": {
+    "vibedrop-frontend": {
+      "version": "0.0.0",
+      "resolved": "file:../frontend",
+      "overridden": false,
+      "dependencies": {
+        "@primevue/themes": {
+          "version": "4.3.5",
+          "overridden": false,
+          "dependencies": {
+            "@primeuix/styled": {
+              "version": "0.6.4",
+              "overridden": false,
+              "dependencies": {
+                "@primeuix/utils": {
+                  "version": "0.5.4"
+                }
+              }
+            },
+            "@primeuix/themes": {
+              "version": "1.1.1",
+              "overridden": false,
+              "dependencies": {
+                "@primeuix/styled": {
+                  "version": "0.6.4"
+                }
+              }
+            }
+          }
+        },
+        "@types/node": {
+          "version": "20.19.0",
+          "overridden": false,
+          "dependencies": {
+            "undici-types": {
+              "version": "6.21.0",
+              "overridden": false
+            }
+          }
+        },
+        "@uppy/aws-s3": {
+          "version": "4.2.3",
+          "overridden": false,
+          "dependencies": {
+            "@uppy/companion-client": {
+              "version": "4.4.2",
+              "overridden": false,
+              "dependencies": {
+                "@uppy/core": {
+                  "version": "4.4.6"
+                },
+                "@uppy/utils": {
+                  "version": "6.1.5"
+                },
+                "namespace-emitter": {
+                  "version": "2.0.1"
+                },
+                "p-retry": {
+                  "version": "6.2.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "@types/retry": {
+                      "version": "0.12.2",
+                      "overridden": false
+                    },
+                    "is-network-error": {
+                      "version": "1.1.0",
+                      "overridden": false
+                    },
+                    "retry": {
+                      "version": "0.13.1",
+                      "overridden": false
+                    }
+                  }
+                }
+              }
+            },
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/utils": {
+              "version": "6.1.5",
+              "overridden": false,
+              "dependencies": {
+                "lodash": {
+                  "version": "4.17.21"
+                },
+                "preact": {
+                  "version": "10.26.8"
+                }
+              }
+            }
+          }
+        },
+        "@uppy/core": {
+          "version": "4.4.6",
+          "overridden": false,
+          "dependencies": {
+            "@transloadit/prettier-bytes": {
+              "version": "0.3.5",
+              "overridden": false
+            },
+            "@uppy/store-default": {
+              "version": "4.2.0",
+              "overridden": false
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            },
+            "lodash": {
+              "version": "4.17.21",
+              "overridden": false
+            },
+            "mime-match": {
+              "version": "1.0.2",
+              "overridden": false,
+              "dependencies": {
+                "wildcard": {
+                  "version": "1.1.2",
+                  "overridden": false
+                }
+              }
+            },
+            "namespace-emitter": {
+              "version": "2.0.1",
+              "overridden": false
+            },
+            "nanoid": {
+              "version": "5.1.5",
+              "overridden": false
+            },
+            "preact": {
+              "version": "10.26.8",
+              "overridden": false
+            }
+          }
+        },
+        "@uppy/dashboard": {
+          "version": "4.3.4",
+          "overridden": false,
+          "dependencies": {
+            "@transloadit/prettier-bytes": {
+              "version": "0.3.5"
+            },
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/informer": {
+              "version": "4.2.1",
+              "overridden": false,
+              "dependencies": {
+                "@uppy/core": {
+                  "version": "4.4.6"
+                },
+                "@uppy/utils": {
+                  "version": "6.1.5"
+                },
+                "preact": {
+                  "version": "10.26.8"
+                }
+              }
+            },
+            "@uppy/provider-views": {
+              "version": "4.4.4",
+              "overridden": false,
+              "dependencies": {
+                "@uppy/core": {
+                  "version": "4.4.6"
+                },
+                "@uppy/utils": {
+                  "version": "6.1.5"
+                },
+                "classnames": {
+                  "version": "2.5.1"
+                },
+                "nanoid": {
+                  "version": "5.1.5"
+                },
+                "p-queue": {
+                  "version": "8.1.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "eventemitter3": {
+                      "version": "5.0.1"
+                    },
+                    "p-timeout": {
+                      "version": "6.1.4",
+                      "overridden": false
+                    }
+                  }
+                },
+                "preact": {
+                  "version": "10.26.8"
+                }
+              }
+            },
+            "@uppy/status-bar": {
+              "version": "4.1.3",
+              "overridden": false,
+              "dependencies": {
+                "@transloadit/prettier-bytes": {
+                  "version": "0.3.5"
+                },
+                "@uppy/core": {
+                  "version": "4.4.6"
+                },
+                "@uppy/utils": {
+                  "version": "6.1.5"
+                },
+                "classnames": {
+                  "version": "2.5.1"
+                },
+                "preact": {
+                  "version": "10.26.8"
+                }
+              }
+            },
+            "@uppy/thumbnail-generator": {
+              "version": "4.1.1",
+              "overridden": false,
+              "dependencies": {
+                "@uppy/core": {
+                  "version": "4.4.6"
+                },
+                "@uppy/utils": {
+                  "version": "6.1.5"
+                },
+                "exifr": {
+                  "version": "7.1.3",
+                  "overridden": false
+                }
+              }
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            },
+            "classnames": {
+              "version": "2.5.1",
+              "overridden": false
+            },
+            "lodash": {
+              "version": "4.17.21"
+            },
+            "memoize-one": {
+              "version": "6.0.0",
+              "overridden": false
+            },
+            "nanoid": {
+              "version": "5.1.5"
+            },
+            "preact": {
+              "version": "10.26.8"
+            },
+            "shallow-equal": {
+              "version": "3.1.0",
+              "overridden": false
+            }
+          }
+        },
+        "@uppy/drag-drop": {
+          "version": "4.1.3",
+          "overridden": false,
+          "dependencies": {
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            },
+            "preact": {
+              "version": "10.26.8"
+            }
+          }
+        },
+        "@uppy/file-input": {
+          "version": "4.1.3",
+          "overridden": false,
+          "dependencies": {
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            },
+            "preact": {
+              "version": "10.26.8"
+            }
+          }
+        },
+        "@uppy/progress-bar": {
+          "version": "4.2.1",
+          "overridden": false,
+          "dependencies": {
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            },
+            "preact": {
+              "version": "10.26.8"
+            }
+          }
+        },
+        "@uppy/xhr-upload": {
+          "version": "4.3.3",
+          "overridden": false,
+          "dependencies": {
+            "@uppy/companion-client": {
+              "version": "4.4.2"
+            },
+            "@uppy/core": {
+              "version": "4.4.6"
+            },
+            "@uppy/utils": {
+              "version": "6.1.5"
+            }
+          }
+        },
+        "@vitejs/plugin-vue": {
+          "version": "5.2.4",
+          "overridden": false,
+          "dependencies": {
+            "vite": {
+              "version": "6.3.5"
+            },
+            "vue": {
+              "version": "3.5.16"
+            }
+          }
+        },
+        "@vue/compiler-sfc": {
+          "version": "3.5.16",
+          "overridden": false,
+          "dependencies": {
+            "@babel/parser": {
+              "version": "7.27.5",
+              "overridden": false,
+              "dependencies": {
+                "@babel/types": {
+                  "version": "7.27.6",
+                  "overridden": false,
+                  "dependencies": {
+                    "@babel/helper-string-parser": {
+                      "version": "7.27.1",
+                      "overridden": false
+                    },
+                    "@babel/helper-validator-identifier": {
+                      "version": "7.27.1",
+                      "overridden": false
+                    }
+                  }
+                }
+              }
+            },
+            "@vue/compiler-core": {
+              "version": "3.5.16",
+              "overridden": false,
+              "dependencies": {
+                "@babel/parser": {
+                  "version": "7.27.5"
+                },
+                "@vue/shared": {
+                  "version": "3.5.16"
+                },
+                "entities": {
+                  "version": "4.5.0",
+                  "overridden": false
+                },
+                "estree-walker": {
+                  "version": "2.0.2"
+                },
+                "source-map-js": {
+                  "version": "1.2.1"
+                }
+              }
+            },
+            "@vue/compiler-dom": {
+              "version": "3.5.16",
+              "overridden": false,
+              "dependencies": {
+                "@vue/compiler-core": {
+                  "version": "3.5.16"
+                },
+                "@vue/shared": {
+                  "version": "3.5.16"
+                }
+              }
+            },
+            "@vue/compiler-ssr": {
+              "version": "3.5.16",
+              "overridden": false,
+              "dependencies": {
+                "@vue/compiler-dom": {
+                  "version": "3.5.16"
+                },
+                "@vue/shared": {
+                  "version": "3.5.16"
+                }
+              }
+            },
+            "@vue/shared": {
+              "version": "3.5.16",
+              "overridden": false
+            },
+            "estree-walker": {
+              "version": "2.0.2",
+              "overridden": false
+            },
+            "magic-string": {
+              "version": "0.30.17",
+              "overridden": false,
+              "dependencies": {
+                "@jridgewell/sourcemap-codec": {
+                  "version": "1.5.0",
+                  "overridden": false
+                }
+              }
+            },
+            "postcss": {
+              "version": "8.5.4",
+              "overridden": false,
+              "dependencies": {
+                "nanoid": {
+                  "version": "3.3.11",
+                  "overridden": false
+                },
+                "picocolors": {
+                  "version": "1.1.1",
+                  "overridden": false
+                },
+                "source-map-js": {
+                  "version": "1.2.1"
+                }
+              }
+            },
+            "source-map-js": {
+              "version": "1.2.1",
+              "overridden": false
+            }
+          }
+        },
+        "plyr": {
+          "version": "3.7.8",
+          "overridden": false,
+          "dependencies": {
+            "core-js": {
+              "version": "3.42.0",
+              "overridden": false
+            },
+            "custom-event-polyfill": {
+              "version": "1.0.7",
+              "overridden": false
+            },
+            "loadjs": {
+              "version": "4.3.0",
+              "overridden": false
+            },
+            "rangetouch": {
+              "version": "2.0.1",
+              "overridden": false
+            },
+            "url-polyfill": {
+              "version": "1.1.13",
+              "overridden": false
+            }
+          }
+        },
+        "primeicons": {
+          "version": "7.0.0",
+          "overridden": false
+        },
+        "primevue": {
+          "version": "4.3.5",
+          "overridden": false,
+          "dependencies": {
+            "@primeuix/styled": {
+              "version": "0.6.4"
+            },
+            "@primeuix/styles": {
+              "version": "1.1.1",
+              "overridden": false,
+              "dependencies": {
+                "@primeuix/styled": {
+                  "version": "0.6.4"
+                }
+              }
+            },
+            "@primeuix/utils": {
+              "version": "0.5.4",
+              "overridden": false
+            },
+            "@primevue/core": {
+              "version": "4.3.5",
+              "overridden": false,
+              "dependencies": {
+                "@primeuix/styled": {
+                  "version": "0.6.4"
+                },
+                "@primeuix/utils": {
+                  "version": "0.5.4"
+                },
+                "vue": {
+                  "version": "3.5.16"
+                }
+              }
+            },
+            "@primevue/icons": {
+              "version": "4.3.5",
+              "overridden": false,
+              "dependencies": {
+                "@primeuix/utils": {
+                  "version": "0.5.4"
+                },
+                "@primevue/core": {
+                  "version": "4.3.5"
+                }
+              }
+            }
+          }
+        },
+        "prismjs": {
+          "version": "1.30.0",
+          "overridden": false
+        },
+        "quill": {
+          "version": "2.0.3",
+          "resolved": "https://registry.npmjs.org/quill/-/quill-2.0.3.tgz",
+          "overridden": false,
+          "dependencies": {
+            "eventemitter3": {
+              "version": "5.0.1",
+              "overridden": false
+            },
+            "lodash-es": {
+              "version": "4.17.21",
+              "resolved": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz",
+              "overridden": false
+            },
+            "parchment": {
+              "version": "3.0.0",
+              "resolved": "https://registry.npmjs.org/parchment/-/parchment-3.0.0.tgz",
+              "overridden": false
+            },
+            "quill-delta": {
+              "version": "5.1.0",
+              "resolved": "https://registry.npmjs.org/quill-delta/-/quill-delta-5.1.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "fast-diff": {
+                  "version": "1.3.0",
+                  "resolved": "https://registry.npmjs.org/fast-diff/-/fast-diff-1.3.0.tgz",
+                  "overridden": false
+                },
+                "lodash.clonedeep": {
+                  "version": "4.5.0",
+                  "resolved": "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz",
+                  "overridden": false
+                },
+                "lodash.isequal": {
+                  "version": "4.5.0",
+                  "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz",
+                  "overridden": false
+                }
+              }
+            }
+          }
+        },
+        "typescript": {
+          "version": "5.8.3",
+          "overridden": false
+        },
+        "vite": {
+          "version": "6.3.5",
+          "overridden": false,
+          "dependencies": {
+            "@types/node": {
+              "version": "20.19.0"
+            },
+            "esbuild": {
+              "version": "0.25.5",
+              "overridden": false,
+              "dependencies": {
+                "@esbuild/aix-ppc64": {},
+                "@esbuild/android-arm": {},
+                "@esbuild/android-arm64": {},
+                "@esbuild/android-x64": {},
+                "@esbuild/darwin-arm64": {
+                  "version": "0.25.5",
+                  "overridden": false
+                },
+                "@esbuild/darwin-x64": {},
+                "@esbuild/freebsd-arm64": {},
+                "@esbuild/freebsd-x64": {},
+                "@esbuild/linux-arm": {},
+                "@esbuild/linux-arm64": {},
+                "@esbuild/linux-ia32": {},
+                "@esbuild/linux-loong64": {},
+                "@esbuild/linux-mips64el": {},
+                "@esbuild/linux-ppc64": {},
+                "@esbuild/linux-riscv64": {},
+                "@esbuild/linux-s390x": {},
+                "@esbuild/linux-x64": {},
+                "@esbuild/netbsd-arm64": {},
+                "@esbuild/netbsd-x64": {},
+                "@esbuild/openbsd-arm64": {},
+                "@esbuild/openbsd-x64": {},
+                "@esbuild/sunos-x64": {},
+                "@esbuild/win32-arm64": {},
+                "@esbuild/win32-ia32": {},
+                "@esbuild/win32-x64": {}
+              }
+            },
+            "fdir": {
+              "version": "6.4.5",
+              "overridden": false,
+              "dependencies": {
+                "picomatch": {
+                  "version": "4.0.2"
+                }
+              }
+            },
+            "fsevents": {
+              "version": "2.3.3"
+            },
+            "jiti": {},
+            "less": {},
+            "lightningcss": {},
+            "picomatch": {
+              "version": "4.0.2",
+              "overridden": false
+            },
+            "postcss": {
+              "version": "8.5.4"
+            },
+            "rollup": {
+              "version": "4.42.0",
+              "overridden": false,
+              "dependencies": {
+                "@rollup/rollup-android-arm-eabi": {},
+                "@rollup/rollup-android-arm64": {},
+                "@rollup/rollup-darwin-arm64": {
+                  "version": "4.42.0",
+                  "overridden": false
+                },
+                "@rollup/rollup-darwin-x64": {},
+                "@rollup/rollup-freebsd-arm64": {},
+                "@rollup/rollup-freebsd-x64": {},
+                "@rollup/rollup-linux-arm-gnueabihf": {},
+                "@rollup/rollup-linux-arm-musleabihf": {},
+                "@rollup/rollup-linux-arm64-gnu": {},
+                "@rollup/rollup-linux-arm64-musl": {},
+                "@rollup/rollup-linux-loongarch64-gnu": {},
+                "@rollup/rollup-linux-powerpc64le-gnu": {},
+                "@rollup/rollup-linux-riscv64-gnu": {},
+                "@rollup/rollup-linux-riscv64-musl": {},
+                "@rollup/rollup-linux-s390x-gnu": {},
+                "@rollup/rollup-linux-x64-gnu": {},
+                "@rollup/rollup-linux-x64-musl": {},
+                "@rollup/rollup-win32-arm64-msvc": {},
+                "@rollup/rollup-win32-ia32-msvc": {},
+                "@rollup/rollup-win32-x64-msvc": {},
+                "@types/estree": {
+                  "version": "1.0.7",
+                  "overridden": false
+                },
+                "fsevents": {
+                  "version": "2.3.3"
+                }
+              }
+            },
+            "sass-embedded": {},
+            "sass": {},
+            "stylus": {},
+            "sugarss": {},
+            "terser": {},
+            "tinyglobby": {
+              "version": "0.2.14",
+              "overridden": false,
+              "dependencies": {
+                "fdir": {
+                  "version": "6.4.5"
+                },
+                "picomatch": {
+                  "version": "4.0.2"
+                }
+              }
+            },
+            "tsx": {},
+            "yaml": {}
+          }
+        },
+        "vue-router": {
+          "version": "4.5.1",
+          "overridden": false,
+          "dependencies": {
+            "@vue/devtools-api": {
+              "version": "6.6.4",
+              "overridden": false
+            },
+            "vue": {
+              "version": "3.5.16"
+            }
+          }
+        },
+        "vue": {
+          "version": "3.5.16",
+          "overridden": false,
+          "dependencies": {
+            "@vue/compiler-dom": {
+              "version": "3.5.16"
+            },
+            "@vue/compiler-sfc": {
+              "version": "3.5.16"
+            },
+            "@vue/runtime-dom": {
+              "version": "3.5.16",
+              "overridden": false,
+              "dependencies": {
+                "@vue/reactivity": {
+                  "version": "3.5.16",
+                  "overridden": false,
+                  "dependencies": {
+                    "@vue/shared": {
+                      "version": "3.5.16"
+                    }
+                  }
+                },
+                "@vue/runtime-core": {
+                  "version": "3.5.16",
+                  "overridden": false,
+                  "dependencies": {
+                    "@vue/reactivity": {
+                      "version": "3.5.16"
+                    },
+                    "@vue/shared": {
+                      "version": "3.5.16"
+                    }
+                  }
+                },
+                "@vue/shared": {
+                  "version": "3.5.16"
+                },
+                "csstype": {
+                  "version": "3.1.3",
+                  "overridden": false
+                }
+              }
+            },
+            "@vue/server-renderer": {
+              "version": "3.5.16",
+              "overridden": false,
+              "dependencies": {
+                "@vue/compiler-ssr": {
+                  "version": "3.5.16"
+                },
+                "@vue/shared": {
+                  "version": "3.5.16"
+                },
+                "vue": {
+                  "version": "3.5.16"
+                }
+              }
+            },
+            "@vue/shared": {
+              "version": "3.5.16"
+            },
+            "typescript": {
+              "version": "5.8.3"
+            }
+          }
+        }
+      }
+    },
+    "vibedrop-worker": {
+      "version": "1.0.0",
+      "resolved": "file:../worker",
+      "overridden": false,
+      "dependencies": {
+        "@aws-sdk/client-s3": {
+          "version": "3.826.0",
+          "overridden": false,
+          "dependencies": {
+            "@aws-crypto/sha1-browser": {
+              "version": "5.2.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-crypto/supports-web-crypto": {
+                  "version": "5.2.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-crypto/util": {
+                  "version": "5.2.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/util-utf8": {
+                      "version": "2.3.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@smithy/util-buffer-from": {
+                          "version": "2.2.0",
+                          "overridden": false,
+                          "dependencies": {
+                            "@smithy/is-array-buffer": {
+                              "version": "2.2.0",
+                              "overridden": false,
+                              "dependencies": {
+                                "tslib": {
+                                  "version": "2.8.1"
+                                }
+                              }
+                            },
+                            "tslib": {
+                              "version": "2.8.1"
+                            }
+                          }
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/util-locate-window": {
+                  "version": "3.804.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/util-utf8": {
+                  "version": "2.3.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/util-buffer-from": {
+                      "version": "2.2.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@smithy/is-array-buffer": {
+                          "version": "2.2.0",
+                          "overridden": false,
+                          "dependencies": {
+                            "tslib": {
+                              "version": "2.8.1"
+                            }
+                          }
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-crypto/sha256-browser": {
+              "version": "5.2.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-crypto/sha256-js": {
+                  "version": "5.2.0"
+                },
+                "@aws-crypto/supports-web-crypto": {
+                  "version": "5.2.0"
+                },
+                "@aws-crypto/util": {
+                  "version": "5.2.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/util-locate-window": {
+                  "version": "3.804.0"
+                },
+                "@smithy/util-utf8": {
+                  "version": "2.3.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/util-buffer-from": {
+                      "version": "2.2.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@smithy/is-array-buffer": {
+                          "version": "2.2.0",
+                          "overridden": false,
+                          "dependencies": {
+                            "tslib": {
+                              "version": "2.8.1"
+                            }
+                          }
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-crypto/sha256-js": {
+              "version": "5.2.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-crypto/util": {
+                  "version": "5.2.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/core": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/xml-builder": {
+                  "version": "3.821.0"
+                },
+                "@smithy/core": {
+                  "version": "3.5.3"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/property-provider": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/signature-v4": {
+                  "version": "5.1.2",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/is-array-buffer": {
+                      "version": "4.0.0"
+                    },
+                    "@smithy/protocol-http": {
+                      "version": "5.1.2"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "@smithy/util-hex-encoding": {
+                      "version": "4.0.0"
+                    },
+                    "@smithy/util-middleware": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/util-uri-escape": {
+                      "version": "4.0.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "@smithy/util-utf8": {
+                      "version": "4.0.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/smithy-client": {
+                  "version": "4.4.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-base64": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-body-length-browser": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "fast-xml-parser": {
+                  "version": "4.4.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "strnum": {
+                      "version": "1.1.2",
+                      "overridden": false
+                    }
+                  }
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/credential-provider-node": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/credential-provider-env": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/credential-provider-http": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/fetch-http-handler": {
+                      "version": "5.0.4"
+                    },
+                    "@smithy/node-http-handler": {
+                      "version": "4.0.6"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/protocol-http": {
+                      "version": "5.1.2"
+                    },
+                    "@smithy/smithy-client": {
+                      "version": "4.4.3"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "@smithy/util-stream": {
+                      "version": "4.2.2"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/credential-provider-ini": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/credential-provider-env": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/credential-provider-http": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/credential-provider-process": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/credential-provider-sso": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/credential-provider-web-identity": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/nested-clients": {
+                      "version": "3.826.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@aws-crypto/sha256-browser": {
+                          "version": "5.2.0"
+                        },
+                        "@aws-crypto/sha256-js": {
+                          "version": "5.2.0"
+                        },
+                        "@aws-sdk/core": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/middleware-host-header": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-logger": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-recursion-detection": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-user-agent": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/region-config-resolver": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/types": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-endpoints": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-user-agent-browser": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-user-agent-node": {
+                          "version": "3.826.0"
+                        },
+                        "@smithy/config-resolver": {
+                          "version": "4.1.4"
+                        },
+                        "@smithy/core": {
+                          "version": "3.5.3"
+                        },
+                        "@smithy/fetch-http-handler": {
+                          "version": "5.0.4"
+                        },
+                        "@smithy/hash-node": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/invalid-dependency": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/middleware-content-length": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/middleware-endpoint": {
+                          "version": "4.1.11"
+                        },
+                        "@smithy/middleware-retry": {
+                          "version": "4.1.12"
+                        },
+                        "@smithy/middleware-serde": {
+                          "version": "4.0.8"
+                        },
+                        "@smithy/middleware-stack": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/node-config-provider": {
+                          "version": "4.1.3"
+                        },
+                        "@smithy/node-http-handler": {
+                          "version": "4.0.6"
+                        },
+                        "@smithy/protocol-http": {
+                          "version": "5.1.2"
+                        },
+                        "@smithy/smithy-client": {
+                          "version": "4.4.3"
+                        },
+                        "@smithy/types": {
+                          "version": "4.3.1"
+                        },
+                        "@smithy/url-parser": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/util-base64": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-body-length-browser": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-body-length-node": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-defaults-mode-browser": {
+                          "version": "4.0.19"
+                        },
+                        "@smithy/util-defaults-mode-node": {
+                          "version": "4.0.19"
+                        },
+                        "@smithy/util-endpoints": {
+                          "version": "3.0.6"
+                        },
+                        "@smithy/util-middleware": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/util-retry": {
+                          "version": "4.0.5"
+                        },
+                        "@smithy/util-utf8": {
+                          "version": "4.0.0"
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/credential-provider-imds": {
+                      "version": "4.0.6"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/shared-ini-file-loader": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/credential-provider-process": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/shared-ini-file-loader": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/credential-provider-sso": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/client-sso": {
+                      "version": "3.826.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@aws-crypto/sha256-browser": {
+                          "version": "5.2.0"
+                        },
+                        "@aws-crypto/sha256-js": {
+                          "version": "5.2.0"
+                        },
+                        "@aws-sdk/core": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/middleware-host-header": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-logger": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-recursion-detection": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/middleware-user-agent": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/region-config-resolver": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/types": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-endpoints": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-user-agent-browser": {
+                          "version": "3.821.0"
+                        },
+                        "@aws-sdk/util-user-agent-node": {
+                          "version": "3.826.0"
+                        },
+                        "@smithy/config-resolver": {
+                          "version": "4.1.4"
+                        },
+                        "@smithy/core": {
+                          "version": "3.5.3"
+                        },
+                        "@smithy/fetch-http-handler": {
+                          "version": "5.0.4"
+                        },
+                        "@smithy/hash-node": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/invalid-dependency": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/middleware-content-length": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/middleware-endpoint": {
+                          "version": "4.1.11"
+                        },
+                        "@smithy/middleware-retry": {
+                          "version": "4.1.12"
+                        },
+                        "@smithy/middleware-serde": {
+                          "version": "4.0.8"
+                        },
+                        "@smithy/middleware-stack": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/node-config-provider": {
+                          "version": "4.1.3"
+                        },
+                        "@smithy/node-http-handler": {
+                          "version": "4.0.6"
+                        },
+                        "@smithy/protocol-http": {
+                          "version": "5.1.2"
+                        },
+                        "@smithy/smithy-client": {
+                          "version": "4.4.3"
+                        },
+                        "@smithy/types": {
+                          "version": "4.3.1"
+                        },
+                        "@smithy/url-parser": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/util-base64": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-body-length-browser": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-body-length-node": {
+                          "version": "4.0.0"
+                        },
+                        "@smithy/util-defaults-mode-browser": {
+                          "version": "4.0.19"
+                        },
+                        "@smithy/util-defaults-mode-node": {
+                          "version": "4.0.19"
+                        },
+                        "@smithy/util-endpoints": {
+                          "version": "3.0.6"
+                        },
+                        "@smithy/util-middleware": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/util-retry": {
+                          "version": "4.0.5"
+                        },
+                        "@smithy/util-utf8": {
+                          "version": "4.0.0"
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/token-providers": {
+                      "version": "3.826.0",
+                      "overridden": false,
+                      "dependencies": {
+                        "@aws-sdk/core": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/nested-clients": {
+                          "version": "3.826.0"
+                        },
+                        "@aws-sdk/types": {
+                          "version": "3.821.0"
+                        },
+                        "@smithy/property-provider": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/shared-ini-file-loader": {
+                          "version": "4.0.4"
+                        },
+                        "@smithy/types": {
+                          "version": "4.3.1"
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/shared-ini-file-loader": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/credential-provider-web-identity": {
+                  "version": "3.826.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-sdk/core": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/nested-clients": {
+                      "version": "3.826.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/credential-provider-imds": {
+                  "version": "4.0.6",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/node-config-provider": {
+                      "version": "4.1.3"
+                    },
+                    "@smithy/property-provider": {
+                      "version": "4.0.4"
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "@smithy/url-parser": {
+                      "version": "4.0.4"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/property-provider": {
+                  "version": "4.0.4"
+                },
+                "@smithy/shared-ini-file-loader": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-bucket-endpoint": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/util-arn-parser": {
+                  "version": "3.804.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-config-provider": {
+                  "version": "4.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-expect-continue": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-flexible-checksums": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-crypto/crc32": {
+                  "version": "5.2.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-crypto/util": {
+                      "version": "5.2.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-crypto/crc32c": {
+                  "version": "5.2.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@aws-crypto/util": {
+                      "version": "5.2.0"
+                    },
+                    "@aws-sdk/types": {
+                      "version": "3.821.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@aws-crypto/util": {
+                  "version": "5.2.0"
+                },
+                "@aws-sdk/core": {
+                  "version": "3.826.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/is-array-buffer": {
+                  "version": "4.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-stream": {
+                  "version": "4.2.2"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-host-header": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-location-constraint": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-logger": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-recursion-detection": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-sdk-s3": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/core": {
+                  "version": "3.826.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/util-arn-parser": {
+                  "version": "3.804.0"
+                },
+                "@smithy/core": {
+                  "version": "3.5.3"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/signature-v4": {
+                  "version": "5.1.2"
+                },
+                "@smithy/smithy-client": {
+                  "version": "4.4.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-config-provider": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-stream": {
+                  "version": "4.2.2"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-ssec": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/middleware-user-agent": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/core": {
+                  "version": "3.826.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@aws-sdk/util-endpoints": {
+                  "version": "3.821.0"
+                },
+                "@smithy/core": {
+                  "version": "3.5.3"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/region-config-resolver": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-config-provider": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/signature-v4-multi-region": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/middleware-sdk-s3": {
+                  "version": "3.826.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/signature-v4": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/types": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/util-endpoints": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-endpoints": {
+                  "version": "3.0.6"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/util-user-agent-browser": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "bowser": {
+                  "version": "2.11.0",
+                  "overridden": false
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/util-user-agent-node": {
+              "version": "3.826.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/middleware-user-agent": {
+                  "version": "3.826.0"
+                },
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "aws-crt": {},
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@aws-sdk/xml-builder": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/config-resolver": {
+              "version": "4.1.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-config-provider": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/core": {
+              "version": "3.5.3",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/middleware-serde": {
+                  "version": "4.0.8"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-base64": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-body-length-browser": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-stream": {
+                  "version": "4.2.2"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/eventstream-serde-browser": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/eventstream-serde-universal": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/eventstream-codec": {
+                      "version": "4.0.4",
+                      "overridden": false,
+                      "dependencies": {
+                        "@aws-crypto/crc32": {
+                          "version": "5.2.0"
+                        },
+                        "@smithy/types": {
+                          "version": "4.3.1"
+                        },
+                        "@smithy/util-hex-encoding": {
+                          "version": "4.0.0"
+                        },
+                        "tslib": {
+                          "version": "2.8.1"
+                        }
+                      }
+                    },
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/eventstream-serde-config-resolver": {
+              "version": "4.1.2",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/eventstream-serde-node": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/eventstream-serde-universal": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/fetch-http-handler": {
+              "version": "5.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/querystring-builder": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "@smithy/util-uri-escape": {
+                      "version": "4.0.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-base64": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/hash-blob-browser": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/chunked-blob-reader-native": {
+                  "version": "4.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/util-base64": {
+                      "version": "4.0.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/chunked-blob-reader": {
+                  "version": "5.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/hash-node": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-buffer-from": {
+                  "version": "4.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/is-array-buffer": {
+                      "version": "4.0.0"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/hash-stream-node": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/invalid-dependency": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/md5-js": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/middleware-content-length": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/middleware-endpoint": {
+              "version": "4.1.11",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/core": {
+                  "version": "3.5.3"
+                },
+                "@smithy/middleware-serde": {
+                  "version": "4.0.8"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/shared-ini-file-loader": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/url-parser": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/middleware-retry": {
+              "version": "4.1.12",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/service-error-classification": {
+                  "version": "4.0.5",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    }
+                  }
+                },
+                "@smithy/smithy-client": {
+                  "version": "4.4.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-middleware": {
+                  "version": "4.0.4"
+                },
+                "@smithy/util-retry": {
+                  "version": "4.0.5"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                },
+                "uuid": {
+                  "version": "9.0.1",
+                  "overridden": false
+                }
+              }
+            },
+            "@smithy/middleware-serde": {
+              "version": "4.0.8",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/middleware-stack": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/node-config-provider": {
+              "version": "4.1.3",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/property-provider": {
+                  "version": "4.0.4"
+                },
+                "@smithy/shared-ini-file-loader": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/node-http-handler": {
+              "version": "4.0.6",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/abort-controller": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/querystring-builder": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/protocol-http": {
+              "version": "5.1.2",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/smithy-client": {
+              "version": "4.4.3",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/core": {
+                  "version": "3.5.3"
+                },
+                "@smithy/middleware-endpoint": {
+                  "version": "4.1.11"
+                },
+                "@smithy/middleware-stack": {
+                  "version": "4.0.4"
+                },
+                "@smithy/protocol-http": {
+                  "version": "5.1.2"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-stream": {
+                  "version": "4.2.2"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/types": {
+              "version": "4.3.1",
+              "overridden": false,
+              "dependencies": {
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/url-parser": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/querystring-parser": {
+                  "version": "4.0.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "@smithy/types": {
+                      "version": "4.3.1"
+                    },
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-base64": {
+              "version": "4.0.0",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/util-buffer-from": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-body-length-browser": {
+              "version": "4.0.0",
+              "overridden": false,
+              "dependencies": {
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-body-length-node": {
+              "version": "4.0.0",
+              "overridden": false,
+              "dependencies": {
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-defaults-mode-browser": {
+              "version": "4.0.19",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/property-provider": {
+                  "version": "4.0.4"
+                },
+                "@smithy/smithy-client": {
+                  "version": "4.4.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "bowser": {
+                  "version": "2.11.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-defaults-mode-node": {
+              "version": "4.0.19",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/config-resolver": {
+                  "version": "4.1.4"
+                },
+                "@smithy/credential-provider-imds": {
+                  "version": "4.0.6"
+                },
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/property-provider": {
+                  "version": "4.0.4"
+                },
+                "@smithy/smithy-client": {
+                  "version": "4.4.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-endpoints": {
+              "version": "3.0.6",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/node-config-provider": {
+                  "version": "4.1.3"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-middleware": {
+              "version": "4.0.4",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-retry": {
+              "version": "4.0.5",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/service-error-classification": {
+                  "version": "4.0.5"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-stream": {
+              "version": "4.2.2",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/fetch-http-handler": {
+                  "version": "5.0.4"
+                },
+                "@smithy/node-http-handler": {
+                  "version": "4.0.6"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "@smithy/util-base64": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-buffer-from": {
+                  "version": "4.0.0"
+                },
+                "@smithy/util-hex-encoding": {
+                  "version": "4.0.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "tslib": {
+                      "version": "2.8.1"
+                    }
+                  }
+                },
+                "@smithy/util-utf8": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-utf8": {
+              "version": "4.0.0",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/util-buffer-from": {
+                  "version": "4.0.0"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/util-waiter": {
+              "version": "4.0.5",
+              "overridden": false,
+              "dependencies": {
+                "@smithy/abort-controller": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "tslib": {
+              "version": "2.8.1",
+              "overridden": false
+            }
+          }
+        },
+        "@aws-sdk/s3-request-presigner": {
+          "version": "3.826.0",
+          "overridden": false,
+          "dependencies": {
+            "@aws-sdk/signature-v4-multi-region": {
+              "version": "3.826.0"
+            },
+            "@aws-sdk/types": {
+              "version": "3.821.0"
+            },
+            "@aws-sdk/util-format-url": {
+              "version": "3.821.0",
+              "overridden": false,
+              "dependencies": {
+                "@aws-sdk/types": {
+                  "version": "3.821.0"
+                },
+                "@smithy/querystring-builder": {
+                  "version": "4.0.4"
+                },
+                "@smithy/types": {
+                  "version": "4.3.1"
+                },
+                "tslib": {
+                  "version": "2.8.1"
+                }
+              }
+            },
+            "@smithy/middleware-endpoint": {
+              "version": "4.1.11"
+            },
+            "@smithy/protocol-http": {
+              "version": "5.1.2"
+            },
+            "@smithy/smithy-client": {
+              "version": "4.4.3"
+            },
+            "@smithy/types": {
+              "version": "4.3.1"
+            },
+            "tslib": {
+              "version": "2.8.1"
+            }
+          }
+        },
+        "hono": {
+          "version": "3.12.12",
+          "overridden": false
+        },
+        "wrangler": {
+          "version": "3.114.9",
+          "overridden": false,
+          "dependencies": {
+            "@cloudflare/kv-asset-handler": {
+              "version": "0.3.4",
+              "overridden": false,
+              "dependencies": {
+                "mime": {
+                  "version": "3.0.0",
+                  "overridden": false
+                }
+              }
+            },
+            "@cloudflare/unenv-preset": {
+              "version": "2.0.2",
+              "overridden": false,
+              "dependencies": {
+                "unenv": {
+                  "version": "2.0.0-rc.14"
+                },
+                "workerd": {
+                  "version": "1.20250408.0"
+                }
+              }
+            },
+            "@cloudflare/workers-types": {},
+            "@esbuild-plugins/node-globals-polyfill": {
+              "version": "0.2.3",
+              "overridden": false,
+              "dependencies": {
+                "esbuild": {
+                  "version": "0.17.19"
+                }
+              }
+            },
+            "@esbuild-plugins/node-modules-polyfill": {
+              "version": "0.2.2",
+              "overridden": false,
+              "dependencies": {
+                "esbuild": {
+                  "version": "0.17.19"
+                },
+                "escape-string-regexp": {
+                  "version": "4.0.0",
+                  "overridden": false
+                },
+                "rollup-plugin-node-polyfills": {
+                  "version": "0.2.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "rollup-plugin-inject": {
+                      "version": "3.0.2",
+                      "overridden": false,
+                      "dependencies": {
+                        "estree-walker": {
+                          "version": "0.6.1",
+                          "overridden": false
+                        },
+                        "magic-string": {
+                          "version": "0.25.9",
+                          "overridden": false,
+                          "dependencies": {
+                            "sourcemap-codec": {
+                              "version": "1.4.8",
+                              "overridden": false
+                            }
+                          }
+                        },
+                        "rollup-pluginutils": {
+                          "version": "2.8.2",
+                          "overridden": false,
+                          "dependencies": {
+                            "estree-walker": {
+                              "version": "0.6.1"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "blake3-wasm": {
+              "version": "2.1.5",
+              "overridden": false
+            },
+            "esbuild": {
+              "version": "0.17.19",
+              "overridden": false,
+              "dependencies": {
+                "@esbuild/android-arm": {},
+                "@esbuild/android-arm64": {},
+                "@esbuild/android-x64": {},
+                "@esbuild/darwin-arm64": {
+                  "version": "0.17.19",
+                  "overridden": false
+                },
+                "@esbuild/darwin-x64": {},
+                "@esbuild/freebsd-arm64": {},
+                "@esbuild/freebsd-x64": {},
+                "@esbuild/linux-arm": {},
+                "@esbuild/linux-arm64": {},
+                "@esbuild/linux-ia32": {},
+                "@esbuild/linux-loong64": {},
+                "@esbuild/linux-mips64el": {},
+                "@esbuild/linux-ppc64": {},
+                "@esbuild/linux-riscv64": {},
+                "@esbuild/linux-s390x": {},
+                "@esbuild/linux-x64": {},
+                "@esbuild/netbsd-x64": {},
+                "@esbuild/openbsd-x64": {},
+                "@esbuild/sunos-x64": {},
+                "@esbuild/win32-arm64": {},
+                "@esbuild/win32-ia32": {},
+                "@esbuild/win32-x64": {}
+              }
+            },
+            "fsevents": {
+              "version": "2.3.3",
+              "overridden": false
+            },
+            "miniflare": {
+              "version": "3.20250408.2",
+              "overridden": false,
+              "dependencies": {
+                "@cspotcode/source-map-support": {
+                  "version": "0.8.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "@jridgewell/trace-mapping": {
+                      "version": "0.3.9",
+                      "overridden": false,
+                      "dependencies": {
+                        "@jridgewell/resolve-uri": {
+                          "version": "3.1.2",
+                          "overridden": false
+                        },
+                        "@jridgewell/sourcemap-codec": {
+                          "version": "1.5.0",
+                          "overridden": false
+                        }
+                      }
+                    }
+                  }
+                },
+                "acorn-walk": {
+                  "version": "8.3.2",
+                  "overridden": false
+                },
+                "acorn": {
+                  "version": "8.14.0",
+                  "overridden": false
+                },
+                "exit-hook": {
+                  "version": "2.2.1",
+                  "overridden": false
+                },
+                "glob-to-regexp": {
+                  "version": "0.4.1",
+                  "overridden": false
+                },
+                "stoppable": {
+                  "version": "1.1.0",
+                  "overridden": false
+                },
+                "undici": {
+                  "version": "5.29.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "@fastify/busboy": {
+                      "version": "2.1.1",
+                      "overridden": false
+                    }
+                  }
+                },
+                "workerd": {
+                  "version": "1.20250408.0"
+                },
+                "ws": {
+                  "version": "8.18.0",
+                  "overridden": false,
+                  "dependencies": {
+                    "bufferutil": {},
+                    "utf-8-validate": {}
+                  }
+                },
+                "youch": {
+                  "version": "3.3.4",
+                  "overridden": false,
+                  "dependencies": {
+                    "cookie": {
+                      "version": "0.7.2",
+                      "overridden": false
+                    },
+                    "mustache": {
+                      "version": "4.2.0",
+                      "overridden": false
+                    },
+                    "stacktracey": {
+                      "version": "2.1.8",
+                      "overridden": false,
+                      "dependencies": {
+                        "as-table": {
+                          "version": "1.0.55",
+                          "overridden": false,
+                          "dependencies": {
+                            "printable-characters": {
+                              "version": "1.0.42",
+                              "overridden": false
+                            }
+                          }
+                        },
+                        "get-source": {
+                          "version": "2.0.12",
+                          "overridden": false,
+                          "dependencies": {
+                            "data-uri-to-buffer": {
+                              "version": "2.0.2",
+                              "overridden": false
+                            },
+                            "source-map": {
+                              "version": "0.6.1",
+                              "overridden": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "zod": {
+                  "version": "3.22.3",
+                  "overridden": false
+                }
+              }
+            },
+            "path-to-regexp": {
+              "version": "6.3.0",
+              "overridden": false
+            },
+            "sharp": {
+              "version": "0.33.5",
+              "overridden": false,
+              "dependencies": {
+                "@img/sharp-darwin-arm64": {
+                  "version": "0.33.5",
+                  "overridden": false,
+                  "dependencies": {
+                    "@img/sharp-libvips-darwin-arm64": {
+                      "version": "1.0.4"
+                    }
+                  }
+                },
+                "@img/sharp-darwin-x64": {},
+                "@img/sharp-libvips-darwin-arm64": {
+                  "version": "1.0.4",
+                  "overridden": false
+                },
+                "@img/sharp-libvips-darwin-x64": {},
+                "@img/sharp-libvips-linux-arm": {},
+                "@img/sharp-libvips-linux-arm64": {},
+                "@img/sharp-libvips-linux-s390x": {},
+                "@img/sharp-libvips-linux-x64": {},
+                "@img/sharp-libvips-linuxmusl-arm64": {},
+                "@img/sharp-libvips-linuxmusl-x64": {},
+                "@img/sharp-linux-arm": {},
+                "@img/sharp-linux-arm64": {},
+                "@img/sharp-linux-s390x": {},
+                "@img/sharp-linux-x64": {},
+                "@img/sharp-linuxmusl-arm64": {},
+                "@img/sharp-linuxmusl-x64": {},
+                "@img/sharp-wasm32": {},
+                "@img/sharp-win32-ia32": {},
+                "@img/sharp-win32-x64": {},
+                "color": {
+                  "version": "4.2.3",
+                  "overridden": false,
+                  "dependencies": {
+                    "color-convert": {
+                      "version": "2.0.1",
+                      "overridden": false,
+                      "dependencies": {
+                        "color-name": {
+                          "version": "1.1.4",
+                          "overridden": false
+                        }
+                      }
+                    },
+                    "color-string": {
+                      "version": "1.9.1",
+                      "overridden": false,
+                      "dependencies": {
+                        "color-name": {
+                          "version": "1.1.4"
+                        },
+                        "simple-swizzle": {
+                          "version": "0.2.2",
+                          "overridden": false,
+                          "dependencies": {
+                            "is-arrayish": {
+                              "version": "0.3.2",
+                              "overridden": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "detect-libc": {
+                  "version": "2.0.4",
+                  "overridden": false
+                },
+                "semver": {
+                  "version": "7.7.2",
+                  "overridden": false
+                }
+              }
+            },
+            "unenv": {
+              "version": "2.0.0-rc.14",
+              "overridden": false,
+              "dependencies": {
+                "defu": {
+                  "version": "6.1.4",
+                  "overridden": false
+                },
+                "exsolve": {
+                  "version": "1.0.5",
+                  "overridden": false
+                },
+                "ohash": {
+                  "version": "2.0.11",
+                  "overridden": false
+                },
+                "pathe": {
+                  "version": "2.0.3",
+                  "overridden": false
+                },
+                "ufo": {
+                  "version": "1.6.1",
+                  "overridden": false
+                }
+              }
+            },
+            "workerd": {
+              "version": "1.20250408.0",
+              "overridden": false,
+              "dependencies": {
+                "@cloudflare/workerd-darwin-64": {},
+                "@cloudflare/workerd-darwin-arm64": {
+                  "version": "1.20250408.0",
+                  "overridden": false
+                },
+                "@cloudflare/workerd-linux-64": {},
+                "@cloudflare/workerd-linux-arm64": {},
+                "@cloudflare/workerd-windows-64": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "wrangler": {
+      "version": "3.114.9",
+      "overridden": false,
+      "dependencies": {
+        "@cloudflare/kv-asset-handler": {
+          "version": "0.3.4",
+          "overridden": false,
+          "dependencies": {
+            "mime": {
+              "version": "3.0.0",
+              "overridden": false
+            }
+          }
+        },
+        "@cloudflare/unenv-preset": {
+          "version": "2.0.2",
+          "overridden": false,
+          "dependencies": {
+            "unenv": {
+              "version": "2.0.0-rc.14"
+            },
+            "workerd": {
+              "version": "1.20250408.0"
+            }
+          }
+        },
+        "@cloudflare/workers-types": {},
+        "@esbuild-plugins/node-globals-polyfill": {
+          "version": "0.2.3",
+          "overridden": false,
+          "dependencies": {
+            "esbuild": {
+              "version": "0.25.5"
+            }
+          }
+        },
+        "@esbuild-plugins/node-modules-polyfill": {
+          "version": "0.2.2",
+          "overridden": false,
+          "dependencies": {
+            "esbuild": {
+              "version": "0.25.5"
+            },
+            "escape-string-regexp": {
+              "version": "4.0.0",
+              "overridden": false
+            },
+            "rollup-plugin-node-polyfills": {
+              "version": "0.2.1",
+              "overridden": false,
+              "dependencies": {
+                "rollup-plugin-inject": {
+                  "version": "3.0.2",
+                  "overridden": false,
+                  "dependencies": {
+                    "estree-walker": {
+                      "version": "0.6.1",
+                      "overridden": false
+                    },
+                    "magic-string": {
+                      "version": "0.25.9",
+                      "overridden": false,
+                      "dependencies": {
+                        "sourcemap-codec": {
+                          "version": "1.4.8",
+                          "overridden": false
+                        }
+                      }
+                    },
+                    "rollup-pluginutils": {
+                      "version": "2.8.2",
+                      "overridden": false,
+                      "dependencies": {
+                        "estree-walker": {
+                          "version": "0.6.1",
+                          "overridden": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "blake3-wasm": {
+          "version": "2.1.5",
+          "overridden": false
+        },
+        "esbuild": {
+          "version": "0.17.19",
+          "overridden": false,
+          "dependencies": {
+            "@esbuild/android-arm": {},
+            "@esbuild/android-arm64": {},
+            "@esbuild/android-x64": {},
+            "@esbuild/darwin-arm64": {
+              "version": "0.17.19",
+              "overridden": false
+            },
+            "@esbuild/darwin-x64": {},
+            "@esbuild/freebsd-arm64": {},
+            "@esbuild/freebsd-x64": {},
+            "@esbuild/linux-arm": {},
+            "@esbuild/linux-arm64": {},
+            "@esbuild/linux-ia32": {},
+            "@esbuild/linux-loong64": {},
+            "@esbuild/linux-mips64el": {},
+            "@esbuild/linux-ppc64": {},
+            "@esbuild/linux-riscv64": {},
+            "@esbuild/linux-s390x": {},
+            "@esbuild/linux-x64": {},
+            "@esbuild/netbsd-x64": {},
+            "@esbuild/openbsd-x64": {},
+            "@esbuild/sunos-x64": {},
+            "@esbuild/win32-arm64": {},
+            "@esbuild/win32-ia32": {},
+            "@esbuild/win32-x64": {}
+          }
+        },
+        "fsevents": {
+          "version": "2.3.3",
+          "overridden": false
+        },
+        "miniflare": {
+          "version": "3.20250408.2",
+          "overridden": false,
+          "dependencies": {
+            "@cspotcode/source-map-support": {
+              "version": "0.8.1",
+              "overridden": false,
+              "dependencies": {
+                "@jridgewell/trace-mapping": {
+                  "version": "0.3.9",
+                  "overridden": false,
+                  "dependencies": {
+                    "@jridgewell/resolve-uri": {
+                      "version": "3.1.2",
+                      "overridden": false
+                    },
+                    "@jridgewell/sourcemap-codec": {
+                      "version": "1.5.0"
+                    }
+                  }
+                }
+              }
+            },
+            "acorn-walk": {
+              "version": "8.3.2",
+              "overridden": false
+            },
+            "acorn": {
+              "version": "8.14.0",
+              "overridden": false
+            },
+            "exit-hook": {
+              "version": "2.2.1",
+              "overridden": false
+            },
+            "glob-to-regexp": {
+              "version": "0.4.1",
+              "overridden": false
+            },
+            "stoppable": {
+              "version": "1.1.0",
+              "overridden": false
+            },
+            "undici": {
+              "version": "5.29.0",
+              "overridden": false,
+              "dependencies": {
+                "@fastify/busboy": {
+                  "version": "2.1.1",
+                  "overridden": false
+                }
+              }
+            },
+            "workerd": {
+              "version": "1.20250408.0"
+            },
+            "ws": {
+              "version": "8.18.0",
+              "overridden": false,
+              "dependencies": {
+                "bufferutil": {},
+                "utf-8-validate": {}
+              }
+            },
+            "youch": {
+              "version": "3.3.4",
+              "overridden": false,
+              "dependencies": {
+                "cookie": {
+                  "version": "0.7.1",
+                  "overridden": false
+                },
+                "mustache": {
+                  "version": "4.2.0",
+                  "overridden": false
+                },
+                "stacktracey": {
+                  "version": "2.1.8",
+                  "overridden": false,
+                  "dependencies": {
+                    "as-table": {
+                      "version": "1.0.55",
+                      "overridden": false,
+                      "dependencies": {
+                        "printable-characters": {
+                          "version": "1.0.42",
+                          "overridden": false
+                        }
+                      }
+                    },
+                    "get-source": {
+                      "version": "2.0.12",
+                      "overridden": false,
+                      "dependencies": {
+                        "data-uri-to-buffer": {
+                          "version": "2.0.2",
+                          "overridden": false
+                        },
+                        "source-map": {
+                          "version": "0.6.1",
+                          "overridden": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "zod": {
+              "version": "3.22.3",
+              "overridden": false
+            }
+          }
+        },
+        "path-to-regexp": {
+          "version": "6.3.0",
+          "overridden": false
+        },
+        "sharp": {
+          "version": "0.33.5",
+          "overridden": false,
+          "dependencies": {
+            "@img/sharp-darwin-arm64": {
+              "version": "0.33.5",
+              "overridden": false,
+              "dependencies": {
+                "@img/sharp-libvips-darwin-arm64": {
+                  "version": "1.0.4"
+                }
+              }
+            },
+            "@img/sharp-darwin-x64": {},
+            "@img/sharp-libvips-darwin-arm64": {
+              "version": "1.0.4",
+              "overridden": false
+            },
+            "@img/sharp-libvips-darwin-x64": {},
+            "@img/sharp-libvips-linux-arm": {},
+            "@img/sharp-libvips-linux-arm64": {},
+            "@img/sharp-libvips-linux-s390x": {},
+            "@img/sharp-libvips-linux-x64": {},
+            "@img/sharp-libvips-linuxmusl-arm64": {},
+            "@img/sharp-libvips-linuxmusl-x64": {},
+            "@img/sharp-linux-arm": {},
+            "@img/sharp-linux-arm64": {},
+            "@img/sharp-linux-s390x": {},
+            "@img/sharp-linux-x64": {},
+            "@img/sharp-linuxmusl-arm64": {},
+            "@img/sharp-linuxmusl-x64": {},
+            "@img/sharp-wasm32": {},
+            "@img/sharp-win32-ia32": {},
+            "@img/sharp-win32-x64": {},
+            "color": {
+              "version": "4.2.3",
+              "overridden": false,
+              "dependencies": {
+                "color-convert": {
+                  "version": "2.0.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "color-name": {
+                      "version": "1.1.4",
+                      "overridden": false
+                    }
+                  }
+                },
+                "color-string": {
+                  "version": "1.9.1",
+                  "overridden": false,
+                  "dependencies": {
+                    "color-name": {
+                      "version": "1.1.4"
+                    },
+                    "simple-swizzle": {
+                      "version": "0.2.2",
+                      "overridden": false,
+                      "dependencies": {
+                        "is-arrayish": {
+                          "version": "0.3.2",
+                          "overridden": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "detect-libc": {
+              "version": "2.0.4",
+              "overridden": false
+            },
+            "semver": {
+              "version": "7.7.2",
+              "overridden": false
+            }
+          }
+        },
+        "unenv": {
+          "version": "2.0.0-rc.14",
+          "overridden": false,
+          "dependencies": {
+            "defu": {
+              "version": "6.1.4",
+              "overridden": false
+            },
+            "exsolve": {
+              "version": "1.0.5",
+              "overridden": false
+            },
+            "ohash": {
+              "version": "2.0.11",
+              "overridden": false
+            },
+            "pathe": {
+              "version": "2.0.3",
+              "overridden": false
+            },
+            "ufo": {
+              "version": "1.6.1",
+              "overridden": false
+            }
+          }
+        },
+        "workerd": {
+          "version": "1.20250408.0",
+          "overridden": false,
+          "dependencies": {
+            "@cloudflare/workerd-darwin-64": {},
+            "@cloudflare/workerd-darwin-arm64": {
+              "version": "1.20250408.0",
+              "overridden": false
+            },
+            "@cloudflare/workerd-linux-64": {},
+            "@cloudflare/workerd-linux-arm64": {},
+            "@cloudflare/workerd-windows-64": {}
+          }
+        }
+      }
+    }
+  }
+}

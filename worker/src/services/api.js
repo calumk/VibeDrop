@@ -7,14 +7,15 @@ let env;
 export function initS3Client(environment) {
   env = environment;
   
-  // Log environment variables (without exposing secrets)
-  console.log('Initializing S3 client with:', {
-    accountId: env.ACCOUNT_ID,
-    bucketName: env.R2_BUCKET_NAME,
-    hasAccessKey: !!env.R2_ACCESS_KEY_ID,
-    hasSecretKey: !!env.R2_SECRET_ACCESS_KEY
-  });
+  console.log('=== DEBUG: S3 Client Init ===');
+  console.log('Account ID:', env.ACCOUNT_ID);
+  console.log('Bucket Name:', env.R2_BUCKET_NAME);
+  console.log('Access Key ID (first 8 chars):', env.R2_ACCESS_KEY_ID?.substring(0, 8));
+  console.log('Secret Key (first 8 chars):', env.R2_SECRET_ACCESS_KEY?.substring(0, 8));
+  console.log('Endpoint:', `https://${env.ACCOUNT_ID}.r2.cloudflarestorage.com`);
+  console.log('============================');
 
+  
   if (!env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY) {
     throw new Error('R2 credentials are not properly configured');
   }
@@ -30,17 +31,17 @@ export function initS3Client(environment) {
 }
 
 export async function createMultipartUpload(fileName, fileType, fileSize) {
-  console.log('createMultipartUpload called with:');
-  console.log('- fileName:', JSON.stringify(fileName));
-  console.log('- fileType:', JSON.stringify(fileType));
-  console.log('- fileSize:', fileSize);
+  // console.log('createMultipartUpload called with:');
+  // console.log('- fileName:', JSON.stringify(fileName));
+  // console.log('- fileType:', JSON.stringify(fileType));
+  // console.log('- fileSize:', fileSize);
   
   // Use fileId instead of timestamp-filename to avoid spaces and ensure consistency
   const fileId = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
   const key = `files/${fileId}`;
   
-  console.log('Generated fileId:', fileId);
-  console.log('Generated key:', key);
+  // console.log('Generated fileId:', fileId);
+  // console.log('Generated key:', key);
   
   const command = new CreateMultipartUploadCommand({
     Bucket: env.R2_BUCKET_NAME,
@@ -52,23 +53,23 @@ export async function createMultipartUpload(fileName, fileType, fileSize) {
     }
   });
 
-  console.log('CreateMultipartUploadCommand params:', {
-    Bucket: env.R2_BUCKET_NAME,
-    Key: key,
-    ContentType: fileType,
-    Metadata: {
-      'x-amz-meta-size': fileSize.toString()
-    }
-  });
+  // console.log('CreateMultipartUploadCommand params:', {
+  //   Bucket: env.R2_BUCKET_NAME,
+  //   Key: key,
+  //   ContentType: fileType,
+  //   Metadata: {
+  //     'x-amz-meta-size': fileSize.toString()
+  //   }
+  // });
 
   try {
-    console.log('Sending command to S3...');
+    // console.log('Sending command to S3...');
     const response = await s3Client.send(command);
-    console.log('S3 response received:', {
-      UploadId: response.UploadId,
-      Key: response.Key,
-      Bucket: response.Bucket
-    });
+    // console.log('S3 response received:', {
+    //   UploadId: response.UploadId,
+    //   Key: response.Key,
+    //   Bucket: response.Bucket
+    // });
     
     const result = {
       success: true,
@@ -77,7 +78,7 @@ export async function createMultipartUpload(fileName, fileType, fileSize) {
       fileId: fileId
     };
     
-    console.log('Returning result:', JSON.stringify(result));
+    // console.log('Returning result:', JSON.stringify(result));
     return result;
   } catch (error) {
     console.error('Error creating multipart upload:', error);
@@ -106,7 +107,7 @@ export async function signPart(key, uploadId, partNumber) {
       signedUrl
     };
   } catch (error) {
-    console.error('Error signing part:', error);
+    // console.error('Error signing part:', error);
     throw new Error('Failed to sign part');
   }
 }
@@ -126,7 +127,7 @@ export async function completeMultipartUpload(key, uploadId, parts) {
       key: key
     };
   } catch (error) {
-    console.error('Error completing multipart upload:', error);
+    // console.error('Error completing multipart upload:', error);
     throw new Error('Failed to complete multipart upload');
   }
 }
@@ -143,7 +144,7 @@ export async function uploadToR2(file, key) {
     await s3Client.send(command);
     return `https://${env.R2_PUBLIC_DOMAIN}/${key}`;
   } catch (error) {
-    console.error('Error uploading to R2:', error);
+    // console.error('Error uploading to R2:', error);
     throw new Error('Failed to upload file');
   }
 }
@@ -158,7 +159,7 @@ export async function getFromR2(key) {
     const response = await s3Client.send(command);
     return response.Body;
   } catch (error) {
-    console.error('Error getting from R2:', error);
+    // console.error('Error getting from R2:', error);
     throw new Error('Failed to get file');
   }
 }
@@ -172,7 +173,7 @@ export async function deleteFromR2(key) {
   try {
     await s3Client.send(command);
   } catch (error) {
-    console.error('Error deleting from R2:', error);
+    // console.error('Error deleting from R2:', error);
     throw new Error('Failed to delete file');
   }
 }
@@ -191,7 +192,7 @@ export async function createMetadata(metadata) {
     }
   } catch (error) {
     // If no existing metadata, that's fine - we'll create new
-    console.log('No existing metadata found, creating new');
+    // console.log('No existing metadata found, creating new');
   }
 
   const expiryDate = fileData.expiryDays ? new Date(now.getTime() + fileData.expiryDays * 24 * 60 * 60 * 1000) : null;
@@ -218,7 +219,7 @@ export async function createMetadata(metadata) {
       fileId: fileId
     };
   } catch (error) {
-    console.error('Error creating metadata:', error);
+    // console.error('Error creating metadata:', error);
     throw new Error('Failed to create metadata');
   }
 }
@@ -249,7 +250,7 @@ export async function getMetadata(fileId) {
         }
       };
     }
-    console.error('Error getting metadata:', error);
+    // console.error('Error getting metadata:', error);
     throw new Error(`Failed to get metadata: ${error.message}`);
   }
 }
@@ -300,7 +301,7 @@ export async function getDownloadUrl(fileId, passcode) {
       metadata: updatedMetadata
     };
   } catch (error) {
-    console.error('Error getting download URL:', error);
+    // console.error('Error getting download URL:', error);
     throw new Error('Failed to get download URL');
   }
 }
@@ -312,15 +313,15 @@ export async function listFiles() {
   });
 
   try {
-    console.log('Listing files with params:', {
-      bucket: env.R2_BUCKET_NAME,
-      endpoint: `https://${env.ACCOUNT_ID}.r2.cloudflarestorage.com`,
-      hasAccessKey: !!env.R2_ACCESS_KEY_ID,
-      hasSecretKey: !!env.R2_SECRET_ACCESS_KEY
-    });
+    // console.log('Listing files with params:', {
+    //   bucket: env.R2_BUCKET_NAME,
+    //   endpoint: `https://${env.ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    //   hasAccessKey: !!env.R2_ACCESS_KEY_ID,
+    //   hasSecretKey: !!env.R2_SECRET_ACCESS_KEY
+    // });
 
     const response = await s3Client.send(command);
-    console.log('List response:', response);
+    // console.log('List response:', response);
 
     const files = await Promise.all(
       (response.Contents || [])
@@ -341,13 +342,13 @@ export async function listFiles() {
       files: files.sort((a, b) => b.lastModified - a.lastModified)
     };
   } catch (error) {
-    console.error('Error listing files:', error);
-    console.error('Error details:', {
-      message: error.message,
-      code: error.code,
-      requestId: error.$metadata?.requestId,
-      cfId: error.$metadata?.cfId
-    });
+    // console.error('Error listing files:', error);
+    // console.error('Error details:', {
+    //   message: error.message,
+    //   code: error.code,
+    //   requestId: error.$metadata?.requestId,
+    //   cfId: error.$metadata?.cfId
+    // });
     throw new Error(`Failed to list files: ${error.message}`);
   }
 }
@@ -366,7 +367,7 @@ export async function deleteFile(fileId) {
       success: true
     };
   } catch (error) {
-    console.error('Error deleting file:', error);
+    // console.error('Error deleting file:', error);
     throw new Error('Failed to delete file');
   }
 }
@@ -404,15 +405,15 @@ export async function getUploadUrl(fileId, fileName, fileType) {
       key: key
     };
   } catch (error) {
-    console.error('Error getting upload URL:', error);
+    // console.error('Error getting upload URL:', error);
     throw new Error('Failed to get upload URL');
   }
 }
 
 export async function abortMultipartUpload(key, uploadId) {
-  console.log('abortMultipartUpload called with:');
-  console.log('- key:', key);
-  console.log('- uploadId:', uploadId);
+  // console.log('abortMultipartUpload called with:');
+  // console.log('- key:', key);
+  // console.log('- uploadId:', uploadId);
 
   const command = new AbortMultipartUploadCommand({
     Bucket: env.R2_BUCKET_NAME,
@@ -421,20 +422,20 @@ export async function abortMultipartUpload(key, uploadId) {
   });
 
   try {
-    console.log('Sending AbortMultipartUploadCommand to S3...');
+    // console.log('Sending AbortMultipartUploadCommand to S3...');
     await s3Client.send(command);
-    console.log('Multipart upload aborted successfully');
+    // console.log('Multipart upload aborted successfully');
     return {
       success: true
     };
   } catch (error) {
-    console.error('Error aborting multipart upload:', error);
-    console.error('Error details:', {
-      name: error.name,
-      message: error.message,
-      code: error.Code,
-      statusCode: error.$metadata?.httpStatusCode
-    });
+    // console.error('Error aborting multipart upload:', error);
+    // console.error('Error details:', {
+    //   name: error.name,
+    //   message: error.message,
+    //   code: error.Code,
+    //   statusCode: error.$metadata?.httpStatusCode
+    // });
     throw new Error(`Failed to abort multipart upload: ${error.message}`);
   }
 } 
