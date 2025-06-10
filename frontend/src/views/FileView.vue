@@ -156,6 +156,14 @@
                 class="download-button"
                 :loading="downloading"
               />
+              <Button 
+                @click="copyFileUrl"
+                icon="pi pi-link"
+                text
+                size="small"
+                class="copy-url-button"
+                :loading="copying"
+              />
             </div>
 
             <!-- Expiry Notice -->
@@ -211,7 +219,8 @@ export default {
       passcodeError: '',
       verifying: false,
       downloading: false,
-      previewUrl: null
+      previewUrl: null,
+      copying: false
     }
   },
   computed: {
@@ -343,6 +352,45 @@ export default {
       }
     },
 
+    async copyFileUrl() {
+      try {
+        this.copying = true;
+        const result = await S3Service.getDownloadUrl(
+          this.fileId, 
+          this.needsPasscode ? this.enteredPasscode : null
+        );
+        
+        if (!result.success) {
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: result.error,
+            life: 5000
+          });
+          return;
+        }
+        
+        await navigator.clipboard.writeText(result.downloadUrl);
+        
+        this.$toast.add({
+          severity: 'success',
+          summary: 'URL Copied',
+          detail: 'Temporary (1hr) URL has been copied to clipboard',
+          life: 3000
+        });
+      } catch (error) {
+        console.error('Copy URL error:', error);
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Copy Failed',
+          detail: 'Failed to copy URL to clipboard',
+          life: 5000
+        });
+      } finally {
+        this.copying = false;
+      }
+    },
+
     isPreviewable(type) {
       return this.isImage(type) || this.isVideo(type) || this.isText(type)
     },
@@ -392,7 +440,7 @@ export default {
       if (this.isImage(type)) return 'pi pi-image'
       if (this.isVideo(type)) return 'pi pi-video'
       if (type && type.includes('pdf')) return 'pi pi-file-pdf'
-      if (type && type.includes('zip')) return 'pi pi-file-archive'
+      if (type && (type.includes('zip') || type.includes('rar') || type.includes('7z') || type.includes('tar') || type.includes('gz'))) return 'pi pi-file-plus'
       if (type && type.includes('audio')) return 'pi pi-volume-up'
       return 'pi pi-file'
     },
@@ -550,6 +598,11 @@ export default {
 .download-button {
   font-size: 1.1rem;
   padding: 1rem 2rem;
+}
+
+.copy-url-button {
+  margin-top: 0.5rem;
+  color: #6b7280;
 }
 
 .expiry-notice {

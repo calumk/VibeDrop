@@ -122,8 +122,9 @@
               :rowsPerPageOptions="[5, 10, 20, 50]"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} files"
-              sortField="createdAt" 
-              :sortOrder="-1"
+              :sortField="sortField"
+              :sortOrder="sortOrder"
+              @sort="onSort"
               class="files-table"
               responsiveLayout="scroll"
               :globalFilterFields="['name', 'status']"
@@ -277,7 +278,9 @@ export default {
       fileToDelete: null,
       extendDialogVisible: false,
       selectedFile: null,
-      filters: null,
+      filters: {},
+      sortField: 'createdAt',
+      sortOrder: -1,
     }
   },
   computed: {
@@ -319,8 +322,10 @@ export default {
         const result = await S3Service.getAllFiles()
         
         if (result.success) {
-          this.files = result.files
-          console.log('Files data:', this.files) // Debug log
+          this.files = result.files.map(file => ({
+            ...file,
+            isExpired: this.isExpired(file)
+          }))
         } else {
           this.error = result.error
         }
@@ -336,19 +341,25 @@ export default {
       this.cleaningExpired = true
       
       try {
-        const result = await S3Service.cleanExpiredFiles()
+        const result = await S3Service.cleanupExpiredFiles()
         
         this.$toast.add({
           severity: result.success ? 'success' : 'error',
           summary: result.success ? 'Cleanup Complete' : 'Cleanup Failed',
-          detail: result.success 
-            ? `Deleted ${result.deletedCount} expired files`
-            : result.error,
+          detail: result.success ? result.message : result.error,
           life: 5000
         })
 
         if (result.success) {
+          // Store current state
+          const currentFilters = { ...this.filters }
+          const currentSortField = this.sortField
+          const currentSortOrder = this.sortOrder
           await this.loadFiles() // Refresh the list
+          // Restore state after refresh
+          this.filters = currentFilters
+          this.sortField = currentSortField
+          this.sortOrder = currentSortOrder
         }
       } catch (error) {
         console.error('Cleanup error:', error)
@@ -386,7 +397,15 @@ export default {
         if (result.success) {
           this.showDeleteDialog = false
           this.fileToDelete = null
+          // Store current state
+          const currentFilters = { ...this.filters }
+          const currentSortField = this.sortField
+          const currentSortOrder = this.sortOrder
           await this.loadFiles() // Refresh the list
+          // Restore state after refresh
+          this.filters = currentFilters
+          this.sortField = currentSortField
+          this.sortOrder = currentSortOrder
         }
       } catch (error) {
         console.error('Delete error:', error)
@@ -432,7 +451,7 @@ export default {
       if (type && type.startsWith('image/')) return 'pi pi-image'
       if (type && type.startsWith('video/')) return 'pi pi-video'
       if (type && type.includes('pdf')) return 'pi pi-file-pdf'
-      if (type && type.includes('zip')) return 'pi pi-file-archive'
+      if (type && (type.includes('zip') || type.includes('rar') || type.includes('7z') || type.includes('tar') || type.includes('gz'))) return 'pi pi-file-plus'
       if (type && type.startsWith('audio/')) return 'pi pi-volume-up'
       return 'pi pi-file'
     },
@@ -507,7 +526,12 @@ export default {
         this.extendDialogVisible = false;
         this.selectedFile = null;
       }
-    }
+    },
+
+    onSort(event) {
+      this.sortField = event.sortField
+      this.sortOrder = event.sortOrder
+    },
   }
 }
 </script>
@@ -687,6 +711,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  max-width: 300px;
 }
 
 .file-icon {
@@ -697,11 +722,14 @@ export default {
 .file-name-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .file-name {
-  font-size: 0.9rem;
-  color: #374151;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
 }
 
 .file-description-small {

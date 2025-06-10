@@ -49,11 +49,11 @@ export class S3Service {
   }
 
   // Create multipart upload
-  static async createMultipartUpload(fileName, fileType) {
+  static async createMultipartUpload(fileName, fileType, fileSize) {
     try {
       const result = await this.apiCall('/create-multipart', {
         method: 'POST',
-        body: JSON.stringify({ fileName, fileType })
+        body: JSON.stringify({ fileName, fileType, fileSize })
       })
       
       return result

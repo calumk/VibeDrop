@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { initS3Client, createMultipartUpload, signPart, completeMultipartUpload, createMetadata, getMetadata, getDownloadUrl, listFiles, deleteFile, cleanExpired, getUploadUrl } from './src/services/api';
+import { initS3Client, createMultipartUpload, signPart, completeMultipartUpload, createMetadata, getMetadata, getDownloadUrl, listFiles, deleteFile, cleanExpired, getUploadUrl, abortMultipartUpload } from './src/services/api';
 import { onRequest as updateMetadata } from './routes/update-metadata';
 
 const app = new Hono();
@@ -25,7 +25,7 @@ app.use('*', async (c, next) => {
 app.get('/', (c) => {
   return c.json({
     name: 'VibeDrop API',
-    version: '1.0.0',
+    version: '1.0.1',
     endpoints: {
       health: {
         method: 'GET',
@@ -86,6 +86,11 @@ app.get('/', (c) => {
         method: 'POST',
         path: '/api/update-metadata',
         description: 'Update file metadata'
+      },
+      abortMultipart: {
+        method: 'POST',
+        path: '/api/abort-multipart',
+        description: 'Abort multipart upload'
       }
     }
   });
@@ -102,11 +107,11 @@ app.get('/api/health', (c) => {
 // Create multipart upload
 app.post('/api/create-multipart', async (c) => {
   try {
-    const { fileId, fileName, fileType } = await c.req.json();
-    if (!fileId || !fileName || !fileType) {
+    const { fileName, fileType, fileSize } = await c.req.json();
+    if (!fileName || !fileType || !fileSize) {
       return c.json({ success: false, error: 'Missing required fields' }, 400);
     }
-    const result = await createMultipartUpload(fileName, fileType);
+    const result = await createMultipartUpload(fileName, fileType, fileSize);
     return c.json(result);
   } catch (error) {
     console.error('Error in create-multipart:', error);
@@ -259,5 +264,24 @@ app.post('/api/get-upload-url', async (c) => {
 
 // Update metadata
 app.post('/api/update-metadata', updateMetadata);
+
+// Abort multipart upload
+app.post('/api/abort-multipart', async (c) => {
+  try {
+    const { key, uploadId } = await c.req.json();
+    if (!key || !uploadId) {
+      return c.json({ success: false, error: 'Missing required fields' }, 400);
+    }
+    const result = await abortMultipartUpload(key, uploadId);
+    return c.json(result);
+  } catch (error) {
+    console.error('Error in abort-multipart:', error);
+    return c.json({ 
+      success: false, 
+      error: error.message || 'Internal server error',
+      details: error.toString()
+    }, 500);
+  }
+});
 
 export default app; 

@@ -22,6 +22,7 @@
                 icon="pi pi-unlock"
                 :loading="authenticating"
                 class="login-button"
+                severity="secondary"
               />
             </div>
             
@@ -574,7 +575,7 @@ export default {
 }
 
 .auth-button:hover {
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
   box-shadow: 
     0 5px 15px rgba(102, 126, 234, 0.4),
     0 0 20px rgba(255, 0, 150, 0.2),
@@ -644,19 +645,20 @@ export default {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  border: none;
-  transition: all 0.3s ease;
+  /* background: linear-gradient(45deg, #667eea, #764ba2); */
+  background: linear-gradient(135deg, #fff 0%,  100%);
+  /* border: none; */
+  /* transition: all 0.3s ease; */
 }
 
 .login-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 
+  /* transform: translateY(-2px); */
+  /* box-shadow: 
     0 0 20px rgba(102, 126, 234, 0.4),
     0 0 40px rgba(255, 0, 150, 0.2),
     0 0 60px rgba(0, 255, 255, 0.2),
     0 0 80px rgba(255, 255, 0, 0.1),
-    0 0 100px rgba(255, 0, 255, 0.1);
+    0 0 100px rgba(255, 0, 255, 0.1); */
 }
 
 /* Responsive Design */

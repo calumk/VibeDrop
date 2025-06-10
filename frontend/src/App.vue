@@ -2,9 +2,15 @@
   <div id="app">
     <Toast />
     <router-view />
-    <div v-if="!hasDonated" class="footer">
-      Made with ❤️ & ☕ in the 🇬🇧 by <a href="https://github.com/calumk" target="_blank">@calumk</a>
+    <div class="footer">
+      Version: {{ appVersion }}
     </div>
+    <div v-if="!hasDonated" class="footer">
+      Powered by <a href="https://github.com/calumk/vibedrop" target="_blank">VibeDrop</a>
+     
+    </div>
+    <br/>
+    
   </div>
 </template>
 
@@ -14,7 +20,11 @@ export default {
   computed: {
     hasDonated() {
       return import.meta.env.VITE_I_HAVE_DONATED_TO_CALUMK === 'true'
+    },
+    appVersion() {
+      return import.meta.env.VITE_APP_VERSION
     }
+
   }
 }
 </script>
@@ -53,7 +63,7 @@ export default {
 .footer {
   text-align: center;
   color: white;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .footer a {
@@ -69,7 +79,8 @@ export default {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  background: linear-gradient(135deg, #0099FF 0%, #68C2FF 100%);
   min-height: 100vh;
 }
 

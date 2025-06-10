@@ -16,7 +16,7 @@
 
       <Card class="upload-card glass-card">
         <template #content>
-          <div v-if="!uploading && !uploadComplete" class="upload-section">
+          <div v-if="!uploading && !uploadComplete && !isCancelling" class="upload-section">
             <div class="uppy-container" ref="uppyContainer"></div>
             
             <Divider />
@@ -95,7 +95,7 @@
             </div>
           </div>
 
-          <div v-if="uploading" class="upload-progress">
+          <div v-if="uploading && !isCancelling" class="upload-progress">
             <div class="progress-content">
               <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #667eea;"></i>
               <h3>Uploading your file...</h3>
@@ -115,6 +115,23 @@
                   <span class="stat-value">{{ formatTimeRemaining(estimatedTimeRemaining) }}</span>
                 </div>
               </div>
+              
+              <br/>
+              <Button 
+                @click="cancelUpload" 
+                icon="pi pi-times" 
+                label="Cancel Upload"
+                severity="danger"
+                class="cancel-button"
+                size="small"
+              />
+            </div>
+          </div>
+
+          <div v-if="isCancelling" class="upload-progress">
+            <div class="progress-content">
+              <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #667eea;"></i>
+              <h3>Cancelling upload...</h3>
             </div>
           </div>
 
@@ -195,6 +212,7 @@ export default {
       selectedExpiry: 7, // Default to 7 days
       uploading: false,
       uploadComplete: false,
+      isCancelling: false,
       uploadProgress: 0,
       shareUrl: '',
       fileName: '',
@@ -204,6 +222,8 @@ export default {
       uploadStartTime: null,
       estimatedTimeRemaining: null,
       uploadSpeed: 0,
+      speedHistory: [], // Array to store speed measurements
+      lastProgressUpdate: null, // Track last progress update time
       expiryOptions: [
         { label: '1 Day', value: 1 },
         { label: '7 Days (Default)', value: 7 },
@@ -224,6 +244,18 @@ export default {
   beforeUnmount() {
     if (this.uppy) {
       this.uppy.destroy()
+    }
+  },
+  watch: {
+    // Watch for route changes to reset state when returning to upload page
+    '$route'(to, from) {
+      if (to.name === 'Upload' && from.name !== 'Upload') {
+        this.resetUpload()
+        // Reinitialize Uppy after a short delay to ensure DOM is ready
+        setTimeout(() => {
+          this.initUppy()
+        }, 100)
+      }
     }
   },
   methods: {
@@ -291,15 +323,36 @@ export default {
       this.uppy.on('upload-progress', (file, progress) => {
         this.uploadProgress = Math.round((progress.bytesUploaded / progress.bytesTotal) * 100)
         
-        // Calculate upload speed and estimated time remaining
-        if (this.uploadStartTime) {
-          const timeElapsed = (Date.now() - this.uploadStartTime) / 1000 // seconds
-          if (timeElapsed > 1) { // Only calculate after 1 second to avoid initial fluctuations
-            this.uploadSpeed = progress.bytesUploaded / timeElapsed
+        // Calculate upload speed using a 5-second window
+        const now = Date.now()
+        if (this.lastProgressUpdate) {
+          const timeDiff = (now - this.lastProgressUpdate) / 1000 // seconds
+          const bytesDiff = progress.bytesUploaded - (this.lastBytesUploaded || 0)
+          
+          if (timeDiff > 0) {
+            const instantSpeed = bytesDiff / timeDiff
+            this.speedHistory.push({
+              speed: instantSpeed,
+              timestamp: now
+            })
+            
+            // Keep only measurements from the last 5 seconds
+            const fiveSecondsAgo = now - 5000
+            this.speedHistory = this.speedHistory.filter(item => item.timestamp > fiveSecondsAgo)
+            
+            // Calculate average speed from the history
+            if (this.speedHistory.length > 0) {
+              this.uploadSpeed = this.speedHistory.reduce((sum, item) => sum + item.speed, 0) / this.speedHistory.length
+            }
+            
+            // Calculate estimated time remaining
             const remainingBytes = progress.bytesTotal - progress.bytesUploaded
             this.estimatedTimeRemaining = remainingBytes / this.uploadSpeed
           }
         }
+        
+        this.lastProgressUpdate = now
+        this.lastBytesUploaded = progress.bytesUploaded
       })
 
       // Handle upload success
@@ -363,9 +416,9 @@ export default {
         // Multipart upload configuration for large files
         createMultipartUpload: async (file) => {
           try {
-            console.log('Creating multipart upload for:', file.name, file.type)
+            console.log('Creating multipart upload for:', file.name, file.type, file.size)
             
-            const result = await S3Service.createMultipartUpload(file.name, file.type)
+            const result = await S3Service.createMultipartUpload(file.name, file.type, file.size)
             
             if (!result.success) {
               console.error('Failed to create multipart upload:', result.error)
@@ -385,6 +438,48 @@ export default {
             throw error
           }
         },
+
+        // Add chunk size configuration
+        limit: 1, // Number of concurrent uploads
+        companionUrl: false, // We're not using companion
+        getUploadParameters: async (file) => {
+          try {
+            console.log('Getting upload parameters for:', file.name, file.type)
+            
+            // Use existing file ID if already created, otherwise generate new one
+            if (!this.currentFileId) {
+              this.currentFileId = S3Service.generateFileId()
+            }
+            
+            const result = await S3Service.getUploadUrl(this.currentFileId, file.name, file.type)
+            
+            if (!result.success) {
+              console.error('Failed to get upload URL:', result.error)
+              throw new Error(result.error)
+            }
+            
+            console.log('Upload URL generated successfully for file ID:', this.currentFileId)
+            
+            return {
+              method: 'PUT',
+              url: result.uploadUrl,
+              fields: {},
+              headers: {
+                'Content-Type': file.type
+              }
+            }
+          } catch (error) {
+            console.error('Error in getUploadParameters:', error)
+            throw error
+          }
+        },
+
+        // Configure chunk size for multipart uploads
+        shouldUseMultipart: (file) => file.size > 5 * 1024 * 1024, // Use multipart for files > 5MB
+        multipartChunkSize: 5 * 1024 * 1024, // 5MB chunks
+        multipartMinSize: 5 * 1024 * 1024, // Minimum size for multipart upload
+        multipartMaxParts: 10000, // Maximum number of parts
+        multipartMaxConcurrent: 4, // Number of concurrent part uploads
 
         signPart: async (file, { uploadId, key, partNumber }) => {
           try {
@@ -426,9 +521,14 @@ export default {
             
             if (!result.success) {
               console.error('Failed to abort multipart upload:', result.error)
+              throw new Error(result.error)
             }
+            
+            console.log('Multipart upload aborted successfully')
+            return result
           } catch (error) {
             console.error('Error in abortMultipartUpload:', error)
+            throw error
           }
         },
 
@@ -443,39 +543,6 @@ export default {
             return result.parts
           } catch (error) {
             console.error('Error in listParts:', error)
-            throw error
-          }
-        },
-
-        // Fallback method for smaller files or when multipart isn't used
-        getUploadParameters: async (file) => {
-          try {
-            console.log('Getting upload parameters for:', file.name, file.type)
-            
-            // Use existing file ID if already created, otherwise generate new one
-            if (!this.currentFileId) {
-              this.currentFileId = S3Service.generateFileId()
-            }
-            
-            const result = await S3Service.getUploadUrl(this.currentFileId, file.name, file.type)
-            
-            if (!result.success) {
-              console.error('Failed to get upload URL:', result.error)
-              throw new Error(result.error)
-            }
-            
-            console.log('Upload URL generated successfully for file ID:', this.currentFileId)
-            
-            return {
-              method: 'PUT',
-              url: result.uploadUrl,
-              fields: {},
-              headers: {
-                'Content-Type': file.type
-              }
-            }
-          } catch (error) {
-            console.error('Error in getUploadParameters:', error)
             throw error
           }
         }
@@ -506,28 +573,8 @@ export default {
     },
 
     resetUpload() {
-      this.uploading = false
-      this.uploadComplete = false
-      this.uploadProgress = 0
-      this.uploadStartTime = null
-      this.estimatedTimeRemaining = null
-      this.uploadSpeed = 0
-      this.passcode = ''
-      this.customFileName = ''
-      this.originalFileName = ''
-      this.description = ''
-      this.selectedExpiry = 7 // Reset to default
-      this.shareUrl = ''
-      this.fileName = ''
-      this.fileSize = 0
-      this.copied = false
-      this.currentFileId = null
-      
-      // Reset Uppy
-      this.uppy.cancelAll()
-      this.uppy.getFiles().forEach(file => {
-        this.uppy.removeFile(file.id)
-      })
+      // Do a full page refresh to ensure clean state
+      window.location.reload()
     },
 
     formatFileSize(bytes) {
@@ -552,6 +599,38 @@ export default {
       const minutes = Math.floor((seconds % 3600) / 60)
       const remainingSeconds = Math.round(seconds % 60)
       return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${remainingSeconds.toString().padStart(2, '0')}s`
+    },
+
+    async cancelUpload() {
+      try {
+        // Set cancelling state
+        this.isCancelling = true
+        
+        // Cancel all uploads in Uppy and wait for it to complete
+        await this.uppy.cancelAll()
+        
+        // Show cancellation message
+        this.$toast.add({
+          severity: 'info',
+          summary: 'Upload Cancelled',
+          detail: 'The upload has been cancelled',
+          life: 3000
+        })
+
+        // Do a full page refresh after a short delay to show the toast
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      } catch (error) {
+        console.error('Error cancelling upload:', error)
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to cancel upload',
+          life: 3000
+        })
+        this.isCancelling = false
+      }
     }
   }
 }
@@ -782,5 +861,9 @@ export default {
   font-size: 1rem;
   font-weight: 600;
   color: #374151;
+}
+
+.cancel-button {
+  margin-top: 1rem;
 }
 </style> 

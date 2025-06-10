@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, CreateMultipartUploadCommand, UploadPartCommand, CompleteMultipartUploadCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, CreateMultipartUploadCommand, UploadPartCommand, CompleteMultipartUploadCommand, ListObjectsV2Command, AbortMultipartUploadCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 let s3Client;
@@ -29,10 +29,11 @@ export function initS3Client(environment) {
   });
 }
 
-export async function createMultipartUpload(fileName, fileType) {
+export async function createMultipartUpload(fileName, fileType, fileSize) {
   console.log('createMultipartUpload called with:');
   console.log('- fileName:', JSON.stringify(fileName));
   console.log('- fileType:', JSON.stringify(fileType));
+  console.log('- fileSize:', fileSize);
   
   // Use fileId instead of timestamp-filename to avoid spaces and ensure consistency
   const fileId = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
@@ -45,12 +46,19 @@ export async function createMultipartUpload(fileName, fileType) {
     Bucket: env.R2_BUCKET_NAME,
     Key: key,
     ContentType: fileType,
+    // Add metadata about file size
+    Metadata: {
+      'x-amz-meta-size': fileSize.toString()
+    }
   });
 
   console.log('CreateMultipartUploadCommand params:', {
     Bucket: env.R2_BUCKET_NAME,
     Key: key,
     ContentType: fileType,
+    Metadata: {
+      'x-amz-meta-size': fileSize.toString()
+    }
   });
 
   try {
@@ -398,5 +406,35 @@ export async function getUploadUrl(fileId, fileName, fileType) {
   } catch (error) {
     console.error('Error getting upload URL:', error);
     throw new Error('Failed to get upload URL');
+  }
+}
+
+export async function abortMultipartUpload(key, uploadId) {
+  console.log('abortMultipartUpload called with:');
+  console.log('- key:', key);
+  console.log('- uploadId:', uploadId);
+
+  const command = new AbortMultipartUploadCommand({
+    Bucket: env.R2_BUCKET_NAME,
+    Key: key,
+    UploadId: uploadId
+  });
+
+  try {
+    console.log('Sending AbortMultipartUploadCommand to S3...');
+    await s3Client.send(command);
+    console.log('Multipart upload aborted successfully');
+    return {
+      success: true
+    };
+  } catch (error) {
+    console.error('Error aborting multipart upload:', error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      code: error.Code,
+      statusCode: error.$metadata?.httpStatusCode
+    });
+    throw new Error(`Failed to abort multipart upload: ${error.message}`);
   }
 } 

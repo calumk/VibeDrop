@@ -1,16 +1,23 @@
 <template>
-  <div class="auth-header" v-if="isAuthenticated">
+  <div class="auth-header">
 
-    <h1 class="hero-title" style="font-size: 1.5rem; font-weight: 600; color: #fff; margin-bottom: 0; padding:0">
-           {{ appName }}
-          </h1>
+    
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <img :src="appLogoUrl" alt="App Logo" class="app-logo" v-if="appLogoUrl" style="width: 50px; height: 50px;">
+      <h1 class="hero-title" style="font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0;">
+        {{ appName }}
+      </h1>
+    </div>
+    
 
-    <div class="auth-info">
+    <!-- <div class="auth-info">
+      <Tag severity="secondary">
       <i class="pi pi-check-circle"></i>
       <span>{{ label }}</span>
       <small>({{ sessionTime }} min remaining)</small>
-    </div>
-    <div class="auth-buttons">
+    </Tag>
+    </div> -->
+    <div class="auth-buttons"  v-if="isAuthenticated">
       <Button 
       @click="goToNewUpload"
       label="Upload"
@@ -63,6 +70,9 @@ export default {
     appName() {
       return import.meta.env.VITE_APP_NAME
     },
+    appLogoUrl() {
+      return import.meta.env.VITE_LOGO_URL
+    },
     isAuthenticated() {
       return AuthService.isAuthenticated()
     }
@@ -106,7 +116,8 @@ export default {
 
     goToNewUpload() {
       if (this.isAuthenticated) {
-        this.$router.push('/upload')
+        // Do a full page refresh when going to upload page
+        window.location.href = '/upload'
       }
     }
   }
